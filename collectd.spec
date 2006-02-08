@@ -6,7 +6,8 @@
 # - initscripts for server mode (subpackage ?)
 # - collection CGI script
 # - package contrib scripts as %doc
-Summary:	Collects system information in rrd files
+Summary:	Collects system information in RRD files
+Summary(pl):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
 Version:	3.7.1
 Release:	0.1
@@ -15,24 +16,35 @@ Group:		Unknow
 Source0:	http://verplant.org/collectd/files/%{name}-%{version}.tar.gz
 # Source0-md5:	dc2120fad388e5fc8bc486b4fcadc68e
 URL:		http://verplant.org/collectd/
-BuildRequires:	rpmbuild(macros) >= 1.228
-Requires(post,preun):	/sbin/chkconfig
-BuildRequires:	libstatgrab-devel >= 0.12
 BuildRequires:	autoconf
 BuildRequires:	automake
 #BuildRequires:	intltool
+BuildRequires:	libstatgrab-devel >= 0.12
 BuildRequires:	libtool
+BuildRequires:	rpmbuild(macros) >= 1.228
+Requires(post,preun):	/sbin/chkconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-collectd is a small daemon which collects system information every 10 seconds
-and writes the results in an RRD-file.
+collectd is a small daemon which collects system information every 10
+seconds and writes the results in an RRD-file.
 
-In contrast to most similar software, collectd is not a script but written in
-plain C for performance and portability. As a daemon it stays in memory, so
-there is no need to start up a heavy interpreter every time new values should
-be logged. This allows collectd to have a 10 second resolution while being nice
-to the system.
+In contrast to most similar software, collectd is not a script but
+written in plain C for performance and portability. As a daemon it
+stays in memory, so there is no need to start up a heavy interpreter
+every time new values should be logged. This allows collectd to have a
+10 second resolution while being nice to the system.
+
+%description -l pl
+collectd to ma³y demon zbieraj±cy co 10 sekund informacje o systemie i
+zapisuj±cy wyniki do pliku RRD.
+
+W odró¿nieniu od innych podobnych programów collectd nie jest
+skryptem, lecz jest napisany w czystym C z my¶l± o wydajno¶ci i
+przeno¶no¶ci. Jako demon pozostaje w pamiêci, wiêc nie ma potrzeby
+urychamiania ciê¿kiego interpretera za ka¿dym razem, kiedy powinny byæ
+zapisane nowe warto¶ci. Dziêki temu collect mo¿e mieæ rozdzielczo¶æ 10
+sekund i nie obci±¿aæ zbytnio systemu.
 
 %prep
 %setup -q
