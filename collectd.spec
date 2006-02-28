@@ -12,7 +12,7 @@ Name:		collectd
 Version:	3.7.1
 Release:	0.1
 License:	GPL v2
-Group:		Unknow
+Group:		Daemons
 Source0:	http://verplant.org/collectd/files/%{name}-%{version}.tar.gz
 # Source0-md5:	dc2120fad388e5fc8bc486b4fcadc68e
 URL:		http://verplant.org/collectd/
@@ -66,17 +66,17 @@ rm -rf $RPM_BUILD_ROOT
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
-	
-install %{SOURCE2} $RPM_BUILD_ROOT/etc/collectd.conf
+
+install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.conf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post 
+%post
 /sbin/chkconfig --add %{name}
 %service %{name} restart
 
-%preun 
+%preun
 if [ "$1" = "0" ]; then
 	%service -q %{name} stop
 	/sbin/chkconfig --del %{name}
