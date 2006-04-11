@@ -9,13 +9,15 @@
 Summary:	Collects system information in RRD files
 Summary(pl):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
-Version:	3.7.1
+Version:	3.8.4
 Release:	0.1
 License:	GPL v2
 Group:		Daemons
-Source0:	http://verplant.org/collectd/files/%{name}-%{version}.tar.gz
-# Source0-md5:	dc2120fad388e5fc8bc486b4fcadc68e
-URL:		http://verplant.org/collectd/
+Source0:	http://collectd.org/files/%{name}-%{version}.tar.gz
+# Source0-md5:	c2900b156c93265880c5583cbb6898ba
+Source1:	%{name}.conf
+Patch0:		%{name}-hddtemp.patch
+URL:		http://collectd.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
 #BuildRequires:	intltool
@@ -48,6 +50,7 @@ sekund i nie obci±¿aæ zbytnio systemu.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %{__libtoolize}
@@ -67,7 +70,9 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.conf
+install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.conf
+
+rm -f $RPM_BUILD_ROOT%{_libdir}/%{name}/*.la
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -106,6 +111,7 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/tape.so
 %attr(755,root,root) %{_libdir}/%{name}/traffic.so
 %attr(755,root,root) %{_libdir}/%{name}/users.so
+%attr(755,root,root) %{_libdir}/%{name}/wireless.so
 
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.conf
 
