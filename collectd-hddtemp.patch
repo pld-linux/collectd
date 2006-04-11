@@ -1,0 +1,11 @@
+--- collectd-3.8.4/src/hddtemp.c.wiget	2006-04-11 18:02:42.000000000 +0200
++++ collectd-3.8.4/src/hddtemp.c	2006-04-11 18:02:49.000000000 +0200
+@@ -346,7 +346,7 @@
+ 
+ 			if ((entry = (hddname_t *) malloc (sizeof (hddname_t))) == NULL)
+ 			{
+-				syslog (LOG_ERR, "hddtemp: malloc (%u) == NULL", sizeof (hddname_t));
++				syslog (LOG_ERR, "hddtemp: malloc (%zu) == NULL", sizeof (hddname_t));
+ 				free (name);
+ 				continue;
+ 			}
