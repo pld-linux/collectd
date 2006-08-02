@@ -9,14 +9,13 @@
 Summary:	Collects system information in RRD files
 Summary(pl):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
-Version:	3.8.4
+Version:	3.10.1
 Release:	0.1
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.gz
-# Source0-md5:	c2900b156c93265880c5583cbb6898ba
+# Source0-md5:	0a355891f319855e1d242e6c57f7ed4f
 Source1:	%{name}.conf
-Patch0:		%{name}-hddtemp.patch
 URL:		http://collectd.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -50,7 +49,6 @@ sekund i nie obci±¿aæ zbytnio systemu.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 %{__libtoolize}
@@ -93,9 +91,12 @@ fi
 
 %attr(755,root,root) %{_sbindir}/collectd
 %dir %{_libdir}/%{name}
+%attr(755,root,root) %{_libdir}/%{name}/apache.so
+%attr(755,root,root) %{_libdir}/%{name}/apcups.so
+%attr(755,root,root) %{_libdir}/%{name}/apple_sensors.so
 %attr(755,root,root) %{_libdir}/%{name}/battery.so
-%attr(755,root,root) %{_libdir}/%{name}/cpu.so
 %attr(755,root,root) %{_libdir}/%{name}/cpufreq.so
+%attr(755,root,root) %{_libdir}/%{name}/cpu.so
 %attr(755,root,root) %{_libdir}/%{name}/df.so
 %attr(755,root,root) %{_libdir}/%{name}/disk.so
 %attr(755,root,root) %{_libdir}/%{name}/hddtemp.so
@@ -103,6 +104,7 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/memory.so
 %attr(755,root,root) %{_libdir}/%{name}/mysql.so
 %attr(755,root,root) %{_libdir}/%{name}/nfs.so
+%attr(755,root,root) %{_libdir}/%{name}/ntpd.so
 %attr(755,root,root) %{_libdir}/%{name}/ping.so
 %attr(755,root,root) %{_libdir}/%{name}/processes.so
 %attr(755,root,root) %{_libdir}/%{name}/sensors.so
@@ -111,6 +113,7 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/tape.so
 %attr(755,root,root) %{_libdir}/%{name}/traffic.so
 %attr(755,root,root) %{_libdir}/%{name}/users.so
+%attr(755,root,root) %{_libdir}/%{name}/vserver.so
 %attr(755,root,root) %{_libdir}/%{name}/wireless.so
 
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.conf
