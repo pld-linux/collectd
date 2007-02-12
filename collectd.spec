@@ -7,7 +7,7 @@
 # - collection CGI script
 # - package contrib scripts as %doc
 Summary:	Collects system information in RRD files
-Summary(pl.UTF-8):   Zbieranie informacji o systemie w plikach RRD
+Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
 Version:	3.10.1
 Release:	0.1
