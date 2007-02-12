@@ -7,7 +7,7 @@
 # - collection CGI script
 # - package contrib scripts as %doc
 Summary:	Collects system information in RRD files
-Summary(pl):	Zbieranie informacji o systemie w plikach RRD
+Summary(pl.UTF-8):   Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
 Version:	3.10.1
 Release:	0.1
@@ -36,16 +36,16 @@ stays in memory, so there is no need to start up a heavy interpreter
 every time new values should be logged. This allows collectd to have a
 10 second resolution while being nice to the system.
 
-%description -l pl
-collectd to ma³y demon zbieraj±cy co 10 sekund informacje o systemie i
-zapisuj±cy wyniki do pliku RRD.
+%description -l pl.UTF-8
+collectd to maÅ‚y demon zbierajÄ…cy co 10 sekund informacje o systemie i
+zapisujÄ…cy wyniki do pliku RRD.
 
-W odró¿nieniu od innych podobnych programów collectd nie jest
-skryptem, lecz jest napisany w czystym C z my¶l± o wydajno¶ci i
-przeno¶no¶ci. Jako demon pozostaje w pamiêci, wiêc nie ma potrzeby
-urychamiania ciê¿kiego interpretera za ka¿dym razem, kiedy powinny byæ
-zapisane nowe warto¶ci. Dziêki temu collect mo¿e mieæ rozdzielczo¶æ 10
-sekund i nie obci±¿aæ zbytnio systemu.
+W odrÃ³Å¼nieniu od innych podobnych programÃ³w collectd nie jest
+skryptem, lecz jest napisany w czystym C z myÅ›lÄ… o wydajnoÅ›ci i
+przenoÅ›noÅ›ci. Jako demon pozostaje w pamiÄ™ci, wiÄ™c nie ma potrzeby
+urychamiania ciÄ™Å¼kiego interpretera za kaÅ¼dym razem, kiedy powinny byÄ‡
+zapisane nowe wartoÅ›ci. DziÄ™ki temu collect moÅ¼e mieÄ‡ rozdzielczoÅ›Ä‡ 10
+sekund i nie obciÄ…Å¼aÄ‡ zbytnio systemu.
 
 %prep
 %setup -q
