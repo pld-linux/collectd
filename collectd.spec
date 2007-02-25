@@ -2,27 +2,30 @@
 # - mysql subpackage
 # - lm_sensors subpackage
 # - hddtemp subpackage
-# - initscripts for local/network mode (subpackage ?)
-# - initscripts for server mode (subpackage ?)
+# - initscripts for local/client/server mode (subpackage ?)
 # - collection CGI script
 # - package contrib scripts as %doc
 Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
-Version:	3.10.1
-Release:	0.1
+Version:	3.11.2
+Release:	0.2
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.gz
-# Source0-md5:	0a355891f319855e1d242e6c57f7ed4f
+# Source0-md5:	40f4c3689c2c049497a8b1a47e01cc75
 Source1:	%{name}.conf
+Patch0:		%{name}-include.patch
 URL:		http://collectd.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
-#BuildRequires:	intltool
+BuildRequires:	curl-devel
 BuildRequires:	libstatgrab-devel >= 0.12
+BuildRequires:	libpcap-devel
 BuildRequires:	libtool
+BuildRequires:	mysql-devel
 BuildRequires:	rpmbuild(macros) >= 1.228
+BuildRequires:	rrdtool-devel
 Requires(post,preun):	/sbin/chkconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -49,6 +52,7 @@ sekund i nie obciążać zbytnio systemu.
 
 %prep
 %setup -q
+%patch -p1
 
 %build
 %{__libtoolize}
@@ -99,9 +103,13 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/cpu.so
 %attr(755,root,root) %{_libdir}/%{name}/df.so
 %attr(755,root,root) %{_libdir}/%{name}/disk.so
+%attr(755,root,root) %{_libdir}/%{name}/dns.so
+%attr(755,root,root) %{_libdir}/%{name}/email.so
 %attr(755,root,root) %{_libdir}/%{name}/hddtemp.so
 %attr(755,root,root) %{_libdir}/%{name}/load.so
+%attr(755,root,root) %{_libdir}/%{name}/mbmon.so
 %attr(755,root,root) %{_libdir}/%{name}/memory.so
+%attr(755,root,root) %{_libdir}/%{name}/multimeter.so
 %attr(755,root,root) %{_libdir}/%{name}/mysql.so
 %attr(755,root,root) %{_libdir}/%{name}/nfs.so
 %attr(755,root,root) %{_libdir}/%{name}/ntpd.so
