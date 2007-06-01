@@ -8,12 +8,12 @@
 Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
-Version:	3.11.2
-Release:	0.2
+Version:	3.11.5
+Release:	0.1
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.gz
-# Source0-md5:	40f4c3689c2c049497a8b1a47e01cc75
+# Source0-md5:	5fc175cff3e3cd307965968d5398b8ff
 Source1:	%{name}.conf
 Patch0:		%{name}-include.patch
 URL:		http://collectd.org/
