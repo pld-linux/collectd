@@ -17,7 +17,6 @@ Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.gz
 # Source0-md5:	8f708005ce592f53566385118f6eef76
 Source1:	%{name}.conf
-#Patch0:		%{name}-include.patch
 URL:		http://collectd.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -80,15 +79,8 @@ Moduł odpytujący MySQL. Wtyczka udostępnia dane z mysqla.
 
 %prep
 %setup -q
-#%patch -p1
 
 %build
-#if [ -f version-gen.sh ]; then
-#	echo zaktualizuj speca baranie
-#else
-#	echo "head -1 ChangeLog  |cut -f 3 -d ' ' |tr -d '\n' " > version-gen.sh
-#	chmod a+rx version-gen.sh
-#fi
 %{__libtoolize}
 %{__aclocal}
 %{__autoconf}
