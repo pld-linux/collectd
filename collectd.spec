@@ -1,19 +1,21 @@
 # TODO:
 # - lm_sensors subpackage
-# - perl subpackage
+# - perl (plugin and bindings) subpackage
 # - hddtemp subpackage
 # - initscripts for local/client/server mode (subpackage ?)
 # - collection CGI script
 # - package contrib scripts as %doc
+# - build nut, iptables and other plugins
+# - fix building perl plugin
 Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
-Version:	4.1.2
+Version:	4.2.1
 Release:	0.1
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.gz
-# Source0-md5:	40458dabe8ec5df87323c1862a03cb94
+# Source0-md5:	8f708005ce592f53566385118f6eef76
 Source1:	%{name}.conf
 #Patch0:		%{name}-include.patch
 URL:		http://collectd.org/
@@ -81,12 +83,12 @@ Moduł odpytujący MySQL. Wtyczka udostępnia dane z mysqla.
 #%patch -p1
 
 %build
-if [ -f version-gen.sh ]; then
-	echo zaktualizuj speca baranie
-else
-	echo "head -1 ChangeLog  |cut -f 3 -d ' ' |tr -d '\n' " > version-gen.sh
-	chmod a+rx version-gen.sh
-fi
+#if [ -f version-gen.sh ]; then
+#	echo zaktualizuj speca baranie
+#else
+#	echo "head -1 ChangeLog  |cut -f 3 -d ' ' |tr -d '\n' " > version-gen.sh
+#	chmod a+rx version-gen.sh
+#fi
 %{__libtoolize}
 %{__aclocal}
 %{__autoconf}
@@ -95,7 +97,7 @@ fi
 %configure \
 	--with-libstatgrab=/usr \
 	--with-lm-sensors=/usr \
-	--with-libmysql=/usr \
+	--with-libmysql=/usr 
 %{__make}
 
 %install
@@ -146,26 +148,31 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/load.so
 %attr(755,root,root) %{_libdir}/%{name}/logfile.so
 %attr(755,root,root) %{_libdir}/%{name}/mbmon.so
+%attr(755,root,root) %{_libdir}/%{name}/memcached.so
 %attr(755,root,root) %{_libdir}/%{name}/memory.so
 %attr(755,root,root) %{_libdir}/%{name}/multimeter.so
 %attr(755,root,root) %{_libdir}/%{name}/network.so
 %attr(755,root,root) %{_libdir}/%{name}/nfs.so
+%attr(755,root,root) %{_libdir}/%{name}/nginx.so
 %attr(755,root,root) %{_libdir}/%{name}/ntpd.so
-%attr(755,root,root) %{_libdir}/%{name}/perl.so
+#%attr(755,root,root) %{_libdir}/%{name}/perl.so
 %attr(755,root,root) %{_libdir}/%{name}/ping.so
 %attr(755,root,root) %{_libdir}/%{name}/processes.so
 %attr(755,root,root) %{_libdir}/%{name}/rrdtool.so
 #%attr(755,root,root) %{_libdir}/%{name}/sensors.so
+%attr(755,root,root) %{_libdir}/%{name}/sensors.so
 %attr(755,root,root) %{_libdir}/%{name}/serial.so
-%attr(755,root,root) %{_libdir}/%{name}/syslog.so
 %attr(755,root,root) %{_libdir}/%{name}/swap.so
-%{_libdir}/%{name}/types.db
+%attr(755,root,root) %{_libdir}/%{name}/syslog.so
 #%attr(755,root,root) %{_libdir}/%{name}/tape.so
+%attr(755,root,root) %{_libdir}/%{name}/tcpconns.so
 #%attr(755,root,root) %{_libdir}/%{name}/traffic.so
-%attr(755,root,root) %{_libdir}/%{name}/users.so
 %attr(755,root,root) %{_libdir}/%{name}/unixsock.so
+%attr(755,root,root) %{_libdir}/%{name}/users.so
 %attr(755,root,root) %{_libdir}/%{name}/vserver.so
 %attr(755,root,root) %{_libdir}/%{name}/wireless.so
+%{_libdir}/%{name}/types.db
+  
 
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.conf
 
