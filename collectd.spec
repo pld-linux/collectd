@@ -53,29 +53,31 @@ zapisane nowe wartości. Dzięki temu collect może mieć rozdzielczość 10
 sekund i nie obciążać zbytnio systemu.
 
 %package apache
-Summary:	apache-plugin for collectd.
-Summary(pl_PL.UTF-8):	moduł apache dla collectd.
+Summary:	apache-plugin for collectd
+Summary(pl_PL.UTF-8):	Wtyczka apache dla collectd
 Group:		Daemons
-Requires:	%{name} = %{epoch}:%{version}-%{release}
+Requires:	%{name} = %{version}-%{release}
 
 %description apache
 This plugin collectd data provided by Apache's `mod_status'.
 
 %description apache -l pl.UTF-8
-Plugin collectd zbierający informacje udostępniane przez moduł 'mod_status' Apacha.
+Wtyczka collectd zbierająca informacje udostępniane przez moduł
+'mod_status' Apacha.
 
 %package mysql
-Summary:	mysql-plugin for collectd.
-Summary(pl_PL.UTF-8):	moduł mysql-plugin do collectd.
+Summary:	mysql-plugin for collectd
+Summary(pl_PL.UTF-8):	Moduł mysql dla collectd.
 Group:		Daemons
-Requires:	%{name} = %{epoch}:%{version}-%{release}
+Requires:	%{name} = %{version}-%{release}
 
 %description mysql
-MySQL  querying  plugin.  This plugins  provides data of  issued commands,
+MySQL querying plugin. This plugins provides data of issued commands,
 called handlers and database traffic.
 
 %description mysql -l pl.UTF-8
-Moduł odpytujący MySQL. Wtyczka udostępnia dane z mysqla.
+Moduł odpytujący MySQL. Wtyczka udostępnia dane o wydawanych
+poleceniach, wywoływanych procedurach obsługi i ruchu bazodanowym.
 
 %prep
 %setup -q
@@ -164,7 +166,6 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/vserver.so
 %attr(755,root,root) %{_libdir}/%{name}/wireless.so
 %{_libdir}/%{name}/types.db
-  
 
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.conf
 
