@@ -65,7 +65,7 @@ Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
 Version:	4.4.0
-Release:	0.2
+Release:	0.3
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.gz
@@ -78,8 +78,7 @@ BuildRequires:	automake
 BuildRequires:	curl-devel
 BuildRequires:	iptables-devel
 BuildRequires:	libnetlink-devel
-# External package needed (http://verplant.org/liboping/)
-#BuildRequires:	liboping-devel
+BuildRequires:	liboping-devel
 BuildRequires:	libpcap-devel
 BuildRequires:	libstatgrab-devel >= 0.12
 BuildRequires:	libtool
@@ -174,6 +173,15 @@ Requires:	%{name} = %{version}-%{release}
 
 %description nginx
 nginx plugin for collectd.
+
+%package ping
+Summary:	ping-plugin for collectd
+Summary(pl_PL.UTF-8):	Wtyczka ping dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description ping
+ping plugin for collectd.
 
 %package rrdtool
 Summary:	rrdtool-plugin for collectd
@@ -296,7 +304,6 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/nfs.so
 %attr(755,root,root) %{_libdir}/%{name}/ntpd.so
 #%attr(755,root,root) %{_libdir}/%{name}/perl.so
-%attr(755,root,root) %{_libdir}/%{name}/ping.so
 %attr(755,root,root) %{_libdir}/%{name}/powerdns.so
 %attr(755,root,root) %{_libdir}/%{name}/processes.so
 %attr(755,root,root) %{_libdir}/%{name}/serial.so
@@ -356,6 +363,10 @@ fi
 %files nginx
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/%{name}/nginx.so
+
+%files ping
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/%{name}/ping.so
 
 %files rrdtool
 %defattr(644,root,root,755)
