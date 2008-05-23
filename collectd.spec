@@ -10,17 +10,19 @@
 Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
-Version:	4.2.3
+Version:	4.4.0
 Release:	0.1
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.gz
-# Source0-md5:	94c337194b333894f9a8ca32734d69a6
+# Source0-md5:	a677ddcad97fdb3cdd09efac4842b11d
 Source1:	%{name}.conf
 URL:		http://collectd.org/
+BuildRequires:	OpenIPMI-devel
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	curl-devel
+BuildRequires:	libnetlink-devel
 BuildRequires:	libstatgrab-devel >= 0.12
 BuildRequires:	libpcap-devel
 BuildRequires:	libtool
@@ -92,7 +94,7 @@ poleceniach, wywoływanych procedurach obsługi i ruchu bazodanowym.
 	--with-libstatgrab=/usr \
 	--with-lm-sensors=/usr \
 	--with-libmysql=/usr 
-%{__make}
+%{__make} LDFLAGS="%{rpmldflags} -lstatgrab"
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -100,7 +102,10 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.conf
+install -d $RPM_BUILD_ROOT%{_var}/{log/,lib/%{name}}
+#install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.conf
+touch $RPM_BUILD_ROOT%{_var}/log/collectd.log
+install src/collectd.conf $RPM_BUILD_ROOT%{_sysconfdir}/collectd.conf
 
 rm -f $RPM_BUILD_ROOT%{_libdir}/%{name}/*.la
 
@@ -119,13 +124,15 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS ChangeLog README TODO
+%doc AUTHORS ChangeLog README TODO contrib
 
 %attr(755,root,root) %{_sbindir}/collectd
+%attr(755,root,root) %{_sbindir}/collectdmon
 %attr(755,root,root) %{_bindir}/collectd-nagios
 %dir %{_libdir}/%{name}
 %attr(755,root,root) %{_libdir}/%{name}/apcups.so
 #%attr(755,root,root) %{_libdir}/%{name}/apple_sensors.so
+%attr(755,root,root) %{_libdir}/%{name}/ascent.so
 %attr(755,root,root) %{_libdir}/%{name}/battery.so
 %attr(755,root,root) %{_libdir}/%{name}/cpufreq.so
 %attr(755,root,root) %{_libdir}/%{name}/cpu.so
@@ -138,6 +145,7 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/exec.so
 %attr(755,root,root) %{_libdir}/%{name}/hddtemp.so
 %attr(755,root,root) %{_libdir}/%{name}/interface.so
+%attr(755,root,root) %{_libdir}/%{name}/iptables.so
 %attr(755,root,root) %{_libdir}/%{name}/irq.so
 %attr(755,root,root) %{_libdir}/%{name}/load.so
 %attr(755,root,root) %{_libdir}/%{name}/logfile.so
@@ -145,26 +153,34 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/memcached.so
 %attr(755,root,root) %{_libdir}/%{name}/memory.so
 %attr(755,root,root) %{_libdir}/%{name}/multimeter.so
+%attr(755,root,root) %{_libdir}/%{name}/netlink.so
 %attr(755,root,root) %{_libdir}/%{name}/network.so
 %attr(755,root,root) %{_libdir}/%{name}/nfs.so
 %attr(755,root,root) %{_libdir}/%{name}/nginx.so
 %attr(755,root,root) %{_libdir}/%{name}/ntpd.so
 #%attr(755,root,root) %{_libdir}/%{name}/perl.so
 %attr(755,root,root) %{_libdir}/%{name}/ping.so
+%attr(755,root,root) %{_libdir}/%{name}/powerdns.so
 %attr(755,root,root) %{_libdir}/%{name}/processes.so
 %attr(755,root,root) %{_libdir}/%{name}/rrdtool.so
 #%attr(755,root,root) %{_libdir}/%{name}/sensors.so
 %attr(755,root,root) %{_libdir}/%{name}/sensors.so
 %attr(755,root,root) %{_libdir}/%{name}/serial.so
+%attr(755,root,root) %{_libdir}/%{name}/snmp.so
 %attr(755,root,root) %{_libdir}/%{name}/swap.so
 %attr(755,root,root) %{_libdir}/%{name}/syslog.so
+%attr(755,root,root) %{_libdir}/%{name}/tail.so
 #%attr(755,root,root) %{_libdir}/%{name}/tape.so
+%attr(755,root,root) %{_libdir}/%{name}/teamspeak2.so
 %attr(755,root,root) %{_libdir}/%{name}/tcpconns.so
 #%attr(755,root,root) %{_libdir}/%{name}/traffic.so
 %attr(755,root,root) %{_libdir}/%{name}/unixsock.so
+%attr(755,root,root) %{_libdir}/%{name}/uuid.so
 %attr(755,root,root) %{_libdir}/%{name}/users.so
+%attr(755,root,root) %{_libdir}/%{name}/vmem.so
 %attr(755,root,root) %{_libdir}/%{name}/vserver.so
 %attr(755,root,root) %{_libdir}/%{name}/wireless.so
+%attr(755,root,root) %{_libdir}/%{name}/xmms.so
 %{_libdir}/%{name}/types.db
 
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.conf
@@ -180,6 +196,11 @@ fi
 %{_mandir}/man5/collectd-perl.5*
 %{_mandir}/man5/collectd-snmp.5*
 %{_mandir}/man5/collectd-unixsock.5*
+%{_mandir}/man1/collectdmon.1*
+%{_mandir}/man5/types.db.5*
+%{_var}/log/collectd.log
+%dir %{_var}/lib/%{name}
+
 
 %files apache
 %defattr(644,root,root,755)
