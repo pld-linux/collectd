@@ -70,7 +70,7 @@ Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.gz
 # Source0-md5:	a677ddcad97fdb3cdd09efac4842b11d
 Source1:	%{name}.conf
-Source2:	%{name}-init
+Source2:	%{name}.init
 URL:		http://collectd.org/
 BuildRequires:	OpenIPMI-devel
 BuildRequires:	autoconf
