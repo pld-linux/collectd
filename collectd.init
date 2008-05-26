@@ -1,0 +1,58 @@
+#!/bin/sh
+#
+# collectd	collectd (collectd daemon)
+#
+# chkconfig:	345 93 11
+#
+# description:	utility that colect various system information  \
+#		into rrd files \
+
+
+
+# Source function library
+. /etc/rc.d/init.d/functions
+
+# Get service config
+[ -f /etc/sysconfig/collectd ] && . /etc/sysconfig/collectd
+
+
+
+RETVAL=0
+
+case "$1" in
+  start)
+	# Check if the service is already running?
+	if [ ! -f /var/lock/subsys/collectd ]; then
+		msg_starting collectd
+		daemon /usr/sbin/collectd
+		RETVAL=$?
+		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/collectd
+	else
+		msg_already_running collectd
+	fi
+	;;
+  stop)
+	if [ -f /var/lock/subsys/collectd ]; then
+		msg_stopping collectd
+		killproc collectd
+		rm -f /var/lock/subsys/collectd >/dev/null 2>&1
+	else
+		msg_not_running collectd
+	fi
+	;;
+  restart)
+	$0 stop
+	$0 start
+	exit $?
+	;;
+  status)
+	status collectd
+	exit $?
+	;;
+  *)
+	msg_usage "$0 {start|stop|restart|status}"
+	exit 3
+esac
+
+exit $RETVAL
+
