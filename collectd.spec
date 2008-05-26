@@ -1,7 +1,6 @@
 # TODO:
 # - lm_sensors subpackage
 # - initscripts for local/client/server mode (subpackage ?)
-# - collection CGI script
 # - package contrib scripts as %doc
 # - put every plugin into subpackages
 # - Current plugins status:
@@ -71,6 +70,7 @@ Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.gz
 # Source0-md5:	a677ddcad97fdb3cdd09efac4842b11d
 Source1:	%{name}.conf
+Source2:	%{name}-init
 URL:		http://collectd.org/
 BuildRequires:	OpenIPMI-devel
 BuildRequires:	autoconf
@@ -262,13 +262,14 @@ rm -rf $RPM_BUILD_ROOT
 
 install -d $RPM_BUILD_ROOT%{_var}/{log/,lib/%{name}}
 install -d $RPM_BUILD_ROOT/home/services/httpd/cgi-bin
+install -d $RPM_BUILD_ROOT/etc/rc.d/init.d/
 #install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.conf
 touch $RPM_BUILD_ROOT%{_var}/log/collectd.log
 install src/collectd.conf $RPM_BUILD_ROOT%{_sysconfdir}/collectd.conf
 install contrib/collection.conf $RPM_BUILD_ROOT%{_sysconfdir}
 install contrib/collection.cgi $RPM_BUILD_ROOT/home/services/httpd/cgi-bin
-
 rm -f $RPM_BUILD_ROOT%{_libdir}/%{name}/*.la
+install %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -335,8 +336,7 @@ fi
 
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.conf
 
-#%attr(754,root,root) /etc/rc.d/init.d/%{name}
-#%config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/%{name}
+%attr(754,root,root) /etc/rc.d/init.d/%{name}
 
 %{_mandir}/man1/collectd.1*
 %{_mandir}/man1/collectd-nagios.1*
