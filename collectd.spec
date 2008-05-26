@@ -84,10 +84,11 @@ BuildRequires:	libstatgrab-devel >= 0.12
 BuildRequires:	libtool
 BuildRequires:	mysql-devel
 BuildRequires:	perl-devel
-BuildRequires:	rpmbuild(macros) >= 1.228
+BuildRequires:	rpmbuild(macros) >= 1.268
 BuildRequires:	rrdtool-devel
 BuildRequires:	xmms-devel
 Requires(post,preun):	/sbin/chkconfig
+Requires:	rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -101,15 +102,15 @@ every time new values should be logged. This allows collectd to have a
 10 second resolution while being nice to the system.
 
 %description -l pl.UTF-8
-collectd to mały demon zbierający co 10 sekund informacje o systemie
-i zapisujący wyniki do pliku RRD.
+collectd to mały demon zbierający co 10 sekund informacje o systemie i
+zapisujący wyniki do pliku RRD.
 
 W odróżnieniu od innych podobnych programów collectd nie jest
 skryptem, lecz jest napisany w czystym C z myślą o wydajności i
 przenośności. Jako demon pozostaje w pamięci, więc nie ma potrzeby
-urychamiania ciężkiego interpretera za każdym razem, kiedy powinny
-być zapisane nowe wartości. Dzięki temu collect może mieć
-rozdzielczość 10 sekund i nie obciążać zbytnio systemu.
+urychamiania ciężkiego interpretera za każdym razem, kiedy powinny być
+zapisane nowe wartości. Dzięki temu collect może mieć rozdzielczość 10
+sekund i nie obciążać zbytnio systemu.
 
 %package ascent
 Summary:	ascent-plugin for collectd
