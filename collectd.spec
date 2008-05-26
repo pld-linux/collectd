@@ -101,15 +101,15 @@ every time new values should be logged. This allows collectd to have a
 10 second resolution while being nice to the system.
 
 %description -l pl.UTF-8
-collectd to mały demon zbierający co 10 sekund informacje o systemie i
-zapisujący wyniki do pliku RRD.
+collectd to mały demon zbierający co 10 sekund informacje o systemie
+i zapisujący wyniki do pliku RRD.
 
 W odróżnieniu od innych podobnych programów collectd nie jest
 skryptem, lecz jest napisany w czystym C z myślą o wydajności i
 przenośności. Jako demon pozostaje w pamięci, więc nie ma potrzeby
-urychamiania ciężkiego interpretera za każdym razem, kiedy powinny być
-zapisane nowe wartości. Dzięki temu collect może mieć rozdzielczość 10
-sekund i nie obciążać zbytnio systemu.
+urychamiania ciężkiego interpretera za każdym razem, kiedy powinny
+być zapisane nowe wartości. Dzięki temu collect może mieć
+rozdzielczość 10 sekund i nie obciążać zbytnio systemu.
 
 %package ascent
 Summary:	ascent-plugin for collectd
@@ -132,6 +132,15 @@ This plugin collectd data provided by Apache's `mod_status'.
 %description apache -l pl.UTF-8
 Wtyczka collectd zbierająca informacje udostępniane przez moduł
 'mod_status' Apacha.
+
+%package collection
+Summary:	Web script for collectiond
+Summary(pl_PL.UTF-8):	Web script for collectiond
+Group:		Applications/WWW
+Requires:	%{name} = %{version}-%{release}
+
+%description collection
+Web script for collectiond
 
 %package dns
 Summary:	dns-plugin for collectd
@@ -242,7 +251,7 @@ This plugin collectd data provided by XMMS.
 %configure \
 	--with-libstatgrab=/usr \
 	--with-lm-sensors=/usr \
-	--with-libmysql=/usr 
+	--with-libmysql=/usr
 %{__make} LDFLAGS="%{rpmldflags} -lstatgrab"
 
 %install
@@ -252,9 +261,12 @@ rm -rf $RPM_BUILD_ROOT
 	DESTDIR=$RPM_BUILD_ROOT
 
 install -d $RPM_BUILD_ROOT%{_var}/{log/,lib/%{name}}
+install -d $RPM_BUILD_ROOT/home/services/httpd/cgi-bin
 #install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.conf
 touch $RPM_BUILD_ROOT%{_var}/log/collectd.log
 install src/collectd.conf $RPM_BUILD_ROOT%{_sysconfdir}/collectd.conf
+install contrib/collection.conf $RPM_BUILD_ROOT%{_sysconfdir}
+install contrib/collection.cgi $RPM_BUILD_ROOT/home/services/httpd/cgi-bin
 
 rm -f $RPM_BUILD_ROOT%{_libdir}/%{name}/*.la
 
@@ -347,6 +359,11 @@ fi
 %files apache
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/%{name}/apache.so
+
+%files collection
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/collection.conf
+%attr(755,root,root) /home/services/httpd/cgi-bin/collection.cgi
 
 %files dns
 %defattr(644,root,root,755)
