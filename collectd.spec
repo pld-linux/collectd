@@ -82,6 +82,7 @@ BuildRequires:	liboping-devel
 BuildRequires:	libpcap-devel
 BuildRequires:	libstatgrab-devel >= 0.12
 BuildRequires:	libtool
+BuildRequires:	lm_sensors-devel
 BuildRequires:	mysql-devel
 BuildRequires:	perl-devel
 BuildRequires:	rpmbuild(macros) >= 1.268
@@ -148,7 +149,7 @@ Summary:	dns-plugin for collectd
 Summary(pl_PL.UTF-8):	Wtyczka dns dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
-
+Requires:	perl-rrdtool
 %description dns
 dns plugin for collectd.
 
