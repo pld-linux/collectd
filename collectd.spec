@@ -150,6 +150,7 @@ Summary(pl_PL.UTF-8):	Wtyczka dns dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 Requires:	perl-rrdtool
+
 %description dns
 dns plugin for collectd.
 
