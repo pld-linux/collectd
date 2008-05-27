@@ -64,7 +64,7 @@ Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
 Version:	4.4.0
-Release:	0.3
+Release:	0.4
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.gz
@@ -135,13 +135,26 @@ This plugin collectd data provided by Apache's `mod_status'.
 Wtyczka collectd zbierająca informacje udostępniane przez moduł
 'mod_status' Apacha.
 
-%package collection
+%package collection-apache
 Summary:	Web script for collectiond
 Summary(pl_PL.UTF-8):	Web script for collectiond
 Group:		Applications/WWW
 Requires:	%{name} = %{version}-%{release}
+Requires:	perl-HTML-Parser
+Requires:	perl-URI
 
-%description collection
+%description collection-apache
+Web script for collectiond
+
+%package collection-lighttpd
+Summary:	Web script for collectiond
+Summary(pl_PL.UTF-8):	Web script for collectiond
+Group:		Applications/WWW
+Requires:	%{name} = %{version}-%{release}
+Requires:	perl-HTML-Parser
+Requires:	perl-URI
+
+%description collection-lighttpd
 Web script for collectiond
 
 %package dns
@@ -245,6 +258,11 @@ This plugin collectd data provided by XMMS.
 %prep
 %setup -q
 
+cat >> collection.conf <<'EOF'
+datadir: "/var/lib/collectd/"
+libdir: "/usr/lib/collectd/"
+EOF
+
 %build
 %{__libtoolize}
 %{__aclocal}
@@ -263,14 +281,16 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
+
 install -d $RPM_BUILD_ROOT%{_var}/{log/,lib/%{name}}
-install -d $RPM_BUILD_ROOT/home/services/httpd/cgi-bin
+install -d $RPM_BUILD_ROOT/home/services/{httpd,lighttpd}/cgi-bin
 install -d $RPM_BUILD_ROOT/etc/rc.d/init.d/
 #install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.conf
 touch $RPM_BUILD_ROOT%{_var}/log/collectd.log
 install src/collectd.conf $RPM_BUILD_ROOT%{_sysconfdir}/collectd.conf
-install contrib/collection.conf $RPM_BUILD_ROOT%{_sysconfdir}
+install collection.conf $RPM_BUILD_ROOT%{_sysconfdir}
 install contrib/collection.cgi $RPM_BUILD_ROOT/home/services/httpd/cgi-bin
+install contrib/collection.cgi $RPM_BUILD_ROOT/home/services/lighttpd/cgi-bin
 rm -f $RPM_BUILD_ROOT%{_libdir}/%{name}/*.la
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
 
@@ -363,10 +383,15 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/%{name}/apache.so
 
-%files collection
+%files collection-apache
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/collection.conf
 %attr(755,root,root) /home/services/httpd/cgi-bin/collection.cgi
+
+%files collection-lighttpd
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/collection.conf
+%attr(755,root,root) /home/services/lighttpd/cgi-bin/collection.cgi
 
 %files dns
 %defattr(644,root,root,755)
