@@ -64,13 +64,14 @@ Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
 Version:	4.4.0
-Release:	0.4
+Release:	0.5
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.gz
 # Source0-md5:	a677ddcad97fdb3cdd09efac4842b11d
 Source1:	%{name}.conf
 Source2:	%{name}.init
+Source3:	%{name}-http.conf
 URL:		http://collectd.org/
 BuildRequires:	OpenIPMI-devel
 BuildRequires:	autoconf
@@ -270,20 +271,25 @@ EOF
 
 %install
 rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT{%{_var}/{log/,lib/%{name}},/etc/rc.d/init.d/} \
+	$RPM_BUILD_ROOT{%{_appdir}/cgi-bin,%{_webappdir},%{_pkglibdir}}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-install -d $RPM_BUILD_ROOT%{_var}/{log/,lib/%{name}}
-install -d $RPM_BUILD_ROOT/home/services/httpd/cgi-bin
-install -d $RPM_BUILD_ROOT/etc/rc.d/init.d/
 #install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.conf
 touch $RPM_BUILD_ROOT%{_var}/log/collectd.log
 install src/collectd.conf $RPM_BUILD_ROOT%{_sysconfdir}/collectd.conf
-install contrib/collection.conf $RPM_BUILD_ROOT%{_sysconfdir}
-install contrib/collection.cgi $RPM_BUILD_ROOT/home/services/httpd/cgi-bin
-rm -f $RPM_BUILD_ROOT%{_libdir}/%{name}/*.la
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
+
+# Web frontend:
+install contrib/collection.conf $RPM_BUILD_ROOT%{_webappdir}
+install contrib/collection.cgi $RPM_BUILD_ROOT%{_appdir}/cgi-bin
+install %{SOURCE3} $RPM_BUILD_ROOT%{_webappdir}/apache.conf
+install %{SOURCE3} $RPM_BUILD_ROOT%{_webappdir}/httpd.conf
+
+# Cleanups:
+rm -f $RPM_BUILD_ROOT%{_libdir}/%{name}/*.la
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -297,6 +303,18 @@ if [ "$1" = "0" ]; then
 	%service -q %{name} stop
 	/sbin/chkconfig --del %{name}
 fi
+
+%triggerin collection -- apache1 < 1.3.37-3, apache1-base
+%webapp_register apache %{_webapp}
+
+%triggerun collection -- apache1 < 1.3.37-3, apache1-base
+%webapp_unregister apache %{_webapp}
+
+%triggerin collection -- apache < 2.2.0, apache-base
+%webapp_register httpd %{_webapp}
+
+%triggerun collection -- apache < 2.2.0, apache-base
+%webapp_unregister httpd %{_webapp}
 
 %files
 %defattr(644,root,root,755)
@@ -376,8 +394,10 @@ fi
 
 %files collection
 %defattr(644,root,root,755)
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/collection.conf
-%attr(755,root,root) /home/services/httpd/cgi-bin/collection.cgi
+%config(noreplace) %verify(not md5 mtime size) %{_webappdir}/collection.conf
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/apache.conf
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/httpd.conf
+%attr(755,root,root) %{_appdir}/cgi-bin/collection.cgi
 
 %files dns
 %defattr(644,root,root,755)
