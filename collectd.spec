@@ -92,6 +92,12 @@ Requires(post,preun):	/sbin/chkconfig
 Requires:	rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
+%define         _pkglibdir      /var/lib/%{name}
+%define         _webapps        /etc/webapps 
+%define         _webapp         %{name}
+%define         _webappdir      %{_webapps}/%{_webapp}
+%define         _appdir         %{_datadir}/%{_webapp}
+
 %description
 collectd is a small daemon which collects system information every 10
 seconds and writes the results in an RRD-file.
