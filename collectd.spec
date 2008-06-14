@@ -59,12 +59,20 @@
 #    vserver . . . . . . yes
 #    wireless  . . . . . yes
 #    xmms  . . . . . . . yes
+%bcond_without	dns
+%bcond_without	iptables
+%bcond_without	netlink
 
+#http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=358637
+%ifarch %{x8664}
+%undefine with_iptables
+%undefine with_netlink
+%endif
 Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
 Version:	4.4.0
-Release:	0.5
+Release:	0.6
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.gz
@@ -88,6 +96,7 @@ BuildRequires:	mysql-devel
 BuildRequires:	perl-devel
 BuildRequires:	rpmbuild(macros) >= 1.268
 BuildRequires:	rrdtool-devel
+BuildRequires:	net-snmp-devel
 BuildRequires:	xmms-devel
 Requires(post,preun):	/sbin/chkconfig
 Requires:	rc-scripts
@@ -202,6 +211,15 @@ Requires:	%{name} = %{version}-%{release}
 %description ping
 ping plugin for collectd.
 
+%package powerdns
+Summary:	powerdns-plugin for collectd
+Summary(pl_PL.UTF-8):	Wtyczka powerdns dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description powerdns
+powerdns plugin for collectd.
+
 %package rrdtool
 Summary:	rrdtool-plugin for collectd
 Summary(pl_PL.UTF-8):	Wtyczka rrdtool dla collectd
@@ -263,10 +281,16 @@ EOF
 %{__autoconf}
 %{__autoheader}
 %{__automake}
+
 %configure \
 	--with-libstatgrab=/usr \
 	--with-lm-sensors=/usr \
-	--with-libmysql=/usr
+	--with-libmysql=/usr \
+	--%{?with_dns:en}%{?!with_dns:dis}able-dns \
+	--%{?with_iptables:en}%{?!with_iptables:dis}able-iptables \
+	--%{?with_netlink:en}%{?!with_netlink:dis}able-netlink
+
+
 %{__make} LDFLAGS="%{rpmldflags} -lstatgrab"
 
 %install
@@ -336,7 +360,9 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/entropy.so
 %attr(755,root,root) %{_libdir}/%{name}/exec.so
 %attr(755,root,root) %{_libdir}/%{name}/interface.so
+%if %{with iptables}
 %attr(755,root,root) %{_libdir}/%{name}/iptables.so
+%endif
 %attr(755,root,root) %{_libdir}/%{name}/irq.so
 %attr(755,root,root) %{_libdir}/%{name}/load.so
 %attr(755,root,root) %{_libdir}/%{name}/logfile.so
@@ -344,12 +370,13 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/memcached.so
 %attr(755,root,root) %{_libdir}/%{name}/memory.so
 %attr(755,root,root) %{_libdir}/%{name}/multimeter.so
+%if %{with netlink}
 %attr(755,root,root) %{_libdir}/%{name}/netlink.so
+%endif
 %attr(755,root,root) %{_libdir}/%{name}/network.so
 %attr(755,root,root) %{_libdir}/%{name}/nfs.so
 %attr(755,root,root) %{_libdir}/%{name}/ntpd.so
 #%attr(755,root,root) %{_libdir}/%{name}/perl.so
-%attr(755,root,root) %{_libdir}/%{name}/powerdns.so
 %attr(755,root,root) %{_libdir}/%{name}/processes.so
 %attr(755,root,root) %{_libdir}/%{name}/serial.so
 %attr(755,root,root) %{_libdir}/%{name}/swap.so
@@ -395,8 +422,8 @@ fi
 %files collection
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_webappdir}/collection.conf
-%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/apache.conf
-%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/httpd.conf
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_webappdir}/apache.conf
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_webappdir}/httpd.conf
 %attr(755,root,root) %{_appdir}/cgi-bin/collection.cgi
 
 %files dns
@@ -418,6 +445,10 @@ fi
 %files ping
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/%{name}/ping.so
+
+%files powerdns
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/%{name}/powerdns.so
 
 %files rrdtool
 %defattr(644,root,root,755)
