@@ -1,6 +1,5 @@
 # TODO:
 # - lm_sensors subpackage
-# - initscripts for local/client/server mode (subpackage ?)
 # - package contrib scripts as %doc
 # - put every plugin into subpackages
 # - Current plugins status:
@@ -72,7 +71,7 @@ Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
 Version:	4.4.2
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.gz
