@@ -20,7 +20,7 @@
 #    hddtemp . . . . . . yes
 #    interface . . . . . yes
 #    iptables  . . . . . yes
-#    ipmi  . . . . . . . no
+#    ipmi  . . . . . . . yes
 #    ipvs  . . . . . . . no (ip_vs.h not found)
 #    irq . . . . . . . . yes
 #    libvirt . . . . . . no
@@ -29,14 +29,14 @@
 #    mbmon . . . . . . . yes
 #    memcached . . . . . yes
 #    memory  . . . . . . yes
-#    multimeter  . . . . yes
+#    multimeter  . . . . no
 #    mysql . . . . . . . yes
 #    netlink . . . . . . yes
 #    network . . . . . . yes
 #    nfs . . . . . . . . yes
 #    nginx . . . . . . . yes
 #    ntpd  . . . . . . . yes
-#    nut . . . . . . . . no
+#    nut . . . . . . . . yes
 #    perl  . . . . . . . no (needs libperl)
 #    ping  . . . . . . . yes
 #    powerdns  . . . . . yes
@@ -59,7 +59,9 @@
 #    wireless  . . . . . yes
 #    xmms  . . . . . . . yes
 %bcond_without	dns
+%bcond_without	ipmi
 %bcond_without	iptables
+%bcond_with	multimeter
 %bcond_without	netlink
 
 #http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=358637
@@ -71,7 +73,7 @@ Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
 Version:	4.4.2
-Release:	2
+Release:	3
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.gz
@@ -92,6 +94,7 @@ BuildRequires:	libstatgrab-devel >= 0.12
 BuildRequires:	libtool
 BuildRequires:	lm_sensors-devel
 BuildRequires:	mysql-devel
+BuildRequires:	nut-devel
 BuildRequires:	perl-devel
 BuildRequires:	rpmbuild(macros) >= 1.268
 BuildRequires:	rrdtool-devel
@@ -177,6 +180,15 @@ Requires:	%{name} = %{version}-%{release}
 
 %description hddtemp
 hddtemp plugin for collectd.
+
+%package ipmi
+Summary:	ipmi-plugin for collectd
+Summary(pl_PL.UTF-8):	Wtyczka ipmi dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description ipmi
+ipmi plugin for collectd.
 
 %package mysql
 Summary:	mysql-plugin for collectd
@@ -285,12 +297,16 @@ EOF
 	--with-libstatgrab=/usr \
 	--with-lm-sensors=/usr \
 	--with-libmysql=/usr \
+	--%{?with_ipmi:en}%{?!with_ipmi:dis}able-ipmi \
+	--%{?with_multimeter:en}%{?!with_multimeter:dis}able-multimeter \
 	--%{?with_dns:en}%{?!with_dns:dis}able-dns \
 	--%{?with_iptables:en}%{?!with_iptables:dis}able-iptables \
 	--%{?with_netlink:en}%{?!with_netlink:dis}able-netlink
 
 
-%{__make} LDFLAGS="%{rpmldflags} -lstatgrab"
+%{__make} LDFLAGS="%{rpmldflags} -lstatgrab" \
+	BUILD_WITH_OPENIPMI_CFLAGS="-I/usr/include" \
+	BUILD_WITH_OPENIPMI_LIBS="-L/usr/lib64 -lOpenIPMIutils -lOpenIPMIpthread"
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -368,11 +384,14 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/mbmon.so
 %attr(755,root,root) %{_libdir}/%{name}/memcached.so
 %attr(755,root,root) %{_libdir}/%{name}/memory.so
+%if %{with multimeter}
 %attr(755,root,root) %{_libdir}/%{name}/multimeter.so
+%endif
 %if %{with netlink}
 %attr(755,root,root) %{_libdir}/%{name}/netlink.so
 %endif
 %attr(755,root,root) %{_libdir}/%{name}/network.so
+%attr(755,root,root) %{_libdir}/%{name}/nut.so
 %attr(755,root,root) %{_libdir}/%{name}/nfs.so
 %attr(755,root,root) %{_libdir}/%{name}/ntpd.so
 #%attr(755,root,root) %{_libdir}/%{name}/perl.so
@@ -432,6 +451,12 @@ fi
 %files hddtemp
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/%{name}/hddtemp.so
+
+%if %{with ipmi}
+%files ipmi
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/%{name}/ipmi.so
+%endif
 
 %files mysql
 %defattr(644,root,root,755)
