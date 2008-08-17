@@ -58,12 +58,14 @@
 #    vserver . . . . . . yes
 #    wireless  . . . . . yes
 #    xmms  . . . . . . . yes
-%bcond_without	dns
-%bcond_without	ipmi
-%bcond_without	iptables
-%bcond_with	multimeter
-%bcond_without	netlink
-
+#
+# Conditional build:
+%bcond_without	dns		# ???
+%bcond_without	ipmi		# ipmi plugin package
+%bcond_without	iptables	# iptables plugin
+%bcond_with	multimeter	# multimeter plugin
+%bcond_without	netlink		# netlink plugin
+#
 #http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=358637
 %ifarch %{x8664}
 %undefine with_iptables
@@ -190,6 +192,9 @@ Requires:	%{name} = %{version}-%{release}
 %description ipmi
 ipmi plugin for collectd.
 
+%description ipmi -l pl.UTF-8
+Wtyczka ipmi dla collectd.
+
 %package mysql
 Summary:	mysql-plugin for collectd
 Summary(pl_PL.UTF-8):	Moduł mysql dla collectd.
@@ -297,11 +302,11 @@ EOF
 	--with-libstatgrab=/usr \
 	--with-lm-sensors=/usr \
 	--with-libmysql=/usr \
-	--%{?with_ipmi:en}%{?!with_ipmi:dis}able-ipmi \
-	--%{?with_multimeter:en}%{?!with_multimeter:dis}able-multimeter \
-	--%{?with_dns:en}%{?!with_dns:dis}able-dns \
-	--%{?with_iptables:en}%{?!with_iptables:dis}able-iptables \
-	--%{?with_netlink:en}%{?!with_netlink:dis}able-netlink
+	--%{?with_ipmi:en}%{!?with_ipmi:dis}able-ipmi \
+	--%{?with_multimeter:en}%{!?with_multimeter:dis}able-multimeter \
+	--%{?with_dns:en}%{!?with_dns:dis}able-dns \
+	--%{?with_iptables:en}%{!?with_iptables:dis}able-iptables \
+	--%{?with_netlink:en}%{!?with_netlink:dis}able-netlink
 
 
 %{__make} LDFLAGS="%{rpmldflags} -lstatgrab" \
