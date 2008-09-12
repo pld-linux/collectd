@@ -74,12 +74,12 @@
 Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
-Version:	4.4.2
-Release:	3
+Version:	4.5.0
+Release:	1
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.gz
-# Source0-md5:	dbffe35a2d19840e86253c7052485ff0
+# Source0-md5:	f73dbadc8dca136b98c0f96567e0f78c
 Source1:	%{name}.conf
 Source2:	%{name}.init
 Source3:	%{name}-http.conf
@@ -89,7 +89,9 @@ BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	curl-devel
 BuildRequires:	iptables-devel
+BuildRequires:	libesmtp-devel
 BuildRequires:	libnetlink-devel
+BuildRequires:	libnotify-devel
 BuildRequires:	liboping-devel
 BuildRequires:	libpcap-devel
 BuildRequires:	libstatgrab-devel >= 0.12
@@ -379,14 +381,18 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/email.so
 %attr(755,root,root) %{_libdir}/%{name}/entropy.so
 %attr(755,root,root) %{_libdir}/%{name}/exec.so
+%attr(755,root,root) %{_libdir}/%{name}/filecount.so
 %attr(755,root,root) %{_libdir}/%{name}/interface.so
 %if %{with iptables}
 %attr(755,root,root) %{_libdir}/%{name}/iptables.so
 %endif
+%attr(755,root,root) %{_libdir}/%{name}/ipvs.so
 %attr(755,root,root) %{_libdir}/%{name}/irq.so
 %attr(755,root,root) %{_libdir}/%{name}/load.so
 %attr(755,root,root) %{_libdir}/%{name}/logfile.so
 %attr(755,root,root) %{_libdir}/%{name}/mbmon.so
+%attr(755,root,root) %{_libdir}/%{name}/notify_desktop.so
+%attr(755,root,root) %{_libdir}/%{name}/notify_email.so
 %attr(755,root,root) %{_libdir}/%{name}/memcached.so
 %attr(755,root,root) %{_libdir}/%{name}/memory.so
 %if %{with multimeter}
@@ -400,6 +406,7 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/nfs.so
 %attr(755,root,root) %{_libdir}/%{name}/ntpd.so
 #%attr(755,root,root) %{_libdir}/%{name}/perl.so
+%attr(755,root,root) %{_libdir}/%{name}/postgresql.so
 %attr(755,root,root) %{_libdir}/%{name}/processes.so
 %attr(755,root,root) %{_libdir}/%{name}/serial.so
 %attr(755,root,root) %{_libdir}/%{name}/swap.so
@@ -408,6 +415,7 @@ fi
 #%attr(755,root,root) %{_libdir}/%{name}/tape.so
 %attr(755,root,root) %{_libdir}/%{name}/teamspeak2.so
 %attr(755,root,root) %{_libdir}/%{name}/tcpconns.so
+%attr(755,root,root) %{_libdir}/%{name}/thermal.so
 #%attr(755,root,root) %{_libdir}/%{name}/traffic.so
 %attr(755,root,root) %{_libdir}/%{name}/unixsock.so
 %attr(755,root,root) %{_libdir}/%{name}/users.so
