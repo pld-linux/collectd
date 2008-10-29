@@ -79,6 +79,7 @@ Release:	3
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.gz
+# Source0-md5:	f73dbadc8dca136b98c0f96567e0f78c
 Source1:	%{name}.conf
 Source2:	%{name}.init
 Source3:	%{name}-http.conf
