@@ -75,11 +75,10 @@ Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
 Version:	4.5.0
-Release:	2
+Release:	3
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.gz
-# Source0-md5:	f73dbadc8dca136b98c0f96567e0f78c
 Source1:	%{name}.conf
 Source2:	%{name}.init
 Source3:	%{name}-http.conf
@@ -219,6 +218,15 @@ Requires:	%{name} = %{version}-%{release}
 
 %description nginx
 nginx plugin for collectd.
+
+%package notify_desktop
+Summary:	notify_desktop for collectd
+Summary(pl_PL.UTF-8):	Wtyczka notify_desktop dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description notify_desktop
+notify_desktop plugin for collectd.
 
 %package ping
 Summary:	ping-plugin for collectd
@@ -394,7 +402,6 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/load.so
 %attr(755,root,root) %{_libdir}/%{name}/logfile.so
 %attr(755,root,root) %{_libdir}/%{name}/mbmon.so
-%attr(755,root,root) %{_libdir}/%{name}/notify_desktop.so
 %attr(755,root,root) %{_libdir}/%{name}/notify_email.so
 %attr(755,root,root) %{_libdir}/%{name}/memcached.so
 %attr(755,root,root) %{_libdir}/%{name}/memory.so
@@ -481,6 +488,10 @@ fi
 %files nginx
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/%{name}/nginx.so
+
+%files notify_desktop
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/%{name}/notify_desktop.so
 
 %files ping
 %defattr(644,root,root,755)
