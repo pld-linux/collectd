@@ -5,7 +5,7 @@
 # - Current plugins status:
 #    apache  . . . . . . yes
 #    apcups  . . . . . . yes
-#    apple_sensors . . . no
+#    apple_sensors . . . no		(obvious)
 #    ascent  . . . . . . yes
 #    battery . . . . . . yes
 #    cpu . . . . . . . . yes
@@ -21,9 +21,9 @@
 #    interface . . . . . yes
 #    iptables  . . . . . yes
 #    ipmi  . . . . . . . yes
-#    ipvs  . . . . . . . no (ip_vs.h not found)
+#    ipvs  . . . . . . . no		(ip_vs.h not found - llh to be fixed)
 #    irq . . . . . . . . yes
-#    libvirt . . . . . . no
+#    libvirt . . . . . . no		(requires library)
 #    load  . . . . . . . yes
 #    logfile . . . . . . yes
 #    mbmon . . . . . . . yes
@@ -37,7 +37,7 @@
 #    nginx . . . . . . . yes
 #    ntpd  . . . . . . . yes
 #    nut . . . . . . . . yes
-#    perl  . . . . . . . no (needs libperl)
+#    perl  . . . . . . . no		(needs libperl)
 #    ping  . . . . . . . yes
 #    powerdns  . . . . . yes
 #    processes . . . . . yes
@@ -48,7 +48,7 @@
 #    swap  . . . . . . . yes
 #    syslog  . . . . . . yes
 #    tail  . . . . . . . yes
-#    tape  . . . . . . . no
+#    tape  . . . . . . . no		?
 #    tcpconns  . . . . . yes
 #    teamspeak2  . . . . yes
 #    unixsock  . . . . . yes
@@ -75,7 +75,7 @@ Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
 Version:	4.5.0
-Release:	1.2
+Release:	2
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.gz
@@ -308,7 +308,8 @@ EOF
 	--%{?with_multimeter:en}%{!?with_multimeter:dis}able-multimeter \
 	--%{?with_dns:en}%{!?with_dns:dis}able-dns \
 	--%{?with_iptables:en}%{!?with_iptables:dis}able-iptables \
-	--%{?with_netlink:en}%{!?with_netlink:dis}able-netlink
+	--%{?with_netlink:en}%{!?with_netlink:dis}able-netlink \
+	--disable-ipvs
 
 
 %{__make} LDFLAGS="%{rpmldflags} -lstatgrab" \
@@ -386,7 +387,9 @@ fi
 %if %{with iptables}
 %attr(755,root,root) %{_libdir}/%{name}/iptables.so
 %endif
-%attr(755,root,root) %{_libdir}/%{name}/ipvs.so
+# Disabled - requires fixed libc-headers or whole kernel source.
+# It was marked as disabled in status message on top.
+#%attr(755,root,root) %{_libdir}/%{name}/ipvs.so
 %attr(755,root,root) %{_libdir}/%{name}/irq.so
 %attr(755,root,root) %{_libdir}/%{name}/load.so
 %attr(755,root,root) %{_libdir}/%{name}/logfile.so
