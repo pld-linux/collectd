@@ -75,7 +75,7 @@ Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
 Version:	4.5.0
-Release:	3
+Release:	4
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.gz
@@ -463,9 +463,11 @@ fi
 
 %files collection
 %defattr(644,root,root,755)
+%dir %{_webappdir}
 %config(noreplace) %verify(not md5 mtime size) %{_webappdir}/collection.conf
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_webappdir}/apache.conf
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_webappdir}/httpd.conf
+%dir %{_appdir}/cgi-bin
 %attr(755,root,root) %{_appdir}/cgi-bin/collection.cgi
 
 %files dns
