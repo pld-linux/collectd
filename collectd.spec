@@ -75,7 +75,7 @@ Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
 Version:	4.5.0
-Release:	4
+Release:	5
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.gz
@@ -229,6 +229,24 @@ Requires:	%{name} = %{version}-%{release}
 %description notify_desktop
 notify_desktop plugin for collectd.
 
+%package notify_email
+Summary:	notify_email for collectd
+Summary(pl_PL.UTF-8):	Wtyczka notify_email dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description notify_email
+notify_email plugin for collectd.
+
+%package nut
+Summary:	nut-plugin for collectd
+Summary(pl_PL.UTF-8):	Wtyczka nut dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description nut
+nut plugin for collectd.
+
 %package ping
 Summary:	ping-plugin for collectd
 Summary(pl_PL.UTF-8):	Wtyczka ping dla collectd
@@ -237,6 +255,20 @@ Requires:	%{name} = %{version}-%{release}
 
 %description ping
 ping plugin for collectd.
+
+%package postgresql
+Summary:	mysql-plugin for collectd
+Summary(pl_PL.UTF-8):	Moduł postgresql dla collectd.
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description postgresql
+PostgreSQL querying plugin. This plugins provides data of issued commands,
+called handlers and database traffic.
+
+%description postgresql -l pl.UTF-8
+Moduł odpytujący PostgreSQL. Wtyczka udostępnia dane o wydawanych
+poleceniach, wywoływanych procedurach obsługi i ruchu bazodanowym.
 
 %package powerdns
 Summary:	powerdns-plugin for collectd
@@ -403,7 +435,6 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/load.so
 %attr(755,root,root) %{_libdir}/%{name}/logfile.so
 %attr(755,root,root) %{_libdir}/%{name}/mbmon.so
-%attr(755,root,root) %{_libdir}/%{name}/notify_email.so
 %attr(755,root,root) %{_libdir}/%{name}/memcached.so
 %attr(755,root,root) %{_libdir}/%{name}/memory.so
 %if %{with multimeter}
@@ -413,11 +444,9 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/netlink.so
 %endif
 %attr(755,root,root) %{_libdir}/%{name}/network.so
-%attr(755,root,root) %{_libdir}/%{name}/nut.so
 %attr(755,root,root) %{_libdir}/%{name}/nfs.so
 %attr(755,root,root) %{_libdir}/%{name}/ntpd.so
 #%attr(755,root,root) %{_libdir}/%{name}/perl.so
-%attr(755,root,root) %{_libdir}/%{name}/postgresql.so
 %attr(755,root,root) %{_libdir}/%{name}/processes.so
 %attr(755,root,root) %{_libdir}/%{name}/serial.so
 %attr(755,root,root) %{_libdir}/%{name}/swap.so
@@ -467,6 +496,7 @@ fi
 %config(noreplace) %verify(not md5 mtime size) %{_webappdir}/collection.conf
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_webappdir}/apache.conf
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_webappdir}/httpd.conf
+%dir %{_appdir}
 %dir %{_appdir}/cgi-bin
 %attr(755,root,root) %{_appdir}/cgi-bin/collection.cgi
 
@@ -496,9 +526,21 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/%{name}/notify_desktop.so
 
+%files notify_email
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/%{name}/notify_email.so
+
+%files nut
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/%{name}/nut.so
+
 %files ping
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/%{name}/ping.so
+
+%files postgresql
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/%{name}/postgresql.so
 
 %files powerdns
 %defattr(644,root,root,755)
