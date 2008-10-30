@@ -75,7 +75,7 @@ Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
 Version:	4.5.0
-Release:	5.1
+Release:	5.2
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.gz
@@ -101,6 +101,14 @@ Source24:	%{name}-sensors.conf
 Source25:	%{name}-snmp.conf
 Source26:	%{name}-uuid.conf
 Source27:	%{name}-xmms.conf
+Source28:	%{name}-tcpconns.conf
+Source29:	%{name}-teamspeak2.conf
+Source30:	%{name}-thermal.conf
+Source31:	%{name}-unixsock.conf
+Source32:	%{name}-users.conf
+Source33:	%{name}-vmem.conf
+Source34:	%{name}-vserver.conf
+Source35:	%{name}-wireless.conf
 URL:		http://collectd.org/
 BuildRequires:	OpenIPMI-devel
 BuildRequires:	autoconf
@@ -413,6 +421,14 @@ install %{SOURCE24} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/sensors.conf
 install %{SOURCE25} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/snmp.conf
 install %{SOURCE26} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/uuid.conf
 install %{SOURCE27} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/xmms.conf
+install %{SOURCE28} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/tcpconns.conf
+install %{SOURCE29} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/teamspeak2.conf
+install %{SOURCE30} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/thermal.conf
+install %{SOURCE31} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/unixsock.conf
+install %{SOURCE32} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/users.conf
+install %{SOURCE33} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/vmem.conf
+install %{SOURCE34} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/vserver.conf
+install %{SOURCE35} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/wireless.conf
 
 # Cleanups:
 rm -f $RPM_BUILD_ROOT%{_libdir}/%{name}/*.la
@@ -445,10 +461,20 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog README TODO contrib
-
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.conf
+%dir %{_sysconfdir}/%{name}.d
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/tcpconns.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/teamspeak2.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/thermal.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/unixsock.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/users.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/vmem.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/vserver.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/wireless.conf
 %attr(755,root,root) %{_sbindir}/collectd
 %attr(755,root,root) %{_sbindir}/collectdmon
 %attr(755,root,root) %{_bindir}/collectd-nagios
+
 %dir %{_libdir}/%{name}
 %attr(755,root,root) %{_libdir}/%{name}/apcups.so
 #%attr(755,root,root) %{_libdir}/%{name}/apple_sensors.so
@@ -491,8 +517,8 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/syslog.so
 %attr(755,root,root) %{_libdir}/%{name}/tail.so
 #%attr(755,root,root) %{_libdir}/%{name}/tape.so
-%attr(755,root,root) %{_libdir}/%{name}/teamspeak2.so
 %attr(755,root,root) %{_libdir}/%{name}/tcpconns.so
+%attr(755,root,root) %{_libdir}/%{name}/teamspeak2.so
 %attr(755,root,root) %{_libdir}/%{name}/thermal.so
 #%attr(755,root,root) %{_libdir}/%{name}/traffic.so
 %attr(755,root,root) %{_libdir}/%{name}/unixsock.so
@@ -501,9 +527,6 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/vserver.so
 %attr(755,root,root) %{_libdir}/%{name}/wireless.so
 %{_libdir}/%{name}/types.db
-
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.conf
-%dir %{_sysconfdir}/%{name}.d
 
 %attr(754,root,root) /etc/rc.d/init.d/%{name}
 
