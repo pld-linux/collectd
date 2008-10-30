@@ -75,7 +75,7 @@ Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
 Version:	4.5.0
-Release:	5
+Release:	5.1
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.gz
@@ -83,6 +83,24 @@ Source0:	http://collectd.org/files/%{name}-%{version}.tar.gz
 Source1:	%{name}.conf
 Source2:	%{name}.init
 Source3:	%{name}-http.conf
+Source10:	%{name}-ascent.conf
+Source11:	%{name}-apache.conf
+Source12:	%{name}-dns.conf
+Source13:	%{name}-hddtemp.conf
+Source14:	%{name}-ipmi.conf
+Source15:	%{name}-mysql.conf
+Source16:	%{name}-nginx.conf
+Source17:	%{name}-notify_desktop.conf
+Source18:	%{name}-notify_email.conf
+Source19:	%{name}-nut.conf
+Source20:	%{name}-ping.conf
+Source21:	%{name}-postgresql.conf
+Source22:	%{name}-powerdns.conf
+Source23:	%{name}-rrdtool.conf
+Source24:	%{name}-sensors.conf
+Source25:	%{name}-snmp.conf
+Source26:	%{name}-uuid.conf
+Source27:	%{name}-xmms.conf
 URL:		http://collectd.org/
 BuildRequires:	OpenIPMI-devel
 BuildRequires:	autoconf
@@ -359,15 +377,13 @@ EOF
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_var}/{log/,lib/%{name}},/etc/rc.d/init.d/} \
+install -d $RPM_BUILD_ROOT{%{_var}/{log/,lib/%{name}},/etc/{rc.d/init.d/,collectd.d}} \
 	$RPM_BUILD_ROOT{%{_appdir}/cgi-bin,%{_webappdir},%{_pkglibdir}}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-#install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.conf
 touch $RPM_BUILD_ROOT%{_var}/log/collectd.log
-install src/collectd.conf $RPM_BUILD_ROOT%{_sysconfdir}/collectd.conf
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
 
 # Web frontend:
@@ -375,6 +391,28 @@ install contrib/collection.conf $RPM_BUILD_ROOT%{_webappdir}
 install contrib/collection.cgi $RPM_BUILD_ROOT%{_appdir}/cgi-bin
 install %{SOURCE3} $RPM_BUILD_ROOT%{_webappdir}/apache.conf
 install %{SOURCE3} $RPM_BUILD_ROOT%{_webappdir}/httpd.conf
+
+### Configs instalation ###
+# Example config in sources: src/collectd.conf
+install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.conf
+install %{SOURCE10} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/ascent.conf
+install %{SOURCE11} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/apache.conf
+install %{SOURCE12} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/dns.conf
+install %{SOURCE13} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/hddtemp.conf
+install %{SOURCE14} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/ipmi.conf
+install %{SOURCE15} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/mysql.conf
+install %{SOURCE16} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/nginx.conf
+install %{SOURCE17} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/notify_desktop.conf
+install %{SOURCE18} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/notify_email.conf
+install %{SOURCE19} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/nut.conf
+install %{SOURCE20} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/ping.conf
+install %{SOURCE21} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/postgresql.conf
+install %{SOURCE22} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/powerdns.conf
+install %{SOURCE23} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/rrdtool.conf
+install %{SOURCE24} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/sensors.conf
+install %{SOURCE25} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/snmp.conf
+install %{SOURCE26} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/uuid.conf
+install %{SOURCE27} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/xmms.conf
 
 # Cleanups:
 rm -f $RPM_BUILD_ROOT%{_libdir}/%{name}/*.la
@@ -465,6 +503,7 @@ fi
 %{_libdir}/%{name}/types.db
 
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.conf
+%dir %{_sysconfdir}/%{name}.d
 
 %attr(754,root,root) /etc/rc.d/init.d/%{name}
 
@@ -484,10 +523,12 @@ fi
 ########## PLUGINS:
 %files ascent
 %defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/ascent.conf
 %attr(755,root,root) %{_libdir}/%{name}/ascent.so
 
 %files apache
 %defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/apache.conf
 %attr(755,root,root) %{_libdir}/%{name}/apache.so
 
 %files collection
@@ -502,66 +543,82 @@ fi
 
 %files dns
 %defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/dns.conf
 %attr(755,root,root) %{_libdir}/%{name}/dns.so
 
 %files hddtemp
 %defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/hddtemp.conf
 %attr(755,root,root) %{_libdir}/%{name}/hddtemp.so
 
 %if %{with ipmi}
 %files ipmi
 %defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/ipmi.conf
 %attr(755,root,root) %{_libdir}/%{name}/ipmi.so
 %endif
 
 %files mysql
 %defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/mysql.conf
 %attr(755,root,root) %{_libdir}/%{name}/mysql.so
 
 %files nginx
 %defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/nginx.conf
 %attr(755,root,root) %{_libdir}/%{name}/nginx.so
 
 %files notify_desktop
 %defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/notify_desktop.conf
 %attr(755,root,root) %{_libdir}/%{name}/notify_desktop.so
 
 %files notify_email
 %defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/notify_email.conf
 %attr(755,root,root) %{_libdir}/%{name}/notify_email.so
 
 %files nut
 %defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/nut.conf
 %attr(755,root,root) %{_libdir}/%{name}/nut.so
 
 %files ping
 %defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/ping.conf
 %attr(755,root,root) %{_libdir}/%{name}/ping.so
 
 %files postgresql
 %defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/postgresql.conf
 %attr(755,root,root) %{_libdir}/%{name}/postgresql.so
 
 %files powerdns
 %defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/powerdns.conf
 %attr(755,root,root) %{_libdir}/%{name}/powerdns.so
 
 %files rrdtool
 %defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/rrdtool.conf
 %attr(755,root,root) %{_libdir}/%{name}/rrdtool.so
 
 %files sensors
 %defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/sensors.conf
 %attr(755,root,root) %{_libdir}/%{name}/sensors.so
 
 %files snmp
 %defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/snmp.conf
 %attr(755,root,root) %{_libdir}/%{name}/snmp.so
 
 %files uuid
 %defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/uuid.conf
 %attr(755,root,root) %{_libdir}/%{name}/uuid.so
 
 %files xmms
 %defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/xmms.conf
 %attr(755,root,root) %{_libdir}/%{name}/xmms.so
