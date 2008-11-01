@@ -2,62 +2,14 @@
 # - lm_sensors subpackage
 # - package contrib scripts as %doc
 # - put every plugin into subpackages
-# - Current plugins status:
-#    apache  . . . . . . yes
-#    apcups  . . . . . . yes
+# - perl modules with Collectd classes package to separate package
+# - Disabled modules:
 #    apple_sensors . . . no		(obvious)
-#    ascent  . . . . . . yes
-#    battery . . . . . . yes
-#    cpu . . . . . . . . yes
-#    cpufreq . . . . . . yes
-#    csv . . . . . . . . yes
-#    df  . . . . . . . . yes
-#    disk  . . . . . . . yes
-#    dns . . . . . . . . yes
-#    email . . . . . . . yes
-#    entropy . . . . . . yes
-#    exec  . . . . . . . yes
-#    hddtemp . . . . . . yes
-#    interface . . . . . yes
-#    iptables  . . . . . yes
-#    ipmi  . . . . . . . yes
 #    ipvs  . . . . . . . no		(ip_vs.h not found - llh to be fixed)
-#    irq . . . . . . . . yes
 #    libvirt . . . . . . no		(requires library)
-#    load  . . . . . . . yes
-#    logfile . . . . . . yes
-#    mbmon . . . . . . . yes
-#    memcached . . . . . yes
-#    memory  . . . . . . yes
-#    multimeter  . . . . no
-#    mysql . . . . . . . yes
-#    netlink . . . . . . yes
-#    network . . . . . . yes
-#    nfs . . . . . . . . yes
-#    nginx . . . . . . . yes
-#    ntpd  . . . . . . . yes
-#    nut . . . . . . . . yes
+#    multimeter  . . . . no		?
 #    perl  . . . . . . . no		(needs libperl)
-#    ping  . . . . . . . yes
-#    powerdns  . . . . . yes
-#    processes . . . . . yes
-#    rrdtool . . . . . . yes
-#    sensors . . . . . . yes
-#    serial  . . . . . . yes
-#    snmp  . . . . . . . yes
-#    swap  . . . . . . . yes
-#    syslog  . . . . . . yes
-#    tail  . . . . . . . yes
 #    tape  . . . . . . . no		?
-#    tcpconns  . . . . . yes
-#    teamspeak2  . . . . yes
-#    unixsock  . . . . . yes
-#    users . . . . . . . yes
-#    uuid  . . . . . . . yes
-#    vmem  . . . . . . . yes
-#    vserver . . . . . . yes
-#    wireless  . . . . . yes
-#    xmms  . . . . . . . yes
 #
 # Conditional build:
 %bcond_without	dns		# ???
@@ -75,7 +27,7 @@ Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
 Version:	4.5.0
-Release:	5.2
+Release:	5.3
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.gz
@@ -109,6 +61,36 @@ Source32:	%{name}-users.conf
 Source33:	%{name}-vmem.conf
 Source34:	%{name}-vserver.conf
 Source35:	%{name}-wireless.conf
+Source36:	%{name}-apcups.conf
+Source37:	%{name}-battery.conf
+Source38:	%{name}-cpufreq.conf
+Source39:	%{name}-cpu.conf
+Source40:	%{name}-csv.conf
+Source41:	%{name}-df.conf
+Source42:	%{name}-disk.conf
+Source43:	%{name}-email.conf
+Source44:	%{name}-entropy.conf
+Source45:	%{name}-exec.conf
+Source46:	%{name}-filecount.conf
+Source47:	%{name}-interface.conf
+Source48:	%{name}-iptables.conf
+Source49:	%{name}-irq.conf
+Source50:	%{name}-irq.conf
+Source51:	%{name}-load.conf
+Source52:	%{name}-logfile.conf
+Source53:	%{name}-mbmon.conf
+Source54:	%{name}-memcached.conf
+Source55:	%{name}-memory.conf
+Source56:	%{name}-multimeter.conf
+Source57:	%{name}-netlink.conf
+Source58:	%{name}-network.conf
+Source59:	%{name}-nfs.conf
+Source60:	%{name}-ntpd.conf
+Source61:	%{name}-processes.conf
+Source62:	%{name}-serial.conf
+Source63:	%{name}-swap.conf
+Source64:	%{name}-syslog.conf
+Source65:	%{name}-tail.conf
 URL:		http://collectd.org/
 BuildRequires:	OpenIPMI-devel
 BuildRequires:	autoconf
@@ -429,6 +411,36 @@ install %{SOURCE32} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/users.conf
 install %{SOURCE33} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/vmem.conf
 install %{SOURCE34} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/vserver.conf
 install %{SOURCE35} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/wireless.conf
+install %{SOURCE36} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/apcups.conf
+install %{SOURCE37} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/battery.conf
+install %{SOURCE38} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/cpufreq.conf
+install %{SOURCE39} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/cpu.conf
+install %{SOURCE40} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/csv.conf
+install %{SOURCE41} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/df.conf
+install %{SOURCE42} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/disk.conf
+install %{SOURCE43} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/email.conf
+install %{SOURCE44} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/entropy.conf
+install %{SOURCE45} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/exec.conf
+install %{SOURCE46} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/filecount.conf
+install %{SOURCE47} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/interface.conf
+install %{SOURCE48} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/iptables.conf
+install %{SOURCE49} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/irq.conf
+install %{SOURCE50} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/irq.conf
+install %{SOURCE51} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/load.conf
+install %{SOURCE52} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/logfile.conf
+install %{SOURCE53} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/mbmon.conf
+install %{SOURCE54} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/memcached.conf
+install %{SOURCE55} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/memory.conf
+install %{SOURCE56} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/multimeter.conf
+install %{SOURCE57} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/netlink.conf
+install %{SOURCE58} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/network.conf
+install %{SOURCE59} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/nfs.conf
+install %{SOURCE60} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/ntpd.conf
+install %{SOURCE61} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/processes.conf
+install %{SOURCE62} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/serial.conf
+install %{SOURCE63} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/swap.conf
+install %{SOURCE64} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/syslog.conf
+install %{SOURCE65} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/tail.conf
 
 # Cleanups:
 rm -f $RPM_BUILD_ROOT%{_libdir}/%{name}/*.la
@@ -445,6 +457,33 @@ if [ "$1" = "0" ]; then
 	%service -q %{name} stop
 	/sbin/chkconfig --del %{name}
 fi
+
+%define module_scripts() \
+%post %1 \
+%service %{name} restart \
+\
+%postun %1 \
+%service %{name} restart
+
+%module_scripts ascent
+%module_scripts apache
+%module_scripts collection
+%module_scripts dns
+%module_scripts hddtemp
+%module_scripts ipmi
+%module_scripts mysql
+%module_scripts nginx
+%module_scripts notify_desktop
+%module_scripts notify_email
+%module_scripts nut
+%module_scripts ping
+%module_scripts postgresql
+%module_scripts powerdns
+%module_scripts rrdtool
+%module_scripts sensors
+%module_scripts snmp
+%module_scripts uuid
+%module_scripts xmms
 
 %triggerin collection -- apache1 < 1.3.37-3, apache1-base
 %webapp_register apache %{_webapp}
@@ -463,6 +502,36 @@ fi
 %doc AUTHORS ChangeLog README TODO contrib
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.conf
 %dir %{_sysconfdir}/%{name}.d
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/apcups.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/battery.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/cpufreq.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/cpu.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/csv.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/df.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/disk.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/email.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/entropy.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/exec.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/filecount.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/interface.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/iptables.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/irq.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/irq.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/load.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/logfile.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/mbmon.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/memcached.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/memory.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/multimeter.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/netlink.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/network.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/nfs.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/ntpd.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/processes.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/serial.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/swap.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/syslog.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/tail.conf
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/tcpconns.conf
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/teamspeak2.conf
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/thermal.conf
@@ -479,8 +548,8 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/apcups.so
 #%attr(755,root,root) %{_libdir}/%{name}/apple_sensors.so
 %attr(755,root,root) %{_libdir}/%{name}/battery.so
-%attr(755,root,root) %{_libdir}/%{name}/cpufreq.so
 %attr(755,root,root) %{_libdir}/%{name}/cpu.so
+%attr(755,root,root) %{_libdir}/%{name}/cpufreq.so
 %attr(755,root,root) %{_libdir}/%{name}/csv.so
 %attr(755,root,root) %{_libdir}/%{name}/df.so
 %attr(755,root,root) %{_libdir}/%{name}/disk.so
@@ -496,6 +565,7 @@ fi
 # It was marked as disabled in status message on top.
 #%attr(755,root,root) %{_libdir}/%{name}/ipvs.so
 %attr(755,root,root) %{_libdir}/%{name}/irq.so
+#%attr(755,root,root) %{_libdir}/%{name}/libvirt.so
 %attr(755,root,root) %{_libdir}/%{name}/load.so
 %attr(755,root,root) %{_libdir}/%{name}/logfile.so
 %attr(755,root,root) %{_libdir}/%{name}/mbmon.so
