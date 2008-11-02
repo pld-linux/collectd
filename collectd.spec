@@ -26,7 +26,7 @@ Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
 Version:	4.5.1
-Release:	1.5
+Release:	2
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.gz
@@ -34,6 +34,7 @@ Source0:	http://collectd.org/files/%{name}-%{version}.tar.gz
 Source1:	%{name}.conf
 Source2:	%{name}.init
 Source3:	%{name}-http.conf
+Source4:	%{name}-lighttpd.conf
 Source10:	%{name}-ascent.conf
 Source11:	%{name}-apache.conf
 Source12:	%{name}-dns.conf
@@ -89,6 +90,7 @@ Source62:	%{name}-serial.conf
 Source63:	%{name}-swap.conf
 Source64:	%{name}-syslog.conf
 Source65:	%{name}-tail.conf
+Patch0:		%{name}-collection.patch
 URL:		http://collectd.org/
 %{?with_ipmi:BuildRequires:	OpenIPMI-devel >= 2.0.14-3}
 BuildRequires:	autoconf
@@ -187,6 +189,14 @@ Summary:	Web script for collectiond
 Summary(pl_PL.UTF-8):	Web script for collectiond
 Group:		Applications/WWW
 Requires:	%{name} = %{version}-%{release}
+Requires:	perl(CGI)
+Requires:	perl(Data::Dumper)
+Requires:	perl(HTML::Entities)
+Requires:	perl(RRDs)
+Requires:	perl(URI::Escape)
+Requires:	webserver(cgi)
+# It might be not the best choice:
+Suggests:	fonts-TTF-RedHat-liberation
 
 %description collection
 Web script for collectiond
@@ -742,11 +752,7 @@ This plugin collectd data provided by XMMS.
 
 %prep
 %setup -q
-
-cat >> collection.conf <<'EOF'
-datadir: "/var/lib/collectd/"
-libdir: "/usr/lib/collectd/"
-EOF
+%patch0 -p1
 
 %build
 %{__libtoolize}
@@ -789,6 +795,7 @@ install contrib/collection.conf $RPM_BUILD_ROOT%{_webappdir}
 install contrib/collection.cgi $RPM_BUILD_ROOT%{_appdir}/cgi-bin
 install %{SOURCE3} $RPM_BUILD_ROOT%{_webappdir}/apache.conf
 install %{SOURCE3} $RPM_BUILD_ROOT%{_webappdir}/httpd.conf
+install %{SOURCE4} $RPM_BUILD_ROOT%{_webappdir}/lighttpd.conf
 
 ### Configs instalation ###
 # Example config in sources: src/collectd.conf
@@ -940,6 +947,12 @@ fi
 %triggerun collection -- apache < 2.2.0, apache-base
 %webapp_unregister httpd %{_webapp}
 
+%triggerin -- lighttpd
+%webapp_register lighttpd %{_webapp}
+
+%triggerun -- lighttpd
+%webapp_unregister lighttpd %{_webapp}
+
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog README TODO contrib
@@ -966,6 +979,7 @@ fi
 %config(noreplace) %verify(not md5 mtime size) %{_webappdir}/collection.conf
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_webappdir}/apache.conf
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_webappdir}/httpd.conf
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_webappdir}/lighttpd.conf
 %dir %{_appdir}
 %dir %{_appdir}/cgi-bin
 %attr(755,root,root) %{_appdir}/cgi-bin/collection.cgi
