@@ -96,7 +96,7 @@ URL:		http://collectd.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	curl-devel
-BuildRequires:	iptables-devel >= 1.4.1.1-4
+%{?with_iptables:BuildRequires:	iptables-devel >= 1.4.1.1-4}
 BuildRequires:	libesmtp-devel
 BuildRequires:	libnetlink-devel
 BuildRequires:	libnotify-devel
