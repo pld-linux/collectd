@@ -26,12 +26,12 @@
 Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
-Version:	4.5.0
-Release:	5.3
+Version:	4.5.1
+Release:	1
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.gz
-# Source0-md5:	f73dbadc8dca136b98c0f96567e0f78c
+# Source0-md5:	ab900d15662859b8793abf99eda15c29
 Source1:	%{name}.conf
 Source2:	%{name}.init
 Source3:	%{name}-http.conf
@@ -92,7 +92,7 @@ Source63:	%{name}-swap.conf
 Source64:	%{name}-syslog.conf
 Source65:	%{name}-tail.conf
 URL:		http://collectd.org/
-BuildRequires:	OpenIPMI-devel
+%{?with_ipmi:BuildRequires:	OpenIPMI-devel >= 2.0.14-3}
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	curl-devel
@@ -358,7 +358,9 @@ EOF
 	--%{?with_dns:en}%{!?with_dns:dis}able-dns \
 	--%{?with_iptables:en}%{!?with_iptables:dis}able-iptables \
 	--%{?with_netlink:en}%{!?with_netlink:dis}able-netlink \
-	--disable-ipvs
+	--disable-ipvs \
+	--disable-libvirt \
+	--disable-perl
 
 
 %{__make} LDFLAGS="%{rpmldflags} -lstatgrab" \
