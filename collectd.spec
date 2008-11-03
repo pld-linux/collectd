@@ -798,6 +798,11 @@ install %{SOURCE3} $RPM_BUILD_ROOT%{_webappdir}/httpd.conf
 install %{SOURCE4} $RPM_BUILD_ROOT%{_webappdir}/lighttpd.conf
 
 ### Configs instalation ###
+for i in `egrep "^LoadPlugin" src/collectd.conf |awk '{print $NF}' ` ; do
+	egrep "LoadPlugin $i$" src/collectd.conf > $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/$i.conf
+	grep -v LoadPlugin src/collectd.conf |sed -e '/./{H;$!d;}' -e "x;/ $i>/!d;" >> $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/$i.conf
+done
+
 # Example config in sources: src/collectd.conf
 install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.conf
 install %{SOURCE10} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/ascent.conf
