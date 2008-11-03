@@ -9,6 +9,7 @@
 #    onewire . . . . . . no		(needs libowfs)
 #    perl  . . . . . . . no		(needs libperl)
 #    tape  . . . . . . . no		?
+# - logrotate file for logfile plugin
 #
 # Conditional build:
 %bcond_without	dns		# ???
@@ -26,7 +27,7 @@ Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
 Version:	4.5.1
-Release:	2
+Release:	2.1
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.gz
@@ -35,61 +36,8 @@ Source1:	%{name}.conf
 Source2:	%{name}.init
 Source3:	%{name}-http.conf
 Source4:	%{name}-lighttpd.conf
-Source10:	%{name}-ascent.conf
-Source11:	%{name}-apache.conf
-Source12:	%{name}-dns.conf
-Source13:	%{name}-hddtemp.conf
-Source14:	%{name}-ipmi.conf
-Source15:	%{name}-mysql.conf
-Source16:	%{name}-nginx.conf
-Source17:	%{name}-notify_desktop.conf
-Source18:	%{name}-notify_email.conf
-Source19:	%{name}-nut.conf
-Source20:	%{name}-ping.conf
-Source21:	%{name}-postgresql.conf
-Source22:	%{name}-powerdns.conf
-Source23:	%{name}-rrdtool.conf
-Source24:	%{name}-sensors.conf
-Source25:	%{name}-snmp.conf
-Source26:	%{name}-uuid.conf
-Source27:	%{name}-xmms.conf
-Source28:	%{name}-tcpconns.conf
-Source29:	%{name}-teamspeak2.conf
-Source30:	%{name}-thermal.conf
-Source31:	%{name}-unixsock.conf
-Source32:	%{name}-users.conf
-Source33:	%{name}-vmem.conf
-Source34:	%{name}-vserver.conf
-Source35:	%{name}-wireless.conf
-Source36:	%{name}-apcups.conf
-Source37:	%{name}-battery.conf
-Source38:	%{name}-cpufreq.conf
-Source39:	%{name}-cpu.conf
-Source40:	%{name}-csv.conf
-Source41:	%{name}-df.conf
-Source42:	%{name}-disk.conf
-Source43:	%{name}-email.conf
-Source44:	%{name}-entropy.conf
-Source45:	%{name}-exec.conf
-Source46:	%{name}-filecount.conf
-Source47:	%{name}-interface.conf
-Source48:	%{name}-iptables.conf
-Source49:	%{name}-irq.conf
-Source51:	%{name}-load.conf
-Source52:	%{name}-logfile.conf
-Source53:	%{name}-mbmon.conf
-Source54:	%{name}-memcached.conf
-Source55:	%{name}-memory.conf
-Source56:	%{name}-multimeter.conf
-Source57:	%{name}-netlink.conf
-Source58:	%{name}-network.conf
-Source59:	%{name}-nfs.conf
-Source60:	%{name}-ntpd.conf
-Source61:	%{name}-processes.conf
-Source62:	%{name}-serial.conf
-Source63:	%{name}-swap.conf
-Source64:	%{name}-syslog.conf
-Source65:	%{name}-tail.conf
+Source10:	%{name}-df.conf
+Source11:	%{name}-rrdtool.conf
 Patch0:		%{name}-collection.patch
 URL:		http://collectd.org/
 %{?with_ipmi:BuildRequires:	OpenIPMI-devel >= 2.0.14-3}
@@ -800,66 +748,15 @@ install %{SOURCE4} $RPM_BUILD_ROOT%{_webappdir}/lighttpd.conf
 ### Configs instalation ###
 for i in `egrep "^LoadPlugin" src/collectd.conf |awk '{print $NF}' ` ; do
 	egrep "LoadPlugin $i$" src/collectd.conf > $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/$i.conf
-	grep -v LoadPlugin src/collectd.conf |sed -e '/./{H;$!d;}' -e "x;/ $i>/!d;" >> $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/$i.conf
+	grep -v LoadPlugin src/collectd.conf |%{__sed} -e '/./{H;$!d;}' -e "x;/ $i>/!d;" >> $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/$i.conf
 done
 
 # Example config in sources: src/collectd.conf
 install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.conf
-install %{SOURCE10} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/ascent.conf
-install %{SOURCE11} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/apache.conf
-%{?with_dns:install %{SOURCE12} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/dns.conf}
-install %{SOURCE13} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/hddtemp.conf
-%{?with_ipmi:install %{SOURCE14} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/ipmi.conf}
-install %{SOURCE15} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/mysql.conf
-install %{SOURCE16} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/nginx.conf
-install %{SOURCE17} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/notify_desktop.conf
-install %{SOURCE18} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/notify_email.conf
-install %{SOURCE19} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/nut.conf
-install %{SOURCE20} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/ping.conf
-install %{SOURCE21} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/postgresql.conf
-install %{SOURCE22} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/powerdns.conf
-install %{SOURCE23} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/rrdtool.conf
-install %{SOURCE24} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/sensors.conf
-install %{SOURCE25} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/snmp.conf
-install %{SOURCE26} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/uuid.conf
-install %{SOURCE27} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/xmms.conf
-install %{SOURCE28} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/tcpconns.conf
-install %{SOURCE29} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/teamspeak2.conf
-install %{SOURCE30} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/thermal.conf
-install %{SOURCE31} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/unixsock.conf
-install %{SOURCE32} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/users.conf
-install %{SOURCE33} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/vmem.conf
-install %{SOURCE34} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/vserver.conf
-install %{SOURCE35} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/wireless.conf
-install %{SOURCE36} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/apcups.conf
-install %{SOURCE37} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/battery.conf
-install %{SOURCE38} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/cpufreq.conf
-install %{SOURCE39} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/cpu.conf
-install %{SOURCE40} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/csv.conf
-install %{SOURCE41} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/df.conf
-install %{SOURCE42} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/disk.conf
-install %{SOURCE43} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/email.conf
-install %{SOURCE44} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/entropy.conf
-install %{SOURCE45} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/exec.conf
-install %{SOURCE46} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/filecount.conf
-install %{SOURCE47} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/interface.conf
-%{?with_iptables:install %{SOURCE48} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/iptables.conf}
-install %{SOURCE49} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/irq.conf
-install %{SOURCE51} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/load.conf
-install %{SOURCE52} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/logfile.conf
-install %{SOURCE53} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/mbmon.conf
-install %{SOURCE54} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/memcached.conf
-install %{SOURCE55} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/memory.conf
-%{?with_multimeter:install %{SOURCE56} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/multimeter.conf}
-%{?with_netlink:install %{SOURCE57} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/netlink.conf}
-install %{SOURCE58} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/network.conf
-install %{SOURCE59} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/nfs.conf
-install %{SOURCE60} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/ntpd.conf
-install %{SOURCE61} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/processes.conf
-install %{SOURCE62} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/serial.conf
-install %{SOURCE63} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/swap.conf
-install %{SOURCE64} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/syslog.conf
-install %{SOURCE65} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/tail.conf
+
+# Overwrite only files which we want to change:
+install %{SOURCE10} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/df.conf
+install %{SOURCE11} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/rrdtool.conf
 
 # Cleanups:
 rm -f $RPM_BUILD_ROOT%{_libdir}/%{name}/*.la
@@ -975,7 +872,6 @@ fi
 %{_mandir}/man5/collectd-perl.5*
 %{_mandir}/man1/collectdmon.1*
 %{_mandir}/man5/types.db.5*
-%{_var}/log/collectd.log
 %dir %{_var}/lib/%{name}
 
 %files collection
@@ -1100,6 +996,7 @@ fi
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/logfile.conf
 %attr(755,root,root) %{_libdir}/%{name}/logfile.so
+%{_var}/log/collectd.log
 
 %files mbmon
 %defattr(644,root,root,755)
