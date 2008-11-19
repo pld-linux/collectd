@@ -10,6 +10,7 @@
 #    perl  . . . . . . . no		(needs libperl)
 #    tape  . . . . . . . no		?
 # - logrotate file for logfile plugin
+# - %desc -l pl for plugins
 #
 # Conditional build:
 %bcond_without	dns		# ???
@@ -64,11 +65,11 @@ Requires(post,preun):	/sbin/chkconfig
 Requires:	rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define         _pkglibdir      /var/lib/%{name}
-%define         _webapps        /etc/webapps 
-%define         _webapp         %{name}
-%define         _webappdir      %{_webapps}/%{_webapp}
-%define         _appdir         %{_datadir}/%{_webapp}
+%define		_pkglibdir	%{_sharedstatedir}/%{name}
+%define		_webapps	/etc/webapps
+%define		_webapp		%{name}
+%define		_webappdir	%{_webapps}/%{_webapp}
+%define		_appdir		%{_datadir}/%{_webapp}
 
 %description
 collectd is a small daemon which collects system information every 10
@@ -133,8 +134,8 @@ This plugin collects the battery's charge, the drawn current and the
 battery's voltage.
 
 %package collection
-Summary:	Web script for collectiond
-Summary(pl_PL.UTF-8):	Web script for collectiond
+Summary:	Web script for collectd
+Summary(pl_PL.UTF-8):	Web script for collectd
 Group:		Applications/WWW
 Requires:	%{name} = %{version}-%{release}
 Requires:	perl(CGI)
@@ -147,7 +148,7 @@ Requires:	webserver(cgi)
 Suggests:	fonts-TTF-RedHat-liberation
 
 %description collection
-Web script for collectiond
+Web script for collectd.
 
 %package cpu
 Summary:	cpu-plugin for collectd
