@@ -264,6 +264,7 @@ Summary:	hddtemp-plugin for collectd
 Summary(pl_PL.UTF-8):	Wtyczka hddtemp dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
+Suggests:	hddtemp-hddtempd
 
 %description hddtemp
 Temperature of harddisks. The temperatures are provided via S.M.A.R.T. and
