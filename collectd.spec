@@ -144,8 +144,7 @@ Requires:	perl(HTML::Entities)
 Requires:	perl(RRDs)
 Requires:	perl(URI::Escape)
 Requires:	webserver(cgi)
-# It might be not the best choice:
-Suggests:	fonts-TTF-RedHat-liberation
+Suggests:	fonts-TTF-DejaVu
 
 %description collection
 Web script for collectd.
