@@ -45,6 +45,7 @@ URL:		http://collectd.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	curl-devel
+BuildRequires:	hal-devel
 %{?with_iptables:BuildRequires:	iptables-devel >= 1.4.1.1-4}
 BuildRequires:	libesmtp-devel
 BuildRequires:	libnetlink-devel
@@ -53,10 +54,12 @@ BuildRequires:	liboping-devel
 BuildRequires:	libpcap-devel
 BuildRequires:	libstatgrab-devel >= 0.12
 BuildRequires:	libtool
+BuildRequires:	libxml2-devel
 BuildRequires:	lm_sensors-devel
 BuildRequires:	mysql-devel
 BuildRequires:	nut-devel
 BuildRequires:	perl-devel
+BuildRequires:	postgresql-devel
 BuildRequires:	rpmbuild(macros) >= 1.268
 BuildRequires:	rrdtool-devel
 BuildRequires:	net-snmp-devel
