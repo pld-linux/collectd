@@ -27,12 +27,12 @@
 Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
-Version:	4.5.2
-Release:	1
+Version:	4.6.1
+Release:	0.9
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.gz
-# Source0-md5:	464f44da322f78dcc9c12eeb52d3ad8d
+# Source0-md5:	81d9af9abd31a0a62e021773406787a8
 Source1:	%{name}.conf
 Source2:	%{name}.init
 Source3:	%{name}-http.conf
@@ -95,6 +95,29 @@ urychamiania ciężkiego interpretera za każdym razem, kiedy powinny być
 zapisane nowe wartości. Dzięki temu collect może mieć rozdzielczość 10
 sekund i nie obciążać zbytnio systemu.
 
+%package libs
+Summary:        %{name} libraries
+Summary(pl.UTF-8):      Biblioteki %{name} 
+Group:          Libraries
+
+%description libs
+%{name} libraries.
+
+%description libs -l pl.UTF-8
+Biblioteki %{name}.
+
+%package devel
+Summary:        Header files for %{name} libraries
+Summary(pl.UTF-8):      Pliki nagłówkowe bibliotek %{name} 
+Group:          Development/Libraries
+Requires:       %{name}-libs = %{version}-%{release}
+
+%description devel
+Header files for %{name} libraries.
+
+%description devel -l pl.UTF-8
+Pliki nagłówkowe bibliotek %{name}.
+
 %package apache
 Summary:	apache-plugin for collectd
 Summary(pl_PL.UTF-8):	Wtyczka apache dla collectd
@@ -135,6 +158,18 @@ Requires:	%{name} = %{version}-%{release}
 %description battery
 This plugin collects the battery's charge, the drawn current and the
 battery's voltage.
+
+%package bind
+Summary:	bind plugin for collectd
+Summary(pl_PL.UTF-8):	Wtyczka bind dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description bind
+Starting with BIND 9.5.0, the most widely used DNS server software provides
+extensive statistics about queries, responses and lots of other information.
+The bind plugin retrieves this information that's encoded in XML and provided
+via HTTP and submits the values to collectd.
 
 %package collection
 Summary:	Web script for collectd
@@ -180,6 +215,30 @@ Requires:	%{name} = %{version}-%{release}
 
 %description csv
 CSV output plugin for collectd.
+
+%package curl
+Summary:	cURL output plugin for collectd
+Summary(pl_PL.UTF-8):	Wtyczka wyjściowa cURL dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description curl
+The curl plugin uses the libcurl to read web pages and the match
+infrastructure (the same code used by the tail plugin) to use regular
+expressions with the received data.
+
+%package dbi
+Summary:	dbi plugin for collectd
+Summary(pl_PL.UTF-8):	Wtyczka dbi dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description dbi
+This plugin uses the dbi library to connect to various databases, execute
+SQL statements and read back the results. dbi is an acronym for "database
+interface" in case you were wondering about the name. You can configure how
+each column is to be interpreted and the plugin will generate one or more
+data sets from each row returned according to these rules.
 
 %package df
 Summary:	df-plugin for collectd
@@ -339,9 +398,35 @@ Requires:	%{name} = %{version}-%{release}
 %description logfile
 Logfile plugin for collectd.
 
-%module_scripts mbmon
+%package match_regex
+Summary:	match_regex plugin for collectd
+Summary(pl_PL.UTF-8):	Wtyczka match_regex dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description match_regex
+match_regex plugin for collectd.
+
+%package match_timediff
+Summary:	match_timediff plugin for collectd
+Summary(pl_PL.UTF-8):	Wtyczka match_timediff dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description match_timediff
+match_timediff plugin for collectd.
+
+%package match_value
+Summary:	match_value plugin for collectd
+Summary(pl_PL.UTF-8):	Wtyczka match_value dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description match_value
+match_value plugin for collectd.
+
 %package mbmon
-Summary:	mbmon-plugin for collectd
+Summary:	mbmon plugin for collectd
 Summary(pl_PL.UTF-8):	Wtyczka mbmon dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
@@ -476,6 +561,17 @@ UPS statistics using the Network UPS Tools. These statistics include
 basically everything NUT will give us, including voltages, currents, power,
 frequencies, load, and temperatures.
 
+%package openvpn
+Summary:	openvpn plugin for collectd
+Summary(pl_PL.UTF-8):	Wtyczka openvpn dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+Requires:	openvpn
+
+%description openvpn
+The OpenVPN plugin reads a status file maintained by OpenVPN and gathers
+traffic statistics about connected clients.
+
 %package ping
 Summary:	ping-plugin for collectd
 Summary(pl_PL.UTF-8):	Wtyczka ping dla collectd
@@ -585,6 +681,33 @@ Requires:	%{name} = %{version}-%{release}
 
 %description syslog
 Syslog plugin for collectd.
+
+%package target_notification
+Summary:	target_notification-plugin for collectd
+Summary(pl_PL.UTF-8):	Wtyczka target_notification dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description target_notification
+target_notification plugin for collectd.
+
+%package target_replace
+Summary:	target_replace-plugin for collectd
+Summary(pl_PL.UTF-8):	Wtyczka target_replace dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description target_replace
+target_replace plugin for collectd.
+
+%package target_set
+Summary:	target_set-plugin for collectd
+Summary(pl_PL.UTF-8):	Wtyczka target_set dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description target_set
+target_set plugin for collectd.
 
 %package tail
 Summary:	tail-plugin for collectd
@@ -750,8 +873,8 @@ install %{SOURCE3} $RPM_BUILD_ROOT%{_webappdir}/httpd.conf
 install %{SOURCE4} $RPM_BUILD_ROOT%{_webappdir}/lighttpd.conf
 
 ### Configs instalation ###
-for i in `egrep "^LoadPlugin" src/collectd.conf |awk '{print $NF}' ` ; do
-	egrep "LoadPlugin $i$" src/collectd.conf > $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/$i.conf
+for i in `egrep "^(#|)LoadPlugin" src/collectd.conf |awk '{print $NF}' ` ; do
+	egrep "LoadPlugin $i$" src/collectd.conf | %{__sed} -e "s/^#//" > $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/$i.conf
 	grep -v LoadPlugin src/collectd.conf |%{__sed} -e '/./{H;$!d;}' -e "x;/ $i>/!d;" >> $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/$i.conf
 done
 
@@ -778,6 +901,9 @@ if [ "$1" = "0" ]; then
 	/sbin/chkconfig --del %{name}
 fi
 
+%post   libs -p /sbin/ldconfig
+%postun libs -p /sbin/ldconfig
+
 %define module_scripts() \
 %post %1 \
 %service %{name} restart \
@@ -789,9 +915,12 @@ fi
 %module_scripts apcups
 %module_scripts ascent
 %module_scripts battery
+%module_scripts bind
 %module_scripts cpufreq
 %module_scripts cpu
 %module_scripts csv
+%module_scripts curl
+%module_scripts dbi
 %module_scripts df
 %module_scripts disk
 %{?with_dns:%module_scripts dns}
@@ -806,6 +935,9 @@ fi
 %module_scripts irq
 %module_scripts load
 %module_scripts logfile
+%module_scripts match_regex
+%module_scripts match_timediff
+%module_scripts match_value
 %module_scripts mbmon
 %module_scripts memcached
 %module_scripts memory
@@ -819,6 +951,7 @@ fi
 %module_scripts notify_email
 %module_scripts ntpd
 %module_scripts nut
+%module_scripts openvpn
 %module_scripts ping
 %module_scripts postgresql
 %module_scripts powerdns
@@ -830,6 +963,9 @@ fi
 %module_scripts swap
 %module_scripts syslog
 %module_scripts tail
+%module_scripts target_notification
+%module_scripts target_replace
+%module_scripts target_set
 %module_scripts tcpconns
 %module_scripts teamspeak2
 %module_scripts thermal
@@ -867,8 +1003,8 @@ fi
 %attr(755,root,root) %{_sbindir}/collectd
 %attr(755,root,root) %{_sbindir}/collectdmon
 %attr(755,root,root) %{_bindir}/collectd-nagios
-%dir %{_libdir}/%{name}
-%{_libdir}/%{name}/types.db
+%dir %{_datadir}/%{name}
+%{_datadir}/%{name}/types.db
 %attr(754,root,root) /etc/rc.d/init.d/%{name}
 %{_mandir}/man1/collectd.1*
 %{_mandir}/man1/collectd-nagios.1*
@@ -877,6 +1013,19 @@ fi
 %{_mandir}/man1/collectdmon.1*
 %{_mandir}/man5/types.db.5*
 %dir %{_var}/lib/%{name}
+
+%files libs
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libcollectdclient.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libcollectdclient.so.0
+
+%files devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libcollectdclient.so
+%{_libdir}/libcollectdclient.la
+%dir %{_includedir}/%{name}
+%{_includedir}/%{name}/*.h
+%{_pkgconfigdir}/libcollectdclient.pc
 
 %files collection
 %defattr(644,root,root,755)
@@ -910,6 +1059,11 @@ fi
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/battery.conf
 %attr(755,root,root) %{_libdir}/%{name}/battery.so
 
+%files bind
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/bind.conf
+%attr(755,root,root) %{_libdir}/%{name}/bind.so
+
 %files cpu
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/cpu.conf
@@ -924,6 +1078,16 @@ fi
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/csv.conf
 %attr(755,root,root) %{_libdir}/%{name}/csv.so
+
+%files curl
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/curl.conf
+%attr(755,root,root) %{_libdir}/%{name}/curl.so
+
+%files dbi
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/dbi.conf
+%attr(755,root,root) %{_libdir}/%{name}/dbi.so
 
 %files df
 %defattr(644,root,root,755)
@@ -1002,6 +1166,20 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/logfile.so
 %{_var}/log/collectd.log
 
+%files match_regex
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/match_regex.conf
+%attr(755,root,root) %{_libdir}/%{name}/match_regex.so
+
+%files match_timediff
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/%{name}/match_timediff.so
+
+%files match_value
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/match_value.conf
+%attr(755,root,root) %{_libdir}/%{name}/match_value.so
+
 %files mbmon
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/mbmon.conf
@@ -1071,6 +1249,11 @@ fi
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/nut.conf
 %attr(755,root,root) %{_libdir}/%{name}/nut.so
 
+%files openvpn
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/openvpn.conf
+%attr(755,root,root) %{_libdir}/%{name}/openvpn.so
+
 %files ping
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/ping.conf
@@ -1126,6 +1309,21 @@ fi
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/tail.conf
 %attr(755,root,root) %{_libdir}/%{name}/tail.so
+
+%files target_notification
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/target_notification.conf
+%attr(755,root,root) %{_libdir}/%{name}/target_notification.so
+
+%files target_replace
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/target_replace.conf
+%attr(755,root,root) %{_libdir}/%{name}/target_replace.so
+
+%files target_set
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/target_set.conf
+%attr(755,root,root) %{_libdir}/%{name}/target_set.so
 
 %files tcpconns
 %defattr(644,root,root,755)
