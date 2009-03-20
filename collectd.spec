@@ -28,7 +28,7 @@ Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
 Version:	4.6.2
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.gz
@@ -1018,6 +1018,7 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libcollectdclient.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libcollectdclient.so.0
+%dir %{_libdir}/%{name}
 
 %files devel
 %defattr(644,root,root,755)
