@@ -1264,6 +1264,7 @@ fi
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/postgresql.conf
 %attr(755,root,root) %{_libdir}/%{name}/postgresql.so
+%{_datadir}/%{name}/postgresql_default.conf
 
 %files powerdns
 %defattr(644,root,root,755)
