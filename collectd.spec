@@ -1040,20 +1040,20 @@ fi
 %attr(755,root,root) %{_appdir}/cgi-bin/collection.cgi
 
 ########## PLUGINS:
+%files apache
+%defattr(640,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/apache.conf
+%attr(755,root,root) %{_libdir}/%{name}/apache.so
+
 %files apcups
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/apcups.conf
 %attr(755,root,root) %{_libdir}/%{name}/apcups.so
 
 %files ascent
-%defattr(644,root,root,755)
+%defattr(640,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/ascent.conf
 %attr(755,root,root) %{_libdir}/%{name}/ascent.so
-
-%files apache
-%defattr(644,root,root,755)
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/apache.conf
-%attr(755,root,root) %{_libdir}/%{name}/apache.so
 
 %files battery
 %defattr(644,root,root,755)
@@ -1081,12 +1081,12 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/csv.so
 
 %files curl
-%defattr(644,root,root,755)
+%defattr(640,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/curl.conf
 %attr(755,root,root) %{_libdir}/%{name}/curl.so
 
 %files dbi
-%defattr(644,root,root,755)
+%defattr(640,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/dbi.conf
 %attr(755,root,root) %{_libdir}/%{name}/dbi.so
 
@@ -1204,7 +1204,7 @@ fi
 %endif
 
 %files mysql
-%defattr(644,root,root,755)
+%defattr(640,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/mysql.conf
 %attr(755,root,root) %{_libdir}/%{name}/mysql.so
 
@@ -1226,7 +1226,7 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/nfs.so
 
 %files nginx
-%defattr(644,root,root,755)
+%defattr(640,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/nginx.conf
 %attr(755,root,root) %{_libdir}/%{name}/nginx.so
 
@@ -1236,7 +1236,7 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/notify_desktop.so
 
 %files notify_email
-%defattr(644,root,root,755)
+%defattr(640,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/notify_email.conf
 %attr(755,root,root) %{_libdir}/%{name}/notify_email.so
 
@@ -1261,7 +1261,7 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/ping.so
 
 %files postgresql
-%defattr(644,root,root,755)
+%defattr(640,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/postgresql.conf
 %attr(755,root,root) %{_libdir}/%{name}/postgresql.so
 %{_datadir}/%{name}/postgresql_default.conf
