@@ -870,7 +870,7 @@ This plugin collectd data provided by XMMS.
 	--%{?with_snmp:en}%{!?with_snmp:dis}able-snmp \
 	--%{?with_xmms:en}%{!?with_xmms:dis}able-xmms \
 	%{!?with_curl:--disable-{apache,ascent,bind,curl,nginx}} \
-	%{!?with_xml:--disable-{ascent,libvirt}} \
+	%{!?with_xml:--disable-{ascent,bind,libvirt}} \
 	--disable-ipvs \
 	--disable-libvirt \
 	--disable-perl
