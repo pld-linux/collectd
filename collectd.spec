@@ -968,7 +968,7 @@ fi
 %module_scripts memcached
 %module_scripts memory
 %{?with_multimeter:%module_scripts multimeter}
-%{?with_mysql:%module_scripts mysql
+%{?with_mysql:%module_scripts mysql}
 %{?with_netlink:%module_scripts netlink}
 %module_scripts network
 %module_scripts nfs
