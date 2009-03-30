@@ -13,8 +13,8 @@
 # - %desc -l pl for plugins
 #
 # Conditional build:
-%bcond_without	dns		# ???
-%bcond_without	ipmi		# ipmi plugin package
+%bcond_without	dns		# DNS plugin
+%bcond_without	ipmi		# IPMI plugin
 %bcond_without	iptables	# iptables plugin
 %bcond_with	multimeter	# multimeter plugin
 %bcond_without	netlink		# netlink plugin
@@ -48,10 +48,10 @@ BuildRequires:	curl-devel
 BuildRequires:	hal-devel
 %{?with_iptables:BuildRequires:	iptables-devel >= 1.4.1.1-4}
 BuildRequires:	libesmtp-devel
-BuildRequires:	libnetlink-devel
+%{?with_netlink:BuildRequires:	libnetlink-devel}
 BuildRequires:	libnotify-devel
 BuildRequires:	liboping-devel
-BuildRequires:	libpcap-devel
+%{?with_dns:BuildRequires:	libpcap-devel}
 BuildRequires:	libstatgrab-devel >= 0.12
 BuildRequires:	libtool
 BuildRequires:	libxml2-devel
@@ -96,9 +96,9 @@ zapisane nowe wartości. Dzięki temu collect może mieć rozdzielczość 10
 sekund i nie obciążać zbytnio systemu.
 
 %package libs
-Summary:        %{name} libraries
-Summary(pl.UTF-8):      Biblioteki %{name} 
-Group:          Libraries
+Summary:	%{name} libraries
+Summary(pl.UTF-8):	Biblioteki %{name}
+Group:		Libraries
 
 %description libs
 %{name} libraries.
@@ -107,10 +107,10 @@ Group:          Libraries
 Biblioteki %{name}.
 
 %package devel
-Summary:        Header files for %{name} libraries
-Summary(pl.UTF-8):      Pliki nagłówkowe bibliotek %{name} 
-Group:          Development/Libraries
-Requires:       %{name}-libs = %{version}-%{release}
+Summary:	Header files for %{name} libraries
+Summary(pl.UTF-8):	Pliki nagłówkowe bibliotek %{name}
+Group:		Development/Libraries
+Requires:	%{name}-libs = %{version}-%{release}
 
 %description devel
 Header files for %{name} libraries.
@@ -840,10 +840,10 @@ This plugin collectd data provided by XMMS.
 	--with-libstatgrab=/usr \
 	--with-lm-sensors=/usr \
 	--with-libmysql=/usr \
-	--%{?with_ipmi:en}%{!?with_ipmi:dis}able-ipmi \
-	--%{?with_multimeter:en}%{!?with_multimeter:dis}able-multimeter \
 	--%{?with_dns:en}%{!?with_dns:dis}able-dns \
+	--%{?with_ipmi:en}%{!?with_ipmi:dis}able-ipmi \
 	--%{?with_iptables:en}%{!?with_iptables:dis}able-iptables \
+	--%{?with_multimeter:en}%{!?with_multimeter:dis}able-multimeter \
 	--%{?with_netlink:en}%{!?with_netlink:dis}able-netlink \
 	--disable-ipvs \
 	--disable-libvirt \
@@ -1100,10 +1100,12 @@ fi
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/disk.conf
 %attr(755,root,root) %{_libdir}/%{name}/disk.so
 
+%if %{with dns}
 %files dns
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/dns.conf
 %attr(755,root,root) %{_libdir}/%{name}/dns.so
+%endif
 
 %files email
 %defattr(644,root,root,755)
