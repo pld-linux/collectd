@@ -45,9 +45,12 @@ URL:		http://collectd.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	curl-devel
+BuildRequires:	gcc-c++
 BuildRequires:	hal-devel
 %{?with_iptables:BuildRequires:	iptables-devel >= 1.4.1.1-4}
+BuildRequires:	libdbi-devel
 BuildRequires:	libesmtp-devel
+BuildRequires:	libltdl-devel
 %{?with_netlink:BuildRequires:	libnetlink-devel}
 BuildRequires:	libnotify-devel
 BuildRequires:	liboping-devel
