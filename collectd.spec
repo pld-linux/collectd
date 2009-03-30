@@ -13,11 +13,23 @@
 # - %desc -l pl for plugins
 #
 # Conditional build:
+%bcond_without	curl		# apache, ascent, bind, curl and nginx plugins
 %bcond_without	dns		# DNS plugin
 %bcond_without	ipmi		# IPMI plugin
 %bcond_without	iptables	# iptables plugin
+%bcond_without	libesmtp	# notify_email plugin
 %bcond_with	multimeter	# multimeter plugin
+%bcond_without	mysql		# MySQL plugin
 %bcond_without	netlink		# netlink plugin
+%bcond_without	notify		# notify_desktop plugin
+%bcond_without	ping		# ping plugin
+%bcond_without	psql		# PostgreSQL plugin
+%bcond_without	rrd		# rrdtool and rrdcached plugins
+%bcond_without	sensors		# sensors plugin
+%bcond_without	snmp		# SNMP plugin
+%bcond_without	ups		# nut plugin
+%bcond_without	xml		# ascent, bind and libvirt plugins
+%bcond_without	xmms		# XMMS plugin
 #
 #http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=358637
 %ifarch %{x8664}
@@ -44,29 +56,29 @@ URL:		http://collectd.org/
 %{?with_ipmi:BuildRequires:	OpenIPMI-devel >= 2.0.14-3}
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	curl-devel
+%{?with_curl:BuildRequires:	curl-devel}
 BuildRequires:	gcc-c++
 BuildRequires:	hal-devel
 %{?with_iptables:BuildRequires:	iptables-devel >= 1.4.1.1-4}
 BuildRequires:	libdbi-devel
-BuildRequires:	libesmtp-devel
+%{?with_libesmtp:BuildRequires:	libesmtp-devel}
 BuildRequires:	libltdl-devel
 %{?with_netlink:BuildRequires:	libnetlink-devel}
-BuildRequires:	libnotify-devel
-BuildRequires:	liboping-devel
+%{?with_notify:BuildRequires:	libnotify-devel}
+%{?with_ping:BuildRequires:	liboping-devel}
 %{?with_dns:BuildRequires:	libpcap-devel}
 BuildRequires:	libstatgrab-devel >= 0.12
 BuildRequires:	libtool
-BuildRequires:	libxml2-devel
-BuildRequires:	lm_sensors-devel
-BuildRequires:	mysql-devel
-BuildRequires:	nut-devel
+%{?with_xml:BuildRequires:	libxml2-devel}
+%{?with_sensors:BuildRequires:	lm_sensors-devel}
+%{?with_mysql:BuildRequires:	mysql-devel}
+%{?with_ups:BuildRequires:	nut-devel}
 BuildRequires:	perl-devel
-BuildRequires:	postgresql-devel
+%{?with_psql:BuildRequires:	postgresql-devel}
 BuildRequires:	rpmbuild(macros) >= 1.268
-BuildRequires:	rrdtool-devel
-BuildRequires:	net-snmp-devel
-BuildRequires:	xmms-devel
+%{?with_rrd:BuildRequires:	rrdtool-devel}
+%{?with_snmp:BuildRequires:	net-snmp-devel}
+%{?with_xmms:BuildRequires:	xmms-devel}
 Requires(post,preun):	/sbin/chkconfig
 Requires:	rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -644,7 +656,6 @@ This plugin uses lm-sensors to read hardware sensors. You will need to
 configure lm-sensors before this plugin will collect any usefull and correct
 data.
 
-%module_scripts serial
 %package serial
 Summary:	serial-plugin for collectd
 Summary(pl_PL.UTF-8):	Wtyczka serial dla collectd
@@ -847,7 +858,19 @@ This plugin collectd data provided by XMMS.
 	--%{?with_ipmi:en}%{!?with_ipmi:dis}able-ipmi \
 	--%{?with_iptables:en}%{!?with_iptables:dis}able-iptables \
 	--%{?with_multimeter:en}%{!?with_multimeter:dis}able-multimeter \
+	--%{?with_mysql:en}%{!?with_mysql:dis}able-mysql \
 	--%{?with_netlink:en}%{!?with_netlink:dis}able-netlink \
+	--%{?with_notify:en}%{!?with_notify:dis}able-notify_desktop \
+	--%{?with_libesmtp:en}%{!?with_libesmtp:dis}able-notify_email \
+	--%{?with_ups:en}%{!?with_ups:dis}able-nut \
+	--%{?with_ping:en}%{!?with_ping:dis}able-ping \
+	--%{?with_psql:en}%{!?with_psql:dis}able-postgresql \
+	--%{?with_rrd:en}%{!?with_rrd:dis}able-rrd{cached,tool} \
+	--%{?with_sensors:en}%{!?with_sensors:dis}able-sensors \
+	--%{?with_snmp:en}%{!?with_snmp:dis}able-snmp \
+	--%{?with_xmms:en}%{!?with_xmms:dis}able-xmms \
+	%{!?with_curl:--disable-{apache,ascent,bind,curl,nginx}} \
+	%{!?with_xml:--disable-{ascent,libvirt}} \
 	--disable-ipvs \
 	--disable-libvirt \
 	--disable-perl
@@ -914,15 +937,15 @@ fi
 %postun %1 \
 %service %{name} restart
 
-%module_scripts apache
+%{?with_xml:%{?with_curl:%module_scripts apache}}
 %module_scripts apcups
-%module_scripts ascent
+%{?with_curl:%module_scripts ascent}
 %module_scripts battery
-%module_scripts bind
+%{?with_xml:%{?with_curl:%module_scripts bind}}
 %module_scripts cpufreq
 %module_scripts cpu
 %module_scripts csv
-%module_scripts curl
+%{?with_curl:%module_scripts curl}
 %module_scripts dbi
 %module_scripts df
 %module_scripts disk
@@ -945,24 +968,24 @@ fi
 %module_scripts memcached
 %module_scripts memory
 %{?with_multimeter:%module_scripts multimeter}
-%module_scripts mysql
+%{?with_mysql:%module_scripts mysql
 %{?with_netlink:%module_scripts netlink}
 %module_scripts network
 %module_scripts nfs
-%module_scripts nginx
-%module_scripts notify_desktop
-%module_scripts notify_email
+%{?with_curl:%module_scripts nginx}
+%{?with_notify:%module_scripts notify_desktop}
+%{?with_libesmtp:%module_scripts notify_email}
 %module_scripts ntpd
-%module_scripts nut
+%{?with_ups:%module_scripts nut}
 %module_scripts openvpn
-%module_scripts ping
-%module_scripts postgresql
+%{?with_ping:%module_scripts ping}
+%{?with_psql:%module_scripts postgresql}
 %module_scripts powerdns
 %module_scripts processes
-%module_scripts rrdtool
-%module_scripts sensors
+%{?with_rrd:%module_scripts rrdtool}
+%{?with_sensors:%module_scripts sensors}
 %module_scripts serial
-%module_scripts snmp
+%{?with_snmp:%module_scripts snmp}
 %module_scripts swap
 %module_scripts syslog
 %module_scripts tail
@@ -978,7 +1001,7 @@ fi
 %module_scripts vmem
 %module_scripts vserver
 %module_scripts wireless
-%module_scripts xmms
+%{?with_xmms:%module_scripts xmms}
 
 %triggerin collection -- apache1 < 1.3.37-3, apache1-base
 %webapp_register apache %{_webapp}
@@ -1043,30 +1066,40 @@ fi
 %attr(755,root,root) %{_appdir}/cgi-bin/collection.cgi
 
 ########## PLUGINS:
+%if %{with xml}
+%if %{with curl}
 %files apache
 %defattr(640,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/apache.conf
 %attr(755,root,root) %{_libdir}/%{name}/apache.so
+%endif
+%endif
 
 %files apcups
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/apcups.conf
 %attr(755,root,root) %{_libdir}/%{name}/apcups.so
 
+%if %{with curl}
 %files ascent
 %defattr(640,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/ascent.conf
 %attr(755,root,root) %{_libdir}/%{name}/ascent.so
+%endif
 
 %files battery
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/battery.conf
 %attr(755,root,root) %{_libdir}/%{name}/battery.so
 
+%if %{with xml}
+%if %{with curl}
 %files bind
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/bind.conf
 %attr(755,root,root) %{_libdir}/%{name}/bind.so
+%endif
+%endif
 
 %files cpu
 %defattr(644,root,root,755)
@@ -1083,10 +1116,12 @@ fi
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/csv.conf
 %attr(755,root,root) %{_libdir}/%{name}/csv.so
 
+%if %{with curl}
 %files curl
 %defattr(640,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/curl.conf
 %attr(755,root,root) %{_libdir}/%{name}/curl.so
+%endif
 
 %files dbi
 %defattr(640,root,root,755)
@@ -1208,10 +1243,12 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/multimeter.so
 %endif
 
+%if %{with mysql}
 %files mysql
 %defattr(640,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/mysql.conf
 %attr(755,root,root) %{_libdir}/%{name}/mysql.so
+%endif
 
 %if %{with netlink}
 %files netlink
@@ -1230,46 +1267,58 @@ fi
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/nfs.conf
 %attr(755,root,root) %{_libdir}/%{name}/nfs.so
 
+%if %{with curl}
 %files nginx
 %defattr(640,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/nginx.conf
 %attr(755,root,root) %{_libdir}/%{name}/nginx.so
+%endif
 
+%if %{with notify}
 %files notify_desktop
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/notify_desktop.conf
 %attr(755,root,root) %{_libdir}/%{name}/notify_desktop.so
+%endif
 
+%if %{with libesmtp}
 %files notify_email
 %defattr(640,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/notify_email.conf
 %attr(755,root,root) %{_libdir}/%{name}/notify_email.so
+%endif
 
 %files ntpd
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/ntpd.conf
 %attr(755,root,root) %{_libdir}/%{name}/ntpd.so
 
+%if %{with ups}
 %files nut
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/nut.conf
 %attr(755,root,root) %{_libdir}/%{name}/nut.so
+%endif
 
 %files openvpn
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/openvpn.conf
 %attr(755,root,root) %{_libdir}/%{name}/openvpn.so
 
+%if %{with ping}
 %files ping
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/ping.conf
 %attr(755,root,root) %{_libdir}/%{name}/ping.so
+%endif
 
+%if %{with psql}
 %files postgresql
 %defattr(640,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/postgresql.conf
 %attr(755,root,root) %{_libdir}/%{name}/postgresql.so
 %{_datadir}/%{name}/postgresql_default.conf
+%endif
 
 %files powerdns
 %defattr(644,root,root,755)
@@ -1281,26 +1330,32 @@ fi
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/processes.conf
 %attr(755,root,root) %{_libdir}/%{name}/processes.so
 
+%if %{with rrd}
 %files rrdtool
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/rrdtool.conf
 %attr(755,root,root) %{_libdir}/%{name}/rrdtool.so
+%endif
 
+%if %{with sensors}
 %files sensors
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/sensors.conf
 %attr(755,root,root) %{_libdir}/%{name}/sensors.so
+%endif
 
 %files serial
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/serial.conf
 %attr(755,root,root) %{_libdir}/%{name}/serial.so
 
+%if %{with snmp}
 %files snmp
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/snmp.conf
 %attr(755,root,root) %{_libdir}/%{name}/snmp.so
 %{_mandir}/man5/collectd-snmp.5*
+%endif
 
 %files swap
 %defattr(644,root,root,755)
@@ -1378,7 +1433,9 @@ fi
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/wireless.conf
 %attr(755,root,root) %{_libdir}/%{name}/wireless.so
 
+%if %{with xmms}
 %files xmms
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/xmms.conf
 %attr(755,root,root) %{_libdir}/%{name}/xmms.so
+%endif
