@@ -7,7 +7,8 @@
 #    libvirt . . . . . . no		(requires library)
 #    multimeter  . . . . no		?
 #    onewire . . . . . . no		(needs libowfs)
-#    perl  . . . . . . . no		(needs libperl)
+#    perl  . . . . . . . no		(buggy perl: http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=467072)
+#    rrdcached . . . . . no		(requires rrdtool >= 1.4.0)
 #    tape  . . . . . . . no		?
 # - logrotate file for logfile plugin
 # - %desc -l pl for plugins
@@ -937,27 +938,27 @@ fi
 %postun %1 \
 %service %{name} restart
 
-%{?with_xml:%{?with_curl:%module_scripts apache}}
+%module_scripts apache
 %module_scripts apcups
-%{?with_curl:%module_scripts ascent}
+%module_scripts ascent
 %module_scripts battery
-%{?with_xml:%{?with_curl:%module_scripts bind}}
+%module_scripts bind
 %module_scripts cpufreq
 %module_scripts cpu
 %module_scripts csv
-%{?with_curl:%module_scripts curl}
+%module_scripts curl
 %module_scripts dbi
 %module_scripts df
 %module_scripts disk
-%{?with_dns:%module_scripts dns}
+%module_scripts dns
 %module_scripts email
 %module_scripts entropy
 %module_scripts exec
 %module_scripts filecount
 %module_scripts hddtemp
 %module_scripts interface
-%{?with_ipmi:%module_scripts ipmi}
-%{?with_iptables:%module_scripts iptables}
+%module_scripts ipmi
+%module_scripts iptables
 %module_scripts irq
 %module_scripts load
 %module_scripts logfile
@@ -967,25 +968,25 @@ fi
 %module_scripts mbmon
 %module_scripts memcached
 %module_scripts memory
-%{?with_multimeter:%module_scripts multimeter}
-%{?with_mysql:%module_scripts mysql}
-%{?with_netlink:%module_scripts netlink}
+%module_scripts multimeter
+%module_scripts mysql
+%module_scripts netlink
 %module_scripts network
 %module_scripts nfs
-%{?with_curl:%module_scripts nginx}
-%{?with_notify:%module_scripts notify_desktop}
-%{?with_libesmtp:%module_scripts notify_email}
+%module_scripts nginx
+%module_scripts notify_desktop
+%module_scripts notify_email
 %module_scripts ntpd
-%{?with_ups:%module_scripts nut}
+%module_scripts nut
 %module_scripts openvpn
-%{?with_ping:%module_scripts ping}
-%{?with_psql:%module_scripts postgresql}
+%module_scripts ping
+%module_scripts postgresql
 %module_scripts powerdns
 %module_scripts processes
-%{?with_rrd:%module_scripts rrdtool}
-%{?with_sensors:%module_scripts sensors}
+%module_scripts rrdtool
+%module_scripts sensors
 %module_scripts serial
-%{?with_snmp:%module_scripts snmp}
+%module_scripts snmp
 %module_scripts swap
 %module_scripts syslog
 %module_scripts tail
@@ -1001,7 +1002,7 @@ fi
 %module_scripts vmem
 %module_scripts vserver
 %module_scripts wireless
-%{?with_xmms:%module_scripts xmms}
+%module_scripts xmms
 
 %triggerin collection -- apache1 < 1.3.37-3, apache1-base
 %webapp_register apache %{_webapp}
