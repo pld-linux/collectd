@@ -865,7 +865,7 @@ This plugin collectd data provided by XMMS.
 	--%{?with_ups:en}%{!?with_ups:dis}able-nut \
 	--%{?with_ping:en}%{!?with_ping:dis}able-ping \
 	--%{?with_psql:en}%{!?with_psql:dis}able-postgresql \
-	--%{?with_rrd:en}%{!?with_rrd:dis}able-rrd{cached,tool} \
+	--%{?with_rrd:en}%{!?with_rrd:dis}able-rrdtool \
 	--%{?with_sensors:en}%{!?with_sensors:dis}able-sensors \
 	--%{?with_snmp:en}%{!?with_snmp:dis}able-snmp \
 	--%{?with_xmms:en}%{!?with_xmms:dis}able-xmms \
