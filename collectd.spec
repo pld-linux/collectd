@@ -40,12 +40,12 @@
 Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
-Version:	4.6.2
-Release:	2
+Version:	4.7.0
+Release:	1
 License:	GPL v2
 Group:		Daemons
-Source0:	http://collectd.org/files/%{name}-%{version}.tar.gz
-# Source0-md5:	9eee46a6330780d6e6b41155b159f4f9
+Source0:	http://collectd.org/files/%{name}-%{version}.tar.bz2
+# Source0-md5:	8740670913a7740f976122f3070e592b
 Source1:	%{name}.conf
 Source2:	%{name}.init
 Source3:	%{name}-http.conf
@@ -203,6 +203,15 @@ Suggests:	fonts-TTF-DejaVu
 %description collection
 Web script for collectd.
 
+%package conntrack
+Summary:	conntrack-plugin for collectd
+Summary(pl_PL.UTF-8):	Wtyczka conntrack dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description conntrack
+The conntrack-plugin collects the connection tracking table size.
+
 %package cpu
 Summary:	cpu-plugin for collectd
 Summary(pl_PL.UTF-8):	Wtyczka cpu dla collectd
@@ -336,6 +345,16 @@ in a directory and all its subdirectories. This can be used for a variety of
 statistics, for example the queue length of an MTA, the number of PHP
 sessions of a web server or simply the number of files in your home
 directory.
+
+%package fscache
+Summary:	fscache-plugin for collectd
+Summary(pl_PL.UTF-8):	Wtyczka fscache dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description fscache
+The fscache-plugin collects statistics about Linux file-system based caching
+framework.
 
 %package hddtemp
 Summary:	hddtemp-plugin for collectd
@@ -636,6 +655,16 @@ This plugin collects the number of processes, grouped by their state (e.g.
 running, sleeping, zombies, etc.). In addition to that, it can select
 detailed statistics about selected processes, grouped by name.
 
+%package protocols
+Summary:	protocols-plugin for collectd
+Summary(pl_PL.UTF-8):	Wtyczka protocols dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description protocols
+The protocols-plugin provides information about network protocols, such as
+IP, TCP and UDP.
+
 %package rrdtool
 Summary:	rrdtool-plugin for collectd
 Summary(pl_PL.UTF-8):	Wtyczka rrdtool dla collectd
@@ -696,6 +725,16 @@ Requires:	%{name} = %{version}-%{release}
 
 %description syslog
 Syslog plugin for collectd.
+
+%package table
+Summary:	table-plugin for collectd
+Summary(pl_PL.UTF-8):	Wtyczka table dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description table
+The table-plugin provides parsing for table-like structured files,
+such as many files beneath /proc.
 
 %package target_notification
 Summary:	target_notification-plugin for collectd
@@ -758,6 +797,16 @@ The teamspeak2 plugin connects to the query port of a teamspeak2 server and
 polls interesting global and virtual server data. The plugin can query only
 one physical server but unlimited virtual servers.
 
+%package ted
+Summary:	ted-plugin for collectd
+Summary(pl_PL.UTF-8):	Wtyczka ted dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description ted
+The TED-plugin reads power consumption measurements from “The Energy Detective”
+(TED).
+
 %package thermal
 Summary:	thermal-plugin for collectd
 Summary(pl_PL.UTF-8):	Wtyczka thermal dla collectd
@@ -778,6 +827,15 @@ The unixsock plugin opens an UNIX-socket over which one can interact with
 the daemon. This can be used to use the values collected by collectd in
 other applications, such as monitoring, or submit externally collected
 values to collectd.
+
+%package uptime
+Summary:	uptime-plugin for collectd
+Summary(pl_PL.UTF-8):	Wtyczka uptime dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description uptime
+The uptime-plugin can collect the server's uptime.
 
 %package users
 Summary:	users-plugin for collectd
@@ -943,8 +1001,9 @@ fi
 %module_scripts ascent
 %module_scripts battery
 %module_scripts bind
-%module_scripts cpufreq
+%module_scripts conntrack
 %module_scripts cpu
+%module_scripts cpufreq
 %module_scripts csv
 %module_scripts curl
 %module_scripts dbi
@@ -955,6 +1014,7 @@ fi
 %module_scripts entropy
 %module_scripts exec
 %module_scripts filecount
+%module_scripts fscache
 %module_scripts hddtemp
 %module_scripts interface
 %module_scripts ipmi
@@ -983,20 +1043,24 @@ fi
 %module_scripts postgresql
 %module_scripts powerdns
 %module_scripts processes
+%module_scripts protocols
 %module_scripts rrdtool
 %module_scripts sensors
 %module_scripts serial
 %module_scripts snmp
 %module_scripts swap
 %module_scripts syslog
+%module_scripts table
 %module_scripts tail
 %module_scripts target_notification
 %module_scripts target_replace
 %module_scripts target_set
 %module_scripts tcpconns
 %module_scripts teamspeak2
+%module_scripts ted
 %module_scripts thermal
 %module_scripts unixsock
+%module_scripts uptime
 %module_scripts users
 %module_scripts uuid
 %module_scripts vmem
@@ -1102,6 +1166,11 @@ fi
 %endif
 %endif
 
+%files conntrack
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/conntrack.conf
+%attr(755,root,root) %{_libdir}/%{name}/conntrack.so
+
 %files cpu
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/cpu.conf
@@ -1167,6 +1236,11 @@ fi
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/filecount.conf
 %attr(755,root,root) %{_libdir}/%{name}/filecount.so
+
+%files fscache
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/fscache.conf
+%attr(755,root,root) %{_libdir}/%{name}/fscache.so
 
 %files hddtemp
 %defattr(644,root,root,755)
@@ -1331,6 +1405,11 @@ fi
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/processes.conf
 %attr(755,root,root) %{_libdir}/%{name}/processes.so
 
+%files protocols
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/protocols.conf
+%attr(755,root,root) %{_libdir}/%{name}/protocols.so
+
 %if %{with rrd}
 %files rrdtool
 %defattr(644,root,root,755)
@@ -1368,6 +1447,11 @@ fi
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/syslog.conf
 %attr(755,root,root) %{_libdir}/%{name}/syslog.so
 
+%files table
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/table.conf
+%attr(755,root,root) %{_libdir}/%{name}/table.so
+
 %files tail
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/tail.conf
@@ -1398,6 +1482,11 @@ fi
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/teamspeak2.conf
 %attr(755,root,root) %{_libdir}/%{name}/teamspeak2.so
 
+%files ted
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/ted.conf
+%attr(755,root,root) %{_libdir}/%{name}/ted.so
+
 %files thermal
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/thermal.conf
@@ -1408,6 +1497,11 @@ fi
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/unixsock.conf
 %attr(755,root,root) %{_libdir}/%{name}/unixsock.so
 %{_mandir}/man5/collectd-unixsock.5*
+
+%files uptime
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/uptime.conf
+%attr(755,root,root) %{_libdir}/%{name}/uptime.so
 
 %files users
 %defattr(644,root,root,755)
