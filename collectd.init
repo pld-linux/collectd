@@ -27,6 +27,10 @@ else
 	exit 0
 fi
 
+checkconfig() {
+	/usr/sbin/collectd -t || exit 1
+}
+
 start() {
 	# Check if the service is already running?
 	if [ ! -f /var/lock/subsys/collectd ]; then
@@ -51,6 +55,7 @@ stop() {
 
 condrestart() {
 	if [ -f /var/lock/subsys/collectd ]; then
+		checkconfig
 		stop
 		start
 	else
@@ -68,6 +73,7 @@ case "$1" in
   	stop
 	;;
   restart)
+  	checkconfig
 	stop
 	start
 	;;
@@ -78,6 +84,7 @@ case "$1" in
 	condrestart 7
 	;;
   status)
+  	checkconfig
 	status collectd
 	exit $?
 	;;

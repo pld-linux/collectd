@@ -1,18 +1,3 @@
-# TODO:
-# - package contrib scripts as %doc
-# - perl modules with Collectd classes package to separate package
-# - Disabled modules:
-#    apple_sensors . . . no		(obvious)
-#    ipvs  . . . . . . . no		(ip_vs.h not found - llh to be fixed)
-#    libvirt . . . . . . no		(requires library)
-#    multimeter  . . . . no		?
-#    onewire . . . . . . no		(needs libowfs)
-#    perl  . . . . . . . no		(buggy perl: http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=467072)
-#    rrdcached . . . . . no		(requires rrdtool >= 1.4.0)
-#    tape  . . . . . . . no		?
-# - logrotate file for logfile plugin
-# - %desc -l pl for plugins
-#
 # Conditional build:
 %bcond_without	curl		# apache, ascent, bind, curl and nginx plugins
 %bcond_without	dns		# DNS plugin
@@ -41,7 +26,7 @@ Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
 Version:	4.7.0
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.bz2
