@@ -38,6 +38,7 @@ Source4:	%{name}-lighttpd.conf
 Source10:	%{name}-df.conf
 Source11:	%{name}-rrdtool.conf
 Patch0:		%{name}-collection.patch
+Patch1:		%{name}-as_needed.patch
 URL:		http://collectd.org/
 %{?with_ipmi:BuildRequires:	OpenIPMI-devel >= 2.0.14-3}
 BuildRequires:	autoconf
@@ -886,6 +887,7 @@ This plugin collectd data provided by XMMS.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %build
 %{__libtoolize}
