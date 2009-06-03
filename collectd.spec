@@ -489,6 +489,7 @@ Summary:	mysql-plugin for collectd
 Summary(pl_PL.UTF-8):	Moduł mysql dla collectd.
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
+Requires:	mysql-client
 
 %description mysql
 MySQL querying plugin. This plugins provides data of issued commands,
