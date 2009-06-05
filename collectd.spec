@@ -611,6 +611,7 @@ Summary:	ping-plugin for collectd
 Summary(pl_PL.UTF-8):	Wtyczka ping dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
+Requires:	liboping >= 1.1.2 
 
 %description ping
 The network latency is measured as a roundtrip time. An ICMP-echo-request
