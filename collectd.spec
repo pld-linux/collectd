@@ -16,12 +16,13 @@
 %bcond_without	ups		# nut plugin
 %bcond_without	xml		# ascent, bind and libvirt plugins
 %bcond_without	xmms		# XMMS plugin
-#
-#http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=358637
+
+# http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=358637
 %ifarch %{x8664}
 %undefine with_iptables
 %undefine with_netlink
 %endif
+
 Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
@@ -44,7 +45,6 @@ URL:		http://collectd.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
 %{?with_curl:BuildRequires:	curl-devel}
-BuildRequires:	gcc-c++
 BuildRequires:	hal-devel
 %{?with_iptables:BuildRequires:	iptables-devel >= 1.4.1.1-4}
 BuildRequires:	libdbi-devel
@@ -55,16 +55,17 @@ BuildRequires:	libltdl-devel
 %{?with_ping:BuildRequires:	liboping-devel}
 %{?with_dns:BuildRequires:	libpcap-devel}
 BuildRequires:	libstatgrab-devel >= 0.12
+BuildRequires:	libstdc++-devel
 BuildRequires:	libtool
 %{?with_xml:BuildRequires:	libxml2-devel}
 %{?with_sensors:BuildRequires:	lm_sensors-devel}
 %{?with_mysql:BuildRequires:	mysql-devel}
+%{?with_snmp:BuildRequires:	net-snmp-devel}
 %{?with_ups:BuildRequires:	nut-devel}
 BuildRequires:	perl-devel
 %{?with_psql:BuildRequires:	postgresql-devel}
 BuildRequires:	rpmbuild(macros) >= 1.268
 %{?with_rrd:BuildRequires:	rrdtool-devel}
-%{?with_snmp:BuildRequires:	net-snmp-devel}
 %{?with_xmms:BuildRequires:	xmms-devel}
 Requires(post,preun):	/sbin/chkconfig
 Requires:	rc-scripts
@@ -129,7 +130,7 @@ Requires:	%{name}-libs = %{version}-%{release}
 %description static
 Static files for %{name} libraries.
 
-%description devel -l pl.UTF-8
+%description static -l pl.UTF-8
 Pliki statyczne bibliotek %{name}.
 
 %package apache
@@ -139,7 +140,7 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description apache
-This plugin collectd data provided by Apache's `mod_status'.
+This plugin collect data provided by Apache's `mod_status'.
 
 %description apache -l pl.UTF-8
 Wtyczka collectd zbierająca informacje udostępniane przez moduł
@@ -180,10 +181,11 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description bind
-Starting with BIND 9.5.0, the most widely used DNS server software provides
-extensive statistics about queries, responses and lots of other information.
-The bind plugin retrieves this information that's encoded in XML and provided
-via HTTP and submits the values to collectd.
+Starting with BIND 9.5.0, the most widely used DNS server software
+provides extensive statistics about queries, responses and lots of
+other information. The bind plugin retrieves this information that's
+encoded in XML and provided via HTTP and submits the values to
+collectd.
 
 %package collection
 Summary:	Web script for collectd
@@ -217,9 +219,9 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description cpu
-The cpu-plugin collects the amount of time spent by the CPU in various states,
-most notably executing user code, executing system code, waiting for IO
-operations and being idle.
+The cpu-plugin collects the amount of time spent by the CPU in various
+states, most notably executing user code, executing system code,
+waiting for IO operations and being idle.
 
 %package cpufreq
 Summary:	cpufreq-plugin for collectd
@@ -257,11 +259,12 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description dbi
-This plugin uses the dbi library to connect to various databases, execute
-SQL statements and read back the results. dbi is an acronym for "database
-interface" in case you were wondering about the name. You can configure how
-each column is to be interpreted and the plugin will generate one or more
-data sets from each row returned according to these rules.
+This plugin uses the dbi library to connect to various databases,
+execute SQL statements and read back the results. dbi is an acronym
+for "database interface" in case you were wondering about the name.
+You can configure how each column is to be interpreted and the plugin
+will generate one or more data sets from each row returned according
+to these rules.
 
 %package df
 Summary:	df-plugin for collectd
@@ -270,10 +273,10 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description df
-The df-plugin collects file system usage information, i. e. basically how
-much space on a mounted partition is used and how much is available. It's
-named after and very similar to the df(1) UNIX command that's been around
-forever.
+The df-plugin collects file system usage information, i. e. basically
+how much space on a mounted partition is used and how much is
+available. It's named after and very similar to the df(1) UNIX command
+that's been around forever.
 
 %package disk
 Summary:	disk-plugin for collectd
@@ -293,9 +296,9 @@ Requires:	%{name} = %{version}-%{release}
 Requires:	perl-rrdtool
 
 %description dns
-This plugin has a similar functionality to dnstop: It uses libpcap to get
-a copy of all traffic from/to port UDP/53 (that's the DNS port), interprets
-the packets and collects statistics of your DNS traffic.
+This plugin has a similar functionality to dnstop: It uses libpcap to
+get a copy of all traffic from/to port UDP/53 (that's the DNS port),
+interprets the packets and collects statistics of your DNS traffic.
 
 %package email
 Summary:	email-plugin for collectd
@@ -305,12 +308,12 @@ Requires:	%{name} = %{version}-%{release}
 
 %description email
 The email plugin opens an UNIX-socket over which one can submit email
-statistics, such as the number of ``ham'', ``spam'', ``virus'', etc. mails
-received/handled, spam scores and matched spam checks.
+statistics, such as the number of ``ham'', ``spam'', ``virus'', etc.
+mails received/handled, spam scores and matched spam checks.
 
 This plugin is intended to be used with the the
-Mail::SpamAssassin::Plugin::Collectd manpage SpamAssassin-plugin which is
-included in contrib/, but is of course not limited to that use.
+Mail::SpamAssassin::Plugin::Collectd manpage SpamAssassin-plugin which
+is included in contrib/, but is of course not limited to that use.
 
 %package entropy
 Summary:	entropy-plugin for collectd
@@ -338,11 +341,11 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description filecount
-The filecount-plugin does something very simple: Count the number of files
-in a directory and all its subdirectories. This can be used for a variety of
-statistics, for example the queue length of an MTA, the number of PHP
-sessions of a web server or simply the number of files in your home
-directory.
+The filecount-plugin does something very simple: Count the number of
+files in a directory and all its subdirectories. This can be used for
+a variety of statistics, for example the queue length of an MTA, the
+number of PHP sessions of a web server or simply the number of files
+in your home directory.
 
 %package fscache
 Summary:	fscache-plugin for collectd
@@ -351,8 +354,8 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description fscache
-The fscache-plugin collects statistics about Linux file-system based caching
-framework.
+The fscache-plugin collects statistics about Linux file-system based
+caching framework.
 
 %package hddtemp
 Summary:	hddtemp-plugin for collectd
@@ -362,8 +365,8 @@ Requires:	%{name} = %{version}-%{release}
 Suggests:	hddtemp-hddtempd
 
 %description hddtemp
-Temperature of harddisks. The temperatures are provided via S.M.A.R.T. and
-queried by the external hddtemp-daemon.
+Temperature of harddisks. The temperatures are provided via S.M.A.R.T.
+and queried by the external hddtemp-daemon.
 
 %package interface
 Summary:	interface-plugin for collectd
@@ -372,8 +375,8 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description interface
-The interface-plugin collects information about the traffic (octets), packets
-and errors of interfaces.
+The interface-plugin collects information about the traffic (octets),
+packets and errors of interfaces.
 
 %package iptables
 Summary:	iptables-plugin for collectd
@@ -383,13 +386,14 @@ Requires:	%{name} = %{version}-%{release}
 
 %description iptables
 With this plugin you can gather statistics from your ip_tables based
-packetfilter (aka. firewall). It can collect the byte- and packet-counters
-of selected rules and submit them to collectd. You can select rules that
-should be collected wither by its position (e.g. "the fourth rule in the
-INPUT queue in the filter table") or by its comment (using the COMMENT
-match). This means that depending on your firewall layout you can collect
-certain services (such as the amount of web-traffic), source or destination
-hosts or networks, dropped packets and much more.
+packetfilter (aka. firewall). It can collect the byte- and
+packet-counters of selected rules and submit them to collectd. You can
+select rules that should be collected wither by its position (e.g.
+"the fourth rule in the INPUT queue in the filter table") or by its
+comment (using the COMMENT match). This means that depending on your
+firewall layout you can collect certain services (such as the amount
+of web-traffic), source or destination hosts or networks, dropped
+packets and much more.
 
 %package ipmi
 Summary:	ipmi-plugin for collectd
@@ -474,9 +478,10 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description memcached
-The memcached plugin connects to a memcached daemon and collects the number
-of connections and requests handled by the daemon, the CPU resources consumed,
-number of items cached, number of threads, and bytes sent and received.
+The memcached plugin connects to a memcached daemon and collects the
+number of connections and requests handled by the daemon, the CPU
+resources consumed, number of items cached, number of threads, and
+bytes sent and received.
 
 %package memory
 Summary:	memory-plugin for collectd
@@ -518,11 +523,11 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description netlink
-This plugin will open a netlink socket to the Linux kernel and use it to get
-statistics for interfaces, qdiscs, classes, and, if you can make use of it,
-filters. Since in most setups many of the statistics this plugin can collect
-aren't of interest, you can select which information to gather using the
-configuration.
+This plugin will open a netlink socket to the Linux kernel and use it
+to get statistics for interfaces, qdiscs, classes, and, if you can
+make use of it, filters. Since in most setups many of the statistics
+this plugin can collect aren't of interest, you can select which
+information to gather using the configuration.
 
 %package network
 Summary:	network-plugin for collectd
@@ -540,8 +545,8 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description nfs
-The nfs plugin counts the number of procedure calls of the different NFS
-procedures.
+The nfs plugin counts the number of procedure calls of the different
+NFS procedures.
 
 %package nginx
 Summary:	nginx-plugin for collectd
@@ -550,9 +555,10 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description nginx
-This plugin collects the number of connections and requests handled by the
-nginx daemon, a HTTP and mail server/proxy. It queries the page provided by
-the ngx_http_stub_status_module module, which isn't compiled by default.
+This plugin collects the number of connections and requests handled by
+the nginx daemon, a HTTP and mail server/proxy. It queries the page
+provided by the ngx_http_stub_status_module module, which isn't
+compiled by default.
 
 %package notify_desktop
 Summary:	notify_desktop for collectd
@@ -562,9 +568,9 @@ Requires:	%{name} = %{version}-%{release}
 
 %description notify_desktop
 This plugin sends a desktop notification to a notification daemon, as
-defined in the Desktop Notification Specification. To actually display the
-notifications, notification-daemon is required and collectd has to be able
-to access the X server.
+defined in the Desktop Notification Specification. To actually display
+the notifications, notification-daemon is required and collectd has to
+be able to access the X server.
 
 %package notify_email
 Summary:	notify_email-plugin for collectd
@@ -592,8 +598,8 @@ Requires:	%{name} = %{version}-%{release}
 
 %description nut
 UPS statistics using the Network UPS Tools. These statistics include
-basically everything NUT will give us, including voltages, currents, power,
-frequencies, load, and temperatures.
+basically everything NUT will give us, including voltages, currents,
+power, frequencies, load, and temperatures.
 
 %package openvpn
 Summary:	openvpn plugin for collectd
@@ -603,23 +609,24 @@ Requires:	%{name} = %{version}-%{release}
 Requires:	openvpn
 
 %description openvpn
-The OpenVPN plugin reads a status file maintained by OpenVPN and gathers
-traffic statistics about connected clients.
+The OpenVPN plugin reads a status file maintained by OpenVPN and
+gathers traffic statistics about connected clients.
 
 %package ping
 Summary:	ping-plugin for collectd
 Summary(pl_PL.UTF-8):	Wtyczka ping dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
-Requires:	liboping >= 1.1.2 
+Requires:	liboping >= 1.1.2
 
 %description ping
-The network latency is measured as a roundtrip time. An ICMP-echo-request
-(aka. "ping")is sent to a host and the time needed for his echo-reply (aka.
-"pong") to arrive is measured. If a reply is not received within one second
-the plugin will no longer expect a reply and return. This may happen in
-several circumstances, e. g. the packet is lost, the host is down, a router
-has dismissed the packet, etc.
+The network latency is measured as a roundtrip time. An
+ICMP-echo-request (aka. "ping")is sent to a host and the time needed
+for his echo-reply (aka. "pong") to arrive is measured. If a reply is
+not received within one second the plugin will no longer expect a
+reply and return. This may happen in several circumstances, e. g. the
+packet is lost, the host is down, a router has dismissed the packet,
+etc.
 
 %package postgresql
 Summary:	mysql-plugin for collectd
@@ -628,9 +635,9 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description postgresql
-The postgresql plugin queries statistics from PostgreSQL databases. It keeps
-a persistent connection to all configured databases and tries to reconnect
-if the connection has been interrupted.
+The postgresql plugin queries statistics from PostgreSQL databases. It
+keeps a persistent connection to all configured databases and tries to
+reconnect if the connection has been interrupted.
 
 %package powerdns
 Summary:	powerdns-plugin for collectd
@@ -640,9 +647,9 @@ Requires:	%{name} = %{version}-%{release}
 
 %description powerdns
 The powerdns plugin queries statistics from an authoritative PowerDNS
-nameserver and/or a PowerDNS recursor. Since both offer a wide variety of
-values, many of which are probably meaningless to most users, but may be
-useful for some.
+nameserver and/or a PowerDNS recursor. Since both offer a wide variety
+of values, many of which are probably meaningless to most users, but
+may be useful for some.
 
 %package processes
 Summary:	processes-plugin for collectd
@@ -651,9 +658,9 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description processes
-This plugin collects the number of processes, grouped by their state (e.g.
-running, sleeping, zombies, etc.). In addition to that, it can select
-detailed statistics about selected processes, grouped by name.
+This plugin collects the number of processes, grouped by their state
+(e.g. running, sleeping, zombies, etc.). In addition to that, it can
+select detailed statistics about selected processes, grouped by name.
 
 %package protocols
 Summary:	protocols-plugin for collectd
@@ -662,8 +669,8 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description protocols
-The protocols-plugin provides information about network protocols, such as
-IP, TCP and UDP.
+The protocols-plugin provides information about network protocols,
+such as IP, TCP and UDP.
 
 %package rrdtool
 Summary:	rrdtool-plugin for collectd
@@ -683,8 +690,8 @@ Requires:	%{name} = %{version}-%{release}
 
 %description sensors
 This plugin uses lm-sensors to read hardware sensors. You will need to
-configure lm-sensors before this plugin will collect any usefull and correct
-data.
+configure lm-sensors before this plugin will collect any usefull and
+correct data.
 
 %package serial
 Summary:	serial-plugin for collectd
@@ -703,10 +710,10 @@ Requires:	%{name} = %{version}-%{release}
 
 %description snmp
 The snmp plugin queries other hosts using SNMP, the Simple Network
-Management Protocol, and translates the value it receives to collectd's
-internal format and dispatches them. Depending on the write plugins you have
-loaded they may be written to disk or submitted to another instance or
-whatever you configured.
+Management Protocol, and translates the value it receives to
+collectd's internal format and dispatches them. Depending on the write
+plugins you have loaded they may be written to disk or submitted to
+another instance or whatever you configured.
 
 %package swap
 Summary:	swap-plugin for collectd
@@ -770,9 +777,9 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description tail
-The tail-plugin can be used to "tail" logfiles, i.e. follow them as tail -F
-does. Each line is given to one or more "matches" which test if the line is
-relevant for any statistics using a regular expression.
+The tail-plugin can be used to "tail" logfiles, i.e. follow them as
+tail -F does. Each line is given to one or more "matches" which test
+if the line is relevant for any statistics using a regular expression.
 
 %package tcpconns
 Summary:	tcpconns-plugin for collectd
@@ -782,9 +789,9 @@ Requires:	%{name} = %{version}-%{release}
 
 %description tcpconns
 The tcpconns-plugin counts the number of TCP connections to or from a
-specified port. Typically the connectioins where you specify the local port
-are incoming connections while the connections where you specify the remote
-port are outgoing connections.
+specified port. Typically the connectioins where you specify the local
+port are incoming connections while the connections where you specify
+the remote port are outgoing connections.
 
 %package teamspeak2
 Summary:	teamspeak2-plugin for collectd
@@ -793,9 +800,10 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description teamspeak2
-The teamspeak2 plugin connects to the query port of a teamspeak2 server and
-polls interesting global and virtual server data. The plugin can query only
-one physical server but unlimited virtual servers.
+The teamspeak2 plugin connects to the query port of a teamspeak2
+server and polls interesting global and virtual server data. The
+plugin can query only one physical server but unlimited virtual
+servers.
 
 %package ted
 Summary:	ted-plugin for collectd
@@ -804,8 +812,8 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description ted
-The TED-plugin reads power consumption measurements from “The Energy Detective”
-(TED).
+The TED-plugin reads power consumption measurements from “The Energy
+Detective” (TED).
 
 %package thermal
 Summary:	thermal-plugin for collectd
@@ -823,10 +831,10 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description unixsock
-The unixsock plugin opens an UNIX-socket over which one can interact with
-the daemon. This can be used to use the values collected by collectd in
-other applications, such as monitoring, or submit externally collected
-values to collectd.
+The unixsock plugin opens an UNIX-socket over which one can interact
+with the daemon. This can be used to use the values collected by
+collectd in other applications, such as monitoring, or submit
+externally collected values to collectd.
 
 %package uptime
 Summary:	uptime-plugin for collectd
@@ -853,11 +861,11 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description uuid
-This plugin, if loaded, causes the Hostname to be taken from the machine's
-UUID. The UUID is a universally unique designation for the machine, usually
-taken from the machine's BIOS. This is most useful if the machine is
-running in a virtual environment such as Xen, in which case the UUID is
-preserved across shutdowns and migration.
+This plugin, if loaded, causes the Hostname to be taken from the
+machine's UUID. The UUID is a universally unique designation for the
+machine, usually taken from the machine's BIOS. This is most useful if
+the machine is running in a virtual environment such as Xen, in which
+case the UUID is preserved across shutdowns and migration.
 
 %package vmem
 Summary:	vmem-plugin for collectd
@@ -866,9 +874,9 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description vmem
-The vmem plugin collects information about the usage of virtual memory.
-Since the statistics provided by the Linux kernel are very detailed, they
-are collected very detailed.
+The vmem plugin collects information about the usage of virtual
+memory. Since the statistics provided by the Linux kernel are very
+detailed, they are collected very detailed.
 
 %package vserver
 Summary:	vserver-plugin for collectd
@@ -877,8 +885,8 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description vserver
-Collects information about the virtual servers running on a system, using
-Linux-Vserver.
+Collects information about the virtual servers running on a system,
+using Linux-Vserver.
 
 %package wireless
 Summary:	wireless-plugin for collectd
@@ -1102,7 +1110,7 @@ fi
 %{_mandir}/man1/collectd-nagios.1*
 %{_mandir}/man1/collectdmon.1*
 %{_mandir}/man5/collectd.conf.5*
-%{_mandir}/man5/collectd-java.5.gz
+%{_mandir}/man5/collectd-java.5*
 %{_mandir}/man5/collectd-perl.5*
 %{_mandir}/man5/types.db.5*
 %dir %{_var}/lib/%{name}
