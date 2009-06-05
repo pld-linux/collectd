@@ -25,12 +25,12 @@
 Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
-Version:	4.7.0
-Release:	2
+Version:	4.7.1
+Release:	1
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.bz2
-# Source0-md5:	8740670913a7740f976122f3070e592b
+# Source0-md5:	20e95914219a32bfd51d01333dbb7c01
 Source1:	%{name}.conf
 Source2:	%{name}.init
 Source3:	%{name}-http.conf
@@ -119,6 +119,18 @@ Header files for %{name} libraries.
 
 %description devel -l pl.UTF-8
 Pliki nagłówkowe bibliotek %{name}.
+
+%package static
+Summary:	Static files for %{name} libraries
+Summary(pl.UTF-8):	Pliki statyczne bibliotek %{name}
+Group:		Development/Libraries
+Requires:	%{name}-libs = %{version}-%{release}
+
+%description static
+Static files for %{name} libraries.
+
+%description devel -l pl.UTF-8
+Pliki statyczne bibliotek %{name}.
 
 %package apache
 Summary:	apache-plugin for collectd
@@ -1087,9 +1099,10 @@ fi
 %attr(754,root,root) /etc/rc.d/init.d/%{name}
 %{_mandir}/man1/collectd.1*
 %{_mandir}/man1/collectd-nagios.1*
-%{_mandir}/man5/collectd.conf.5*
-%{_mandir}/man5/collectd-perl.5*
 %{_mandir}/man1/collectdmon.1*
+%{_mandir}/man5/collectd.conf.5*
+%{_mandir}/man5/collectd-java.5.gz
+%{_mandir}/man5/collectd-perl.5*
 %{_mandir}/man5/types.db.5*
 %dir %{_var}/lib/%{name}
 
@@ -1106,6 +1119,11 @@ fi
 %dir %{_includedir}/%{name}
 %{_includedir}/%{name}/*.h
 %{_pkgconfigdir}/libcollectdclient.pc
+
+%files static
+%defattr(644,root,root,755)
+%{_libdir}/libcollectdclient.a
+%{_libdir}/%{name}/*.a
 
 %files collection
 %defattr(644,root,root,755)
@@ -1278,6 +1296,7 @@ fi
 %files match_timediff
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/%{name}/match_timediff.so
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/match_timediff.conf
 
 %files match_value
 %defattr(644,root,root,755)
