@@ -27,7 +27,7 @@ Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
 Version:	4.7.1
-Release:	1
+Release:	1.1
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.bz2
@@ -88,15 +88,15 @@ every time new values should be logged. This allows collectd to have a
 10 second resolution while being nice to the system.
 
 %description -l pl.UTF-8
-collectd to mały demon zbierający co 10 sekund informacje o systemie i
-zapisujący wyniki do pliku RRD.
+collectd to mały demon zbierający co 10 sekund informacje o systemie
+i zapisujący wyniki do pliku RRD.
 
 W odróżnieniu od innych podobnych programów collectd nie jest
 skryptem, lecz jest napisany w czystym C z myślą o wydajności i
 przenośności. Jako demon pozostaje w pamięci, więc nie ma potrzeby
-urychamiania ciężkiego interpretera za każdym razem, kiedy powinny być
-zapisane nowe wartości. Dzięki temu collect może mieć rozdzielczość 10
-sekund i nie obciążać zbytnio systemu.
+urychamiania ciężkiego interpretera za każdym razem, kiedy powinny
+być zapisane nowe wartości. Dzięki temu collect może mieć
+rozdzielczość 10 sekund i nie obciążać zbytnio systemu.
 
 %package libs
 Summary:	%{name} libraries
@@ -201,6 +201,20 @@ Requires:	webserver(cgi)
 Suggests:	fonts-TTF-DejaVu
 
 %description collection
+Web script for collectd.
+
+%package collection3
+Summary:	Web script for collectd
+Summary(pl_PL.UTF-8):	Web script for collectd
+Group:		Applications/WWW
+Requires:	%{name} = %{version}-%{release}
+Requires:	perl(Config::General)
+Requires:	perl(HTML::Entities)
+Requires:	perl(RRDs)
+Requires:	webserver(cgi)
+Suggests:	fonts-TTF-DejaVu
+
+%description collection3
 Web script for collectd.
 
 %package conntrack
@@ -906,6 +920,13 @@ Requires:	%{name} = %{version}-%{release}
 %description xmms
 This plugin collectd data provided by XMMS.
 
+%package -n perl-Collectd
+Summary:	Perl files from Collectd package
+Group:		Daemons
+
+%description -n perl-Collectd
+Perl files from Collectd package
+
 %prep
 %setup -q
 %patch0 -p1
@@ -946,12 +967,12 @@ This plugin collectd data provided by XMMS.
 
 %{__make} LDFLAGS="%{rpmldflags} -lstatgrab" \
 	BUILD_WITH_OPENIPMI_CFLAGS="-I/usr/include" \
-	BUILD_WITH_OPENIPMI_LIBS="-L/usr/lib64 -lOpenIPMIutils -lOpenIPMIpthread"
+	BUILD_WITH_OPENIPMI_LIBS="-L%{_libdir} -lOpenIPMIutils -lOpenIPMIpthread"
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_var}/{log/,lib/%{name}},/etc/{rc.d/init.d/,collectd.d}} \
-	$RPM_BUILD_ROOT{%{_appdir}/cgi-bin,%{_webappdir},%{_pkglibdir}}
+	$RPM_BUILD_ROOT{%{_appdir}/cgi-bin,%{_webappdir},%{_pkglibdir},%{perl_vendorlib}/}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
@@ -966,6 +987,8 @@ install %{SOURCE3} $RPM_BUILD_ROOT%{_webappdir}/apache.conf
 install %{SOURCE3} $RPM_BUILD_ROOT%{_webappdir}/httpd.conf
 install %{SOURCE4} $RPM_BUILD_ROOT%{_webappdir}/lighttpd.conf
 
+cp -R contrib/collection3 $RPM_BUILD_ROOT%{_appdir}
+
 ### Configs instalation ###
 for i in `egrep "^(#|)LoadPlugin" src/collectd.conf |awk '{print $NF}' ` ; do
 	egrep "LoadPlugin $i$" src/collectd.conf | %{__sed} -e "s/^#//" > $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/$i.conf
@@ -978,6 +1001,8 @@ install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.conf
 # Overwrite only files which we want to change:
 install %{SOURCE10} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/df.conf
 install %{SOURCE11} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/rrdtool.conf
+
+mv $RPM_BUILD_ROOT%{_datadir}/perl5/Collectd* $RPM_BUILD_ROOT%{perl_vendorlib}/
 
 # Cleanups:
 rm -f $RPM_BUILD_ROOT%{_libdir}/%{name}/*.la
@@ -1144,6 +1169,10 @@ fi
 %dir %{_appdir}
 %dir %{_appdir}/cgi-bin
 %attr(755,root,root) %{_appdir}/cgi-bin/collection.cgi
+
+%files collection3
+%defattr(644,root,root,755)
+%{_appdir}/collection3
 
 ########## PLUGINS:
 %if %{with xml}
@@ -1550,3 +1579,8 @@ fi
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/xmms.conf
 %attr(755,root,root) %{_libdir}/%{name}/xmms.so
 %endif
+
+%files -n perl-Collectd
+%defattr(644,root,root,755)
+%{perl_vendorlib}/Collectd.pm
+%{perl_vendorlib}/Collectd
