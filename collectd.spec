@@ -579,12 +579,11 @@ Summary:	notify_desktop for collectd
 Summary(pl_PL.UTF-8):	Wtyczka notify_desktop dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
+Requires:	dbus(org.freedesktop.Notifications)
 
 %description notify_desktop
 This plugin sends a desktop notification to a notification daemon, as
-defined in the Desktop Notification Specification. To actually display
-the notifications, notification-daemon is required and collectd has to
-be able to access the X server.
+defined in the Desktop Notification Specification.
 
 %package notify_email
 Summary:	notify_email-plugin for collectd
