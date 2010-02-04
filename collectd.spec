@@ -1,6 +1,23 @@
 # TODO:
 # - package contrib scripts as %doc
 # - perl modules with Collectd classes package to separate package
+# - Bundled libraries - check if its not changed ones and if it can be
+#   mainstream library:
+# liboconfig  . . . . . yes (shipped version)
+# - Libraries not found by configure:
+#   libganglia  . . . . . no (gm_protocol.h not found)
+#   libiokit  . . . . . . no
+#   libjvm  . . . . . . . no (javac not found)
+#   libkstat  . . . . . . no (Solaris only)
+#   libkvm  . . . . . . . no
+#   libmemcached  . . . . no (libmemcached/memcached.h not found)
+#   libnetapp . . . . . . no (netapp_api.h not found)
+#   libperl . . . . . . . no
+#   librouteros . . . . . no ('routeros_api.h' not found)
+#   libtokyotyrant  . . . no (tcrdb.h not found)
+#   libvirt . . . . . . . no (pkg-config doesn't know library)
+#   libyajl . . . . . . . no (yajl/yajl_parse.h not found)
+#   oracle  . . . . . . . no (ORACLE_HOME is not set)
 # - Disabled modules:
 #   apple_sensors . . . no             (obvious)
 #   ipvs  . . . . . . . no             (ip_vs.h not found - llh to be fixed)
@@ -10,6 +27,16 @@
 #   perl  . . . . . . . no             (buggy perl: http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=467072)
 #   rrdcached . . . . . no             (requires rrdtool >= 1.4.0)
 #   tape  . . . . . . . no             ?
+#   curl_json . . . . . . no
+#   gmond . . . . . . . . no
+#   java  . . . . . . . . no
+#   memcachec . . . . . . no
+#   netapp  . . . . . . . no
+#   oracle  . . . . . . . no
+#   routeros  . . . . . . no
+#   rrdcached . . . . . . no
+#   tokyotyrant . . . . . no
+#   zfs_arc . . . . . . . no
 # - logrotate file for logfile plugin
 # - %desc -l pl for plugins
 # - package SpamAssassin plugin from contrib
@@ -42,12 +69,12 @@
 Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
-Version:	4.7.5
-Release:	1
+Version:	4.9.1
+Release:	0.9
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.bz2
-# Source0-md5:	0d662b58365fad1a76f5d2fd714bf3df
+# Source0-md5:	5753496651c8c84afaea1fe290876bfc
 Source1:	%{name}.conf
 Source2:	%{name}.init
 Source3:	%{name}-http.conf
@@ -168,7 +195,9 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description apcups
-APC UPS plugin for collectd.
+The APC UPS plugin connects to an instance of Apcupsd to read various
+statistics about a connected uninterruptible power supply (UPS), such as
+voltage, load, etc.
 
 %package ascent
 Summary:	ascent-plugin for collectd
@@ -177,7 +206,9 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description ascent
-ascent plugin for collectd.
+The Ascent plugin reads and parses the statistics page of Ascent, a free and
+open-source server software for the game World of Warcraft by Blizzard
+Entertainment.
 
 %package battery
 Summary:	battery plugin for collectd
@@ -231,6 +262,16 @@ Suggests:	fonts-TTF-DejaVu
 
 %description collection3
 Web script for collectd.
+
+%package contextswitch
+Summary:	contextswitch-plugin for collectd
+Summary(pl_PL.UTF-8):	Wtyczka contextswitch dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description contextswitch
+The ContextSwitch plugin collects the number of context switches
+done by the operating system.
 
 %package conntrack
 Summary:	conntrack-plugin for collectd
@@ -351,7 +392,9 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description entropy
-entropy plugin for collectd.
+The Entropy plugin collects the available entropy on a system. Entropy is
+important to generate random numbers, which are used for encryption,
+authorization and similar tasks.
 
 %package exec
 Summary:	exec-plugin for collectd
@@ -431,10 +474,10 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description ipmi
-ipmi plugin for collectd.
-
-%description ipmi -l pl.UTF-8
-Wtyczka ipmi dla collectd.
+The IPMI plugin uses the OpenIPMI library to read hardware sensors from
+servers using the Intelligent Platform Management Interface (IPMI). IPMI
+is very common with server hardware but usually not available in consumer
+hardware.
 
 %package irq
 Summary:	IRQs-plugin for collectd
@@ -443,7 +486,8 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description irq
-IRQs plugin for collectd.
+The IRQ plugin collects the number of times each interrupt has been handled
+by the operating system.
 
 %package load
 Summary:	load-plugin for collectd
@@ -462,7 +506,41 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description logfile
-Logfile plugin for collectd.
+The LogFile plugin receives log messages from the daemon and writes them to
+a text file.
+
+%package madwifi
+Summary:	madwifi plugin for collectd
+Summary(pl_PL.UTF-8):	Wtyczka madwifi dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description madwifi
+The MadWifi plugin collects information about Atheros wireless LAN chipsets
+from the MadWifi driver. It uses the /sys filesystem to identify cards
+handled by this driver automatically but can be configured manually, too.
+Because very many statistics are available, an advanced selection mechanism
+is provided.
+
+%package match_empty_counter
+Summary:	match_empty_counter plugin for collectd
+Summary(pl_PL.UTF-8):	Wtyczka match_empty_counter dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description match_empty_counter
+Empty Counter match matches value lists, where at least one data source is
+of type COUNTER and the counter value of all counter data sources is zero.
+
+%package match_hashed
+Summary:	match_hashed plugin for collectd
+Summary(pl_PL.UTF-8):	Wtyczka match_hashed dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description match_hashed
+match_hashed plugin for collectd - match for simple load balancing and
+redundant storage.
 
 %package match_regex
 Summary:	match_regex plugin for collectd
@@ -528,7 +606,11 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description multimeter
-Multimeter plugin for collectd.
+The Multimeter plugin reads a value (usually a voltage or current) from a
+multimeter connected to a serial bus. The plugin tries /dev/ttyS0-9 in order
+to find a multimeter – no configuration is possible.
+
+The multimeter used for development was a Metex M-4650CR.
 
 %package mysql
 Summary:	mysql-plugin for collectd
@@ -565,7 +647,8 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description network
-nginx plugin for collectd.
+The Network plugin can send values to other instances and receive values
+from other %{name} instances.
 
 %package nfs
 Summary:	NFS-plugin for collectd
@@ -607,7 +690,8 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description notify_email
-notify_email plugin for collectd.
+The Notify Email plugin uses libESMTP to send notifications to a configured
+email address(es).
 
 %package ntpd
 Summary:	ntpd-plugin for collectd
@@ -616,7 +700,10 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description ntpd
-NTPd plugin for collectd.
+The NTPd plugin queries an NTP server (usually the local one, where
+statistics access is allowed) and extracts :
+- "local" clock parameters: time offset, error and offset loop,
+- parameters for each NTP server used to sync time: offset, dispersion, delay.
 
 %package nut
 Summary:	nut-plugin for collectd
@@ -628,6 +715,17 @@ Requires:	%{name} = %{version}-%{release}
 UPS statistics using the Network UPS Tools. These statistics include
 basically everything NUT will give us, including voltages, currents,
 power, frequencies, load, and temperatures.
+
+%package olsrd
+Summary:	olsrd plugin for collectd
+Summary(pl_PL.UTF-8):	Wtyczka olsrd dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+Requires:	openvpn
+
+%description olsrd
+The olsrd plugin reads information about meshed networks from the txtinfo
+plugin of the Optimized Link State Routing daemon (olsrd).
 
 %package openvpn
 Summary:	openvpn plugin for collectd
@@ -700,6 +798,21 @@ Requires:	%{name} = %{version}-%{release}
 The protocols-plugin provides information about network protocols,
 such as IP, TCP and UDP.
 
+%package python
+Summary:	python-plugin for collectd
+Summary(pl_PL.UTF-8):	Wtyczka python dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description python
+The Python plugin embeds a Python interpreter into collectd and exposes
+the application programming interface (API) to Python-scripts. This allows
+to write own plugins in the popular scripting language, which are then
+loaded and executed by the daemon without the need to start a new process
+and interpreter every few seconds. Python-modules written for the Python
+plugin are therefore more powerful and efficient than scripts executed by
+the Exec plugin.
+
 %package rrdtool
 Summary:	rrdtool-plugin for collectd
 Summary(pl_PL.UTF-8):	Wtyczka rrdtool dla collectd
@@ -708,7 +821,7 @@ Requires:	%{name} = %{version}-%{release}
 Requires:	rrdtool
 
 %description rrdtool
-RRDTOOL plugin for collectd.
+The RRDtool plugin writes values to RRD-files using librrd.
 
 %package sensors
 Summary:	sensors-plugin for collectd
@@ -728,7 +841,7 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description serial
-Serial plugin for collectd.
+The Serial plugin collects the traffic on serial interfaces.
 
 %package snmp
 Summary:	snmp-plugin for collectd
@@ -750,7 +863,8 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description swap
-Swap space plugin for collectd.
+The Swap plugin collects the amount of memory currently written onto hard
+disk or whatever the system calls “swap”.
 
 %package syslog
 Summary:	syslog-plugin for collectd
@@ -759,7 +873,8 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description syslog
-Syslog plugin for collectd.
+The SysLog plugin receives log messages from the daemon and dispatches
+them to syslog(3).
 
 %package table
 Summary:	table-plugin for collectd
@@ -788,6 +903,15 @@ Requires:	%{name} = %{version}-%{release}
 
 %description target_replace
 target_replace plugin for collectd.
+
+%package target_scale
+Summary:	target_scale-plugin for collectd
+Summary(pl_PL.UTF-8):	Wtyczka target_scale dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description target_scale
+Target to scale (multiply) values by an arbitrary value.
 
 %package target_set
 Summary:	target_set-plugin for collectd
@@ -850,7 +974,8 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description thermal
-Thermal plugin for collectd.
+The thermal plugin reads ACPI thermal zone information from the sysfs or
+procfs file system, i. e. mostly system temperature information.
 
 %package unixsock
 Summary:	unixsock-plugin for collectd
@@ -916,6 +1041,17 @@ Requires:	%{name} = %{version}-%{release}
 Collects information about the virtual servers running on a system,
 using Linux-Vserver.
 
+%package write_http
+Summary:	write_http-plugin for collectd
+Summary(pl_PL.UTF-8):	Wtyczka write_http dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description write_http
+The Write HTTP plugin sends the values collected by collectd to a
+web-server using HTTP POST requests. The data is formatted as PUTVAL
+commands.
+
 %package wireless
 Summary:	wireless-plugin for collectd
 Summary(pl_PL.UTF-8):	Wtyczka wireless dla collectd
@@ -923,7 +1059,8 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description wireless
-Wireless plugin for collectd.
+The Wireless plugin collects signal quality, signal power and
+signal-to-noise ratio for wireless LAN cards.
 
 %package xmms
 Summary:	xmms-plugin for collectd
@@ -932,7 +1069,9 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description xmms
-This plugin collectd data provided by XMMS.
+The XMMS plugin is a plugin for the XMMS music player. It graphs the
+bit-rate and sampling rate as you play songs. Not really useful, just
+something that got written because we can.
 
 %package -n perl-Collectd
 Summary:	Perl files from Collectd package
@@ -1048,6 +1187,7 @@ fi
 %module_scripts ascent
 %module_scripts battery
 %module_scripts bind
+%module_scripts contextswitch
 %module_scripts conntrack
 %module_scripts cpu
 %module_scripts cpufreq
@@ -1069,6 +1209,9 @@ fi
 %module_scripts irq
 %module_scripts load
 %module_scripts logfile
+%module_scripts madwifi
+%module_scripts match_empty_counter
+%module_scripts match_hashed
 %module_scripts match_regex
 %module_scripts match_timediff
 %module_scripts match_value
@@ -1085,12 +1228,14 @@ fi
 %module_scripts notify_email
 %module_scripts ntpd
 %module_scripts nut
+%module_scripts olsrd
 %module_scripts openvpn
 %module_scripts ping
 %module_scripts postgresql
 %module_scripts powerdns
 %module_scripts processes
 %module_scripts protocols
+%module_scripts python
 %module_scripts rrdtool
 %module_scripts sensors
 %module_scripts serial
@@ -1101,6 +1246,7 @@ fi
 %module_scripts tail
 %module_scripts target_notification
 %module_scripts target_replace
+%module_scripts target_scale
 %module_scripts target_set
 %module_scripts tcpconns
 %module_scripts teamspeak2
@@ -1112,6 +1258,7 @@ fi
 %module_scripts uuid
 %module_scripts vmem
 %module_scripts vserver
+%module_scripts write_http
 %module_scripts wireless
 %module_scripts xmms
 
@@ -1222,6 +1369,11 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/bind.so
 %endif
 %endif
+
+%files contextswitch
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/contextswitch.conf
+%attr(755,root,root) %{_libdir}/%{name}/contextswitch.so
 
 %files conntrack
 %defattr(644,root,root,755)
@@ -1339,6 +1491,21 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/logfile.so
 %{_var}/log/collectd.log
 
+%files madwifi
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/madwifi.conf
+%attr(755,root,root) %{_libdir}/%{name}/madwifi.so
+   
+%files match_empty_counter
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/match_empty_counter.conf
+%attr(755,root,root) %{_libdir}/%{name}/match_empty_counter.so
+
+%files match_hashed
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/match_hashed.conf
+%attr(755,root,root) %{_libdir}/%{name}/match_hashed.so
+
 %files match_regex
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/match_regex.conf
@@ -1433,6 +1600,11 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/nut.so
 %endif
 
+%files olsrd
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/olsrd.conf
+%attr(755,root,root) %{_libdir}/%{name}/olsrd.so
+
 %files openvpn
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/openvpn.conf
@@ -1467,6 +1639,12 @@ fi
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/protocols.conf
 %attr(755,root,root) %{_libdir}/%{name}/protocols.so
+
+%files python
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/python.conf
+%attr(755,root,root) %{_libdir}/%{name}/python.so
+%{_mandir}/man5/collectd-python.5*
 
 %if %{with rrd}
 %files rrdtool
@@ -1524,6 +1702,11 @@ fi
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/target_replace.conf
 %attr(755,root,root) %{_libdir}/%{name}/target_replace.so
+
+%files target_scale
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/target_scale.conf
+%attr(755,root,root) %{_libdir}/%{name}/target_scale.so
 
 %files target_set
 %defattr(644,root,root,755)
@@ -1585,6 +1768,11 @@ fi
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/wireless.conf
 %attr(755,root,root) %{_libdir}/%{name}/wireless.so
+
+%files write_http
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/write_http.conf
+%attr(755,root,root) %{_libdir}/%{name}/write_http.so
 
 %if %{with xmms}
 %files xmms
