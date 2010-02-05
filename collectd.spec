@@ -10,7 +10,6 @@
 #   libjvm  . . . . . . . no (javac not found)
 #   libkstat  . . . . . . no (Solaris only)
 #   libkvm  . . . . . . . no
-#   libmemcached  . . . . no (libmemcached/memcached.h not found)
 #   libnetapp . . . . . . no (netapp_api.h not found)
 #   libperl . . . . . . . no
 #   librouteros . . . . . no ('routeros_api.h' not found)
@@ -30,7 +29,6 @@
 #   curl_json . . . . . . no
 #   gmond . . . . . . . . no
 #   java  . . . . . . . . no
-#   memcachec . . . . . . no
 #   netapp  . . . . . . . no
 #   oracle  . . . . . . . no
 #   routeros  . . . . . . no
@@ -585,6 +583,18 @@ Requires:	%{name} = %{version}-%{release}
 
 %description mbmon
 The mbmon plugin uses mbmon to retrieve temperature, voltage, etc.
+
+%package memcachec
+Summary:	memcachec-plugin for collectd
+Summary(pl_PL.UTF-8):	Wtyczka memcachec dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description memcachec
+The memcachec plugin connects to a memcached server, queries one or more
+given pages and parses the returned data according to user specification.
+The matches used are similar to the matches used in the cURL and Tail
+plugins.
 
 %package memcached
 Summary:	memcached-plugin for collectd
@@ -1224,6 +1234,7 @@ fi
 %module_scripts match_timediff
 %module_scripts match_value
 %module_scripts mbmon
+%module_scripts memcachec
 %module_scripts memcached
 %module_scripts memory
 %module_scripts multimeter
@@ -1533,6 +1544,11 @@ fi
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/mbmon.conf
 %attr(755,root,root) %{_libdir}/%{name}/mbmon.so
+
+%files memcachec
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/memcachec.conf
+%attr(755,root,root) %{_libdir}/%{name}/memcachec.so
 
 %files memcached
 %defattr(644,root,root,755)
