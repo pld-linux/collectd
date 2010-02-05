@@ -52,7 +52,7 @@
 %bcond_without	netlink		# netlink plugin
 %bcond_without	notify		# notify_desktop plugin
 %bcond_without	ping		# ping plugin
-%bcond_without	psql		# PostgreSQL plugin
+%bcond_without	pgsql		# PostgreSQL plugin
 %bcond_without	rrd		# rrdtool and rrdcached plugins
 %bcond_without	sensors		# sensors plugin
 %bcond_without	snmp		# SNMP plugin
@@ -92,6 +92,8 @@ BuildRequires:	hal-devel
 BuildRequires:	libdbi-devel
 %{?with_libesmtp:BuildRequires:	libesmtp-devel}
 BuildRequires:	libltdl-devel
+BuildRequires:	libmemcached-devel
+BuildRequires:	libnetlink-devel
 %{?with_netlink:BuildRequires:	libnetlink-devel}
 %{?with_notify:BuildRequires:	libnotify-devel}
 %{?with_ping:BuildRequires:	liboping-devel}
@@ -102,12 +104,18 @@ BuildRequires:	libtool
 %{?with_xml:BuildRequires:	libxml2-devel}
 %{?with_sensors:BuildRequires:	lm_sensors-devel}
 %{?with_mysql:BuildRequires:	mysql-devel}
+BuildRequires:	ncurses-devel
 %{?with_snmp:BuildRequires:	net-snmp-devel}
 %{?with_ups:BuildRequires:	nut-devel}
 BuildRequires:	perl-devel
-%{?with_psql:BuildRequires:	postgresql-devel}
+BuildRequires:	pkgconfig
+%{?with_pgsql:BuildRequires:	postgresql-devel}
+BuildRequires:	python-devel
+BuildRequires:	python-modules
 BuildRequires:	rpmbuild(macros) >= 1.268
 %{?with_rrd:BuildRequires:	rrdtool-devel}
+BuildRequires:	which
+#BuildRequires:	xfsprogs-devel
 %{?with_xmms:BuildRequires:	xmms-devel}
 Requires(post,preun):	/sbin/chkconfig
 Requires:	rc-scripts
@@ -1105,7 +1113,7 @@ Perl files from Collectd package
 	--%{?with_libesmtp:en}%{!?with_libesmtp:dis}able-notify_email \
 	--%{?with_ups:en}%{!?with_ups:dis}able-nut \
 	--%{?with_ping:en}%{!?with_ping:dis}able-ping \
-	--%{?with_psql:en}%{!?with_psql:dis}able-postgresql \
+	--%{?with_pgsql:en}%{!?with_pgsql:dis}able-postgresql \
 	--%{?with_rrd:en}%{!?with_rrd:dis}able-rrdtool \
 	--%{?with_sensors:en}%{!?with_sensors:dis}able-sensors \
 	--%{?with_snmp:en}%{!?with_snmp:dis}able-snmp \
@@ -1495,7 +1503,7 @@ fi
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/madwifi.conf
 %attr(755,root,root) %{_libdir}/%{name}/madwifi.so
-   
+
 %files match_empty_counter
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/match_empty_counter.conf
@@ -1617,7 +1625,7 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/ping.so
 %endif
 
-%if %{with psql}
+%if %{with pgsql}
 %files postgresql
 %defattr(640,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/postgresql.conf
