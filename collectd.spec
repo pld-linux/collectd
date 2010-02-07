@@ -17,7 +17,7 @@
 #   libvirt . . . . . . . no (pkg-config doesn't know library)
 #   libyajl . . . . . . . no (yajl/yajl_parse.h not found)
 #   oracle  . . . . . . . no (ORACLE_HOME is not set)
-# - Disabled modules:
+# - Disabled modules (build most of them an package):
 #   apple_sensors . . . no             (obvious)
 #   ipvs  . . . . . . . no             (ip_vs.h not found - llh to be fixed)
 #   libvirt . . . . . . no             (requires library)
@@ -68,7 +68,7 @@ Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
 Version:	4.9.1
-Release:	0.9
+Release:	1
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.bz2
