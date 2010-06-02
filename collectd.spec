@@ -67,12 +67,12 @@
 Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
-Version:	4.9.2
+Version:	4.10.0
 Release:	1
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.bz2
-# Source0-md5:	9988c52adc4ed6c24bf4a5918ca48ffa
+# Source0-md5:	2f671d267bf6cb1a9d385107ba7b734d
 Source1:	%{name}.conf
 Source2:	%{name}.init
 Source3:	%{name}-http.conf
@@ -1421,6 +1421,10 @@ fi
 %defattr(640,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/curl.conf
 %attr(755,root,root) %{_libdir}/%{name}/curl.so
+%if %{with xml}
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/curl_xml.conf
+%attr(755,root,root) %{_libdir}/%{name}/curl_xml.so
+%endif
 %endif
 
 %files dbi
