@@ -32,7 +32,6 @@
 #   netapp  . . . . . . . no
 #   oracle  . . . . . . . no
 #   routeros  . . . . . . no
-#   rrdcached . . . . . . no
 #   tokyotyrant . . . . . no
 #   zfs_arc . . . . . . . no
 # - logrotate file for logfile plugin
@@ -67,12 +66,12 @@
 Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
-Version:	4.10.1
-Release:	4
+Version:	4.10.2
+Release:	1
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.bz2
-# Source0-md5:	8cd79b4ebdb9dbeb51ba52d3463a06ef
+# Source0-md5:	85d9d8d0a1327782661e3c89800aa70e
 Source1:	%{name}.conf
 Source2:	%{name}.init
 Source3:	%{name}-http.conf
