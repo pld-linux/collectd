@@ -183,7 +183,7 @@ Pliki statyczne bibliotek %{name}.
 
 %package apache
 Summary:	apache-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka apache dla collectd
+Summary(pl.UTF-8):	Wtyczka apache dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -196,7 +196,7 @@ Wtyczka collectd zbierająca informacje udostępniane przez moduł
 
 %package apcups
 Summary:	APC UPS plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka APC UPS dla collectd
+Summary(pl.UTF-8):	Wtyczka APC UPS dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -207,7 +207,7 @@ voltage, load, etc.
 
 %package ascent
 Summary:	ascent-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka ascent dla collectd
+Summary(pl.UTF-8):	Wtyczka ascent dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -218,7 +218,7 @@ Entertainment.
 
 %package battery
 Summary:	battery plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka battery dla collectd
+Summary(pl.UTF-8):	Wtyczka battery dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -228,7 +228,7 @@ battery's voltage.
 
 %package bind
 Summary:	bind plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka bind dla collectd
+Summary(pl.UTF-8):	Wtyczka bind dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -241,7 +241,7 @@ collectd.
 
 %package collection
 Summary:	Web script for collectd
-Summary(pl_PL.UTF-8):	Web script for collectd
+Summary(pl.UTF-8):	Web script for collectd
 Group:		Applications/WWW
 Requires:	%{name} = %{version}-%{release}
 Requires:	perl(CGI)
@@ -257,7 +257,7 @@ Web script for collectd.
 
 %package collection3
 Summary:	Web script for collectd
-Summary(pl_PL.UTF-8):	Web script for collectd
+Summary(pl.UTF-8):	Web script for collectd
 Group:		Applications/WWW
 Requires:	%{name} = %{version}-%{release}
 Requires:	perl(Config::General)
@@ -271,7 +271,7 @@ Web script for collectd.
 
 %package contextswitch
 Summary:	contextswitch-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka contextswitch dla collectd
+Summary(pl.UTF-8):	Wtyczka contextswitch dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -281,7 +281,7 @@ done by the operating system.
 
 %package conntrack
 Summary:	conntrack-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka conntrack dla collectd
+Summary(pl.UTF-8):	Wtyczka conntrack dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -290,7 +290,7 @@ The conntrack-plugin collects the connection tracking table size.
 
 %package cpu
 Summary:	cpu-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka cpu dla collectd
+Summary(pl.UTF-8):	Wtyczka cpu dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -301,7 +301,7 @@ waiting for IO operations and being idle.
 
 %package cpufreq
 Summary:	cpufreq-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka cpufreq dla collectd
+Summary(pl.UTF-8):	Wtyczka cpufreq dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -310,7 +310,7 @@ Collects the current CPU's frequency, mostly for mobile computers.
 
 %package csv
 Summary:	CSV output plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka wyjściowa CSV dla collectd
+Summary(pl.UTF-8):	Wtyczka wyjściowa CSV dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -319,7 +319,7 @@ CSV output plugin for collectd.
 
 %package curl
 Summary:	cURL output plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka wyjściowa cURL dla collectd
+Summary(pl.UTF-8):	Wtyczka wyjściowa cURL dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -330,7 +330,7 @@ expressions with the received data.
 
 %package dbi
 Summary:	dbi plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka dbi dla collectd
+Summary(pl.UTF-8):	Wtyczka dbi dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -344,7 +344,7 @@ to these rules.
 
 %package df
 Summary:	df-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka df dla collectd
+Summary(pl.UTF-8):	Wtyczka df dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -356,7 +356,7 @@ that's been around forever.
 
 %package disk
 Summary:	disk-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka disk dla collectd
+Summary(pl.UTF-8):	Wtyczka disk dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -366,7 +366,7 @@ supported, partitions.
 
 %package dns
 Summary:	dns-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka dns dla collectd
+Summary(pl.UTF-8):	Wtyczka dns dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 Requires:	perl-rrdtool
@@ -378,7 +378,7 @@ interprets the packets and collects statistics of your DNS traffic.
 
 %package email
 Summary:	email-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka email dla collectd
+Summary(pl.UTF-8):	Wtyczka email dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -393,7 +393,7 @@ is included in contrib/, but is of course not limited to that use.
 
 %package entropy
 Summary:	entropy-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka entropy dla collectd
+Summary(pl.UTF-8):	Wtyczka entropy dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -404,7 +404,7 @@ authorization and similar tasks.
 
 %package exec
 Summary:	exec-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka exec dla collectd
+Summary(pl.UTF-8):	Wtyczka exec dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -414,7 +414,7 @@ dispatch notifications to the outside world.
 
 %package filecount
 Summary:	filecount-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka filecount dla collectd
+Summary(pl.UTF-8):	Wtyczka filecount dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -427,7 +427,7 @@ in your home directory.
 
 %package fscache
 Summary:	fscache-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka fscache dla collectd
+Summary(pl.UTF-8):	Wtyczka fscache dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -437,7 +437,7 @@ caching framework.
 
 %package hddtemp
 Summary:	hddtemp-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka hddtemp dla collectd
+Summary(pl.UTF-8):	Wtyczka hddtemp dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 Suggests:	hddtemp-hddtempd
@@ -448,7 +448,7 @@ and queried by the external hddtemp-daemon.
 
 %package interface
 Summary:	interface-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka interface dla collectd
+Summary(pl.UTF-8):	Wtyczka interface dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -458,7 +458,7 @@ packets and errors of interfaces.
 
 %package iptables
 Summary:	iptables-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka iptables dla collectd
+Summary(pl.UTF-8):	Wtyczka iptables dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -475,7 +475,7 @@ packets and much more.
 
 %package ipmi
 Summary:	ipmi-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka ipmi dla collectd
+Summary(pl.UTF-8):	Wtyczka ipmi dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -487,7 +487,7 @@ hardware.
 
 %package irq
 Summary:	IRQs-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka IRQs dla collectd
+Summary(pl.UTF-8):	Wtyczka IRQs dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -497,7 +497,7 @@ by the operating system.
 
 %package load
 Summary:	load-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka load dla collectd
+Summary(pl.UTF-8):	Wtyczka load dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -507,7 +507,7 @@ utilization of a machine, though their meaning is mostly overrated.
 
 %package logfile
 Summary:	logfile-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka logfile dla collectd
+Summary(pl.UTF-8):	Wtyczka logfile dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -517,7 +517,7 @@ a text file.
 
 %package madwifi
 Summary:	madwifi plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka madwifi dla collectd
+Summary(pl.UTF-8):	Wtyczka madwifi dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -530,7 +530,7 @@ is provided.
 
 %package match_empty_counter
 Summary:	match_empty_counter plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka match_empty_counter dla collectd
+Summary(pl.UTF-8):	Wtyczka match_empty_counter dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -540,7 +540,7 @@ of type COUNTER and the counter value of all counter data sources is zero.
 
 %package match_hashed
 Summary:	match_hashed plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka match_hashed dla collectd
+Summary(pl.UTF-8):	Wtyczka match_hashed dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -550,7 +550,7 @@ redundant storage.
 
 %package match_regex
 Summary:	match_regex plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka match_regex dla collectd
+Summary(pl.UTF-8):	Wtyczka match_regex dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -559,7 +559,7 @@ match_regex plugin for collectd.
 
 %package match_timediff
 Summary:	match_timediff plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka match_timediff dla collectd
+Summary(pl.UTF-8):	Wtyczka match_timediff dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -568,7 +568,7 @@ match_timediff plugin for collectd.
 
 %package match_value
 Summary:	match_value plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka match_value dla collectd
+Summary(pl.UTF-8):	Wtyczka match_value dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -577,7 +577,7 @@ match_value plugin for collectd.
 
 %package mbmon
 Summary:	mbmon plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka mbmon dla collectd
+Summary(pl.UTF-8):	Wtyczka mbmon dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -586,7 +586,7 @@ The mbmon plugin uses mbmon to retrieve temperature, voltage, etc.
 
 %package memcachec
 Summary:	memcachec-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka memcachec dla collectd
+Summary(pl.UTF-8):	Wtyczka memcachec dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -598,7 +598,7 @@ plugins.
 
 %package memcached
 Summary:	memcached-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka memcached dla collectd
+Summary(pl.UTF-8):	Wtyczka memcached dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -610,7 +610,7 @@ bytes sent and received.
 
 %package memory
 Summary:	memory-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka memory dla collectd
+Summary(pl.UTF-8):	Wtyczka memory dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -619,7 +619,7 @@ Collects physical memory utilization for collectd.
 
 %package multimeter
 Summary:	multimeter-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka multimeter dla collectd
+Summary(pl.UTF-8):	Wtyczka multimeter dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -632,7 +632,7 @@ The multimeter used for development was a Metex M-4650CR.
 
 %package mysql
 Summary:	mysql-plugin for collectd
-Summary(pl_PL.UTF-8):	Moduł mysql dla collectd.
+Summary(pl.UTF-8):	Moduł mysql dla collectd.
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 Requires:	mysql-client
@@ -647,7 +647,7 @@ poleceniach, wywoływanych procedurach obsługi i ruchu bazodanowym.
 
 %package netlink
 Summary:	netlink-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka netlink dla collectd
+Summary(pl.UTF-8):	Wtyczka netlink dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -660,7 +660,7 @@ information to gather using the configuration.
 
 %package network
 Summary:	network-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka network dla collectd
+Summary(pl.UTF-8):	Wtyczka network dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -670,7 +670,7 @@ from other %{name} instances.
 
 %package nfs
 Summary:	NFS-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka NFS dla collectd
+Summary(pl.UTF-8):	Wtyczka NFS dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -680,7 +680,7 @@ NFS procedures.
 
 %package nginx
 Summary:	nginx-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka nginx dla collectd
+Summary(pl.UTF-8):	Wtyczka nginx dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -692,7 +692,7 @@ compiled by default.
 
 %package notify_desktop
 Summary:	notify_desktop for collectd
-Summary(pl_PL.UTF-8):	Wtyczka notify_desktop dla collectd
+Summary(pl.UTF-8):	Wtyczka notify_desktop dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 Requires:	dbus(org.freedesktop.Notifications)
@@ -703,7 +703,7 @@ defined in the Desktop Notification Specification.
 
 %package notify_email
 Summary:	notify_email-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka notify_email dla collectd
+Summary(pl.UTF-8):	Wtyczka notify_email dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -713,7 +713,7 @@ email address(es).
 
 %package ntpd
 Summary:	ntpd-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka ntpd dla collectd
+Summary(pl.UTF-8):	Wtyczka ntpd dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -725,7 +725,7 @@ statistics access is allowed) and extracts :
 
 %package nut
 Summary:	nut-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka nut dla collectd
+Summary(pl.UTF-8):	Wtyczka nut dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -736,7 +736,7 @@ power, frequencies, load, and temperatures.
 
 %package olsrd
 Summary:	olsrd plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka olsrd dla collectd
+Summary(pl.UTF-8):	Wtyczka olsrd dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 Requires:	openvpn
@@ -747,7 +747,7 @@ plugin of the Optimized Link State Routing daemon (olsrd).
 
 %package openvpn
 Summary:	openvpn plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka openvpn dla collectd
+Summary(pl.UTF-8):	Wtyczka openvpn dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 Requires:	openvpn
@@ -758,7 +758,7 @@ gathers traffic statistics about connected clients.
 
 %package ping
 Summary:	ping-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka ping dla collectd
+Summary(pl.UTF-8):	Wtyczka ping dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 Requires:	liboping >= 1.1.2
@@ -774,7 +774,7 @@ etc.
 
 %package postgresql
 Summary:	mysql-plugin for collectd
-Summary(pl_PL.UTF-8):	Moduł postgresql dla collectd.
+Summary(pl.UTF-8):	Moduł postgresql dla collectd.
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -785,7 +785,7 @@ reconnect if the connection has been interrupted.
 
 %package powerdns
 Summary:	powerdns-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka powerdns dla collectd
+Summary(pl.UTF-8):	Wtyczka powerdns dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -797,7 +797,7 @@ may be useful for some.
 
 %package processes
 Summary:	processes-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka processes dla collectd
+Summary(pl.UTF-8):	Wtyczka processes dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -808,7 +808,7 @@ select detailed statistics about selected processes, grouped by name.
 
 %package protocols
 Summary:	protocols-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka protocols dla collectd
+Summary(pl.UTF-8):	Wtyczka protocols dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -818,7 +818,7 @@ such as IP, TCP and UDP.
 
 %package python
 Summary:	python-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka python dla collectd
+Summary(pl.UTF-8):	Wtyczka python dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -833,7 +833,7 @@ the Exec plugin.
 
 %package rrdtool
 Summary:	rrdtool-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka rrdtool dla collectd
+Summary(pl.UTF-8):	Wtyczka rrdtool dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 Requires:	rrdtool
@@ -843,7 +843,7 @@ The RRDtool plugin writes values to RRD-files using librrd.
 
 %package sensors
 Summary:	sensors-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka sensors dla collectd
+Summary(pl.UTF-8):	Wtyczka sensors dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -854,7 +854,7 @@ correct data.
 
 %package serial
 Summary:	serial-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka serial dla collectd
+Summary(pl.UTF-8):	Wtyczka serial dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -863,7 +863,7 @@ The Serial plugin collects the traffic on serial interfaces.
 
 %package snmp
 Summary:	snmp-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka snmp dla collectd
+Summary(pl.UTF-8):	Wtyczka snmp dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -876,7 +876,7 @@ another instance or whatever you configured.
 
 %package swap
 Summary:	swap-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka swap dla collectd
+Summary(pl.UTF-8):	Wtyczka swap dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -886,7 +886,7 @@ disk or whatever the system calls “swap”.
 
 %package syslog
 Summary:	syslog-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka syslog dla collectd
+Summary(pl.UTF-8):	Wtyczka syslog dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -896,7 +896,7 @@ them to syslog(3).
 
 %package table
 Summary:	table-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka table dla collectd
+Summary(pl.UTF-8):	Wtyczka table dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -906,7 +906,7 @@ such as many files beneath /proc.
 
 %package target_notification
 Summary:	target_notification-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka target_notification dla collectd
+Summary(pl.UTF-8):	Wtyczka target_notification dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -915,7 +915,7 @@ target_notification plugin for collectd.
 
 %package target_replace
 Summary:	target_replace-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka target_replace dla collectd
+Summary(pl.UTF-8):	Wtyczka target_replace dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -924,7 +924,7 @@ target_replace plugin for collectd.
 
 %package target_scale
 Summary:	target_scale-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka target_scale dla collectd
+Summary(pl.UTF-8):	Wtyczka target_scale dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -933,7 +933,7 @@ Target to scale (multiply) values by an arbitrary value.
 
 %package target_set
 Summary:	target_set-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka target_set dla collectd
+Summary(pl.UTF-8):	Wtyczka target_set dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -942,7 +942,7 @@ target_set plugin for collectd.
 
 %package tail
 Summary:	tail-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka tail dla collectd
+Summary(pl.UTF-8):	Wtyczka tail dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -953,7 +953,7 @@ if the line is relevant for any statistics using a regular expression.
 
 %package tcpconns
 Summary:	tcpconns-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka tcpconns dla collectd
+Summary(pl.UTF-8):	Wtyczka tcpconns dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -965,7 +965,7 @@ the remote port are outgoing connections.
 
 %package teamspeak2
 Summary:	teamspeak2-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka teamspeak2 dla collectd
+Summary(pl.UTF-8):	Wtyczka teamspeak2 dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -977,7 +977,7 @@ servers.
 
 %package ted
 Summary:	ted-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka ted dla collectd
+Summary(pl.UTF-8):	Wtyczka ted dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -987,7 +987,7 @@ Detective” (TED).
 
 %package thermal
 Summary:	thermal-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka thermal dla collectd
+Summary(pl.UTF-8):	Wtyczka thermal dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -997,7 +997,7 @@ procfs file system, i. e. mostly system temperature information.
 
 %package unixsock
 Summary:	unixsock-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka unixsock dla collectd
+Summary(pl.UTF-8):	Wtyczka unixsock dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -1009,7 +1009,7 @@ externally collected values to collectd.
 
 %package uptime
 Summary:	uptime-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka uptime dla collectd
+Summary(pl.UTF-8):	Wtyczka uptime dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -1018,7 +1018,7 @@ The uptime-plugin can collect the server's uptime.
 
 %package users
 Summary:	users-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka users dla collectd
+Summary(pl.UTF-8):	Wtyczka users dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -1027,7 +1027,7 @@ Number of users currently logged in.
 
 %package uuid
 Summary:	uuid-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka uuid dla collectd
+Summary(pl.UTF-8):	Wtyczka uuid dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -1040,7 +1040,7 @@ case the UUID is preserved across shutdowns and migration.
 
 %package vmem
 Summary:	vmem-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka vmem dla collectd
+Summary(pl.UTF-8):	Wtyczka vmem dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -1051,7 +1051,7 @@ detailed, they are collected very detailed.
 
 %package vserver
 Summary:	vserver-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka vserver dla collectd
+Summary(pl.UTF-8):	Wtyczka vserver dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -1061,7 +1061,7 @@ using Linux-Vserver.
 
 %package write_http
 Summary:	write_http-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka write_http dla collectd
+Summary(pl.UTF-8):	Wtyczka write_http dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -1072,7 +1072,7 @@ commands.
 
 %package wireless
 Summary:	wireless-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka wireless dla collectd
+Summary(pl.UTF-8):	Wtyczka wireless dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
@@ -1082,7 +1082,7 @@ signal-to-noise ratio for wireless LAN cards.
 
 %package xmms
 Summary:	xmms-plugin for collectd
-Summary(pl_PL.UTF-8):	Wtyczka xmms dla collectd
+Summary(pl.UTF-8):	Wtyczka xmms dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
