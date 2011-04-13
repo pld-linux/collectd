@@ -66,12 +66,12 @@
 Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
-Version:	4.10.2
-Release:	2
+Version:	5.0.0
+Release:	0.1
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.bz2
-# Source0-md5:	85d9d8d0a1327782661e3c89800aa70e
+# Source0-md5:	7bfea6e82d35b36f16d1da2c71397213
 Source1:	%{name}.conf
 Source2:	%{name}.init
 Source3:	%{name}-http.conf
@@ -80,6 +80,8 @@ Source10:	%{name}-df.conf
 Source11:	%{name}-rrdtool.conf
 Patch0:		%{name}-collection.patch
 Patch1:		compile.patch
+Patch2:		netfilter.patch
+Patch3:		libnotify.patch
 URL:		http://collectd.org/
 %{?with_ipmi:BuildRequires:	OpenIPMI-devel >= 2.0.14-3}
 BuildRequires:	autoconf
@@ -93,7 +95,7 @@ BuildRequires:	libltdl-devel
 BuildRequires:	libmemcached-devel
 BuildRequires:	libnetlink-devel
 %{?with_netlink:BuildRequires:	libnetlink-devel}
-%{?with_notify:BuildRequires:	libnotify-devel}
+%{?with_notify:BuildRequires:	libnotify-devel >= 0.7.0}
 %{?with_ping:BuildRequires:	liboping-devel}
 %{?with_dns:BuildRequires:	libpcap-devel}
 BuildRequires:	libstatgrab-devel >= 0.12
@@ -1102,6 +1104,8 @@ Perl files from Collectd package
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 %build
 %{__libtoolize}
@@ -1111,29 +1115,36 @@ Perl files from Collectd package
 %{__automake}
 
 %configure \
+	c_cv_have_libperl=yes \
 	--with-libstatgrab=/usr \
 	--with-lm-sensors=/usr \
 	--with-libmysql=/usr \
-	--%{?with_dns:en}%{!?with_dns:dis}able-dns \
-	--%{?with_ipmi:en}%{!?with_ipmi:dis}able-ipmi \
-	--%{?with_iptables:en}%{!?with_iptables:dis}able-iptables \
-	--%{?with_multimeter:en}%{!?with_multimeter:dis}able-multimeter \
-	--%{?with_mysql:en}%{!?with_mysql:dis}able-mysql \
-	--%{?with_netlink:en}%{!?with_netlink:dis}able-netlink \
-	--%{?with_notify:en}%{!?with_notify:dis}able-notify_desktop \
-	--%{?with_libesmtp:en}%{!?with_libesmtp:dis}able-notify_email \
-	--%{?with_ups:en}%{!?with_ups:dis}able-nut \
-	--%{?with_ping:en}%{!?with_ping:dis}able-ping \
-	--%{?with_pgsql:en}%{!?with_pgsql:dis}able-postgresql \
-	--%{?with_rrd:en}%{!?with_rrd:dis}able-rrdtool \
-	--%{?with_sensors:en}%{!?with_sensors:dis}able-sensors \
-	--%{?with_snmp:en}%{!?with_snmp:dis}able-snmp \
-	--%{?with_xmms:en}%{!?with_xmms:dis}able-xmms \
-	%{!?with_curl:--disable-{apache,ascent,bind,curl,nginx}} \
-	%{!?with_xml:--disable-{ascent,bind,libvirt}} \
-	--disable-ipvs \
+	--enable-perl \
+	%{__enable_disable dns} \
+	%{__enable_disable ipmi} \
+	%{__enable_disable iptables} \
+	%{__enable_disable multimeter} \
+	%{__enable_disable mysql} \
+	%{__enable_disable netlink} \
+	%{__enable_disable notify notify_desktop} \
+	%{__enable_disable libesmtp notify_email} \
+	%{__enable_disable ups nut} \
+	%{__enable_disable ping} \
+	%{__enable_disable pgsql postgresql} \
+	%{__enable_disable rrd rrdtool} \
+	%{__enable_disable sensors} \
+	%{__enable_disable snmp} \
+	%{__enable_disable xmms} \
+	%{__enable_disable curl} \
+	%{__enable_disable curl apache} \
+	%{__enable_disable curl ngix} \
+	%{__enable_disable curl ascent} \
+	%{__disable curl ascent} \
+	%{__disable curl bind} \
+	%{__disable xml ascent} \
+	%{__disable xml bind} \
 	--disable-libvirt \
-	--disable-perl
+	--disable-ipvs
 
 
 %{__make} LDFLAGS="%{rpmldflags} -lstatgrab" \
