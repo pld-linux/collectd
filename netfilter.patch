@@ -5434,3 +5434,41 @@ index 47e47dc..0000000
 -#endif
 -
 -#endif /* _XTABLES_H */
+commit 698837f250f754e93cfec3fcd7461f272c91f6f5
+Author: Sebastian Harl <sh@tokkee.org>
+Date:   Thu Jun 16 11:11:40 2011 +0200
+
+    configure: Removed last traces of 'owniptc'.
+    
+    E.g., autoconf still tried to generated src/owniptc/Makefile in AC_OUTPUT(),
+    which obviously fails if owniptc is no longer there.
+
+diff --git a/configure.in b/configure.in
+index 8043d9a..f240466 100644
+--- a/configure.in
++++ b/configure.in
+@@ -1807,13 +1807,8 @@ if test "x$with_libiptc" = "xyes"
+ then
+ 	AC_CHECK_TYPES([iptc_handle_t, ip6tc_handle_t], [], [],
+ 	[
+-#if OWN_LIBIPTC
+-# include "$srcdir/src/owniptc/libiptc.h"
+-# include "$srcdir/src/owniptc/libip6tc.h"
+-#else
+-# include <libiptc/libiptc.h>
+-# include <libiptc/libip6tc.h>
+-#endif
++#include <libiptc/libiptc.h>
++#include <libiptc/libip6tc.h>
+ 	])
+ fi
+ # Check for the iptc_init symbol in the library.
+@@ -4813,7 +4808,7 @@ AC_SUBST(LCC_VERSION_STRING)
+ 
+ AC_CONFIG_FILES(src/libcollectdclient/lcc_features.h)
+ 
+-AC_OUTPUT(Makefile src/Makefile src/collectd.conf src/owniptc/Makefile src/libcollectdclient/Makefile src/libcollectdclient/libcollectdclient.pc src/liboconfig/Makefile bindings/Makefile bindings/java/Makefile)
++AC_OUTPUT(Makefile src/Makefile src/collectd.conf src/libcollectdclient/Makefile src/libcollectdclient/libcollectdclient.pc src/liboconfig/Makefile bindings/Makefile bindings/java/Makefile)
+ 
+ if test "x$with_librrd" = "xyes" \
+ 	&& test "x$librrd_threadsafe" != "xyes"

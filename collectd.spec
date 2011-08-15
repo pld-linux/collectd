@@ -11,7 +11,6 @@
 #   libkstat  . . . . . . no (Solaris only)
 #   libkvm  . . . . . . . no
 #   libnetapp . . . . . . no (netapp_api.h not found)
-#   libperl . . . . . . . no
 #   librouteros . . . . . no ('routeros_api.h' not found)
 #   libtokyotyrant  . . . no (tcrdb.h not found)
 #   libvirt . . . . . . . no (pkg-config doesn't know library)
@@ -23,10 +22,7 @@
 #   libvirt . . . . . . no             (requires library)
 #   multimeter  . . . . no             ?
 #   onewire . . . . . . no             (needs libowfs)
-#   perl  . . . . . . . no             (buggy perl: http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=467072)
-#   rrdcached . . . . . no             (requires rrdtool >= 1.4.0)
 #   tape  . . . . . . . no             ?
-#   curl_json . . . . . . no
 #   gmond . . . . . . . . no
 #   java  . . . . . . . . no
 #   netapp  . . . . . . . no
@@ -54,20 +50,15 @@
 %bcond_without	sensors		# sensors plugin
 %bcond_without	snmp		# SNMP plugin
 %bcond_without	ups		# nut plugin
+%bcond_without	varnish		# varnish plugin
 %bcond_without	xml		# ascent, bind and libvirt plugins
 %bcond_without	xmms		# XMMS plugin
-
-# http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=358637
-%ifarch %{x8664}
-%undefine with_iptables
-%undefine with_netlink
-%endif
 
 Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
 Version:	5.0.0
-Release:	0.1
+Release:	1
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.bz2
@@ -82,6 +73,8 @@ Patch0:		%{name}-collection.patch
 Patch1:		compile.patch
 Patch2:		netfilter.patch
 Patch3:		libnotify.patch
+Patch4:		noquote.patch
+Patch5:		libiptc.patch
 URL:		http://collectd.org/
 %{?with_ipmi:BuildRequires:	OpenIPMI-devel >= 2.0.14-3}
 BuildRequires:	autoconf
@@ -114,6 +107,7 @@ BuildRequires:	python-devel
 BuildRequires:	python-modules
 BuildRequires:	rpmbuild(macros) >= 1.268
 %{?with_rrd:BuildRequires:	rrdtool-devel}
+%{?with_varnish:BuildRequires:		varnish-devel}
 BuildRequires:	which
 #BuildRequires:	xfsprogs-devel
 %{?with_xmms:BuildRequires:	xmms-devel}
@@ -142,11 +136,11 @@ collectd to mały demon zbierający co 10 sekund informacje o systemie
 i zapisujący wyniki do pliku RRD.
 
 W odróżnieniu od innych podobnych programów collectd nie jest
-skryptem, lecz jest napisany w czystym C z myślą o wydajności i
-przenośności. Jako demon pozostaje w pamięci, więc nie ma potrzeby
-urychamiania ciężkiego interpretera za każdym razem, kiedy powinny
-być zapisane nowe wartości. Dzięki temu collect może mieć
-rozdzielczość 10 sekund i nie obciążać zbytnio systemu.
+skryptem, lecz jest napisany w czystym C z myślą o wydajności
+i przenośności. Jako demon pozostaje w pamięci, więc nie ma potrzeby
+urychamiania ciężkiego interpretera za każdym razem, kiedy powinny być
+zapisane nowe wartości. Dzięki temu collect może mieć rozdzielczość 10
+sekund i nie obciążać zbytnio systemu.
 
 %package libs
 Summary:	%{name} libraries
@@ -204,8 +198,8 @@ Requires:	%{name} = %{version}-%{release}
 
 %description apcups
 The APC UPS plugin connects to an instance of Apcupsd to read various
-statistics about a connected uninterruptible power supply (UPS), such as
-voltage, load, etc.
+statistics about a connected uninterruptible power supply (UPS), such
+as voltage, load, etc.
 
 %package ascent
 Summary:	ascent-plugin for collectd
@@ -214,9 +208,9 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description ascent
-The Ascent plugin reads and parses the statistics page of Ascent, a free and
-open-source server software for the game World of Warcraft by Blizzard
-Entertainment.
+The Ascent plugin reads and parses the statistics page of Ascent, a
+free and open-source server software for the game World of Warcraft by
+Blizzard Entertainment.
 
 %package battery
 Summary:	battery plugin for collectd
@@ -278,8 +272,8 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description contextswitch
-The ContextSwitch plugin collects the number of context switches
-done by the operating system.
+The ContextSwitch plugin collects the number of context switches done
+by the operating system.
 
 %package conntrack
 Summary:	conntrack-plugin for collectd
@@ -329,6 +323,18 @@ Requires:	%{name} = %{version}-%{release}
 The curl plugin uses the libcurl to read web pages and the match
 infrastructure (the same code used by the tail plugin) to use regular
 expressions with the received data.
+
+%package curl_json
+Summary:	cURL JSON plugin for collectd
+Summary(pl.UTF-8):	Wtyczka cURL JSON dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description curl_json
+The cURL-JSON plugin queries JavaScript Object Notation (JSON) data
+using the cURL library and parses it according to the user's
+configuration using Yet Another JSON Library (YAJL). This can be used
+to query statistics information from a CouchDB instance, for example.
 
 %package dbi
 Summary:	dbi plugin for collectd
@@ -400,9 +406,9 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description entropy
-The Entropy plugin collects the available entropy on a system. Entropy is
-important to generate random numbers, which are used for encryption,
-authorization and similar tasks.
+The Entropy plugin collects the available entropy on a system. Entropy
+is important to generate random numbers, which are used for
+encryption, authorization and similar tasks.
 
 %package exec
 Summary:	exec-plugin for collectd
@@ -482,10 +488,10 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description ipmi
-The IPMI plugin uses the OpenIPMI library to read hardware sensors from
-servers using the Intelligent Platform Management Interface (IPMI). IPMI
-is very common with server hardware but usually not available in consumer
-hardware.
+The IPMI plugin uses the OpenIPMI library to read hardware sensors
+from servers using the Intelligent Platform Management Interface
+(IPMI). IPMI is very common with server hardware but usually not
+available in consumer hardware.
 
 %package irq
 Summary:	IRQs-plugin for collectd
@@ -494,8 +500,8 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description irq
-The IRQ plugin collects the number of times each interrupt has been handled
-by the operating system.
+The IRQ plugin collects the number of times each interrupt has been
+handled by the operating system.
 
 %package load
 Summary:	load-plugin for collectd
@@ -514,8 +520,8 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description logfile
-The LogFile plugin receives log messages from the daemon and writes them to
-a text file.
+The LogFile plugin receives log messages from the daemon and writes
+them to a text file.
 
 %package madwifi
 Summary:	madwifi plugin for collectd
@@ -524,11 +530,11 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description madwifi
-The MadWifi plugin collects information about Atheros wireless LAN chipsets
-from the MadWifi driver. It uses the /sys filesystem to identify cards
-handled by this driver automatically but can be configured manually, too.
-Because very many statistics are available, an advanced selection mechanism
-is provided.
+The MadWifi plugin collects information about Atheros wireless LAN
+chipsets from the MadWifi driver. It uses the /sys filesystem to
+identify cards handled by this driver automatically but can be
+configured manually, too. Because very many statistics are available,
+an advanced selection mechanism is provided.
 
 %package match_empty_counter
 Summary:	match_empty_counter plugin for collectd
@@ -537,8 +543,9 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description match_empty_counter
-Empty Counter match matches value lists, where at least one data source is
-of type COUNTER and the counter value of all counter data sources is zero.
+Empty Counter match matches value lists, where at least one data
+source is of type COUNTER and the counter value of all counter data
+sources is zero.
 
 %package match_hashed
 Summary:	match_hashed plugin for collectd
@@ -593,10 +600,10 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description memcachec
-The memcachec plugin connects to a memcached server, queries one or more
-given pages and parses the returned data according to user specification.
-The matches used are similar to the matches used in the cURL and Tail
-plugins.
+The memcachec plugin connects to a memcached server, queries one or
+more given pages and parses the returned data according to user
+specification. The matches used are similar to the matches used in the
+cURL and Tail plugins.
 
 %package memcached
 Summary:	memcached-plugin for collectd
@@ -626,9 +633,10 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description multimeter
-The Multimeter plugin reads a value (usually a voltage or current) from a
-multimeter connected to a serial bus. The plugin tries /dev/ttyS0-9 in order
-to find a multimeter – no configuration is possible.
+The Multimeter plugin reads a value (usually a voltage or current)
+from a multimeter connected to a serial bus. The plugin tries
+/dev/ttyS0-9 in order to find a multimeter – no configuration is
+possible.
 
 The multimeter used for development was a Metex M-4650CR.
 
@@ -667,8 +675,8 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description network
-The Network plugin can send values to other instances and receive values
-from other %{name} instances.
+The Network plugin can send values to other instances and receive
+values from other %{name} instances.
 
 %package nfs
 Summary:	NFS-plugin for collectd
@@ -710,8 +718,8 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description notify_email
-The Notify Email plugin uses libESMTP to send notifications to a configured
-email address(es).
+The Notify Email plugin uses libESMTP to send notifications to a
+configured email address(es).
 
 %package ntpd
 Summary:	ntpd-plugin for collectd
@@ -723,7 +731,8 @@ Requires:	%{name} = %{version}-%{release}
 The NTPd plugin queries an NTP server (usually the local one, where
 statistics access is allowed) and extracts :
 - "local" clock parameters: time offset, error and offset loop,
-- parameters for each NTP server used to sync time: offset, dispersion, delay.
+- parameters for each NTP server used to sync time: offset,
+  dispersion, delay.
 
 %package nut
 Summary:	nut-plugin for collectd
@@ -741,11 +750,10 @@ Summary:	olsrd plugin for collectd
 Summary(pl.UTF-8):	Wtyczka olsrd dla collectd
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
-Requires:	openvpn
 
 %description olsrd
-The olsrd plugin reads information about meshed networks from the txtinfo
-plugin of the Optimized Link State Routing daemon (olsrd).
+The olsrd plugin reads information about meshed networks from the
+txtinfo plugin of the Optimized Link State Routing daemon (olsrd).
 
 %package openvpn
 Summary:	openvpn plugin for collectd
@@ -757,6 +765,22 @@ Requires:	openvpn
 %description openvpn
 The OpenVPN plugin reads a status file maintained by OpenVPN and
 gathers traffic statistics about connected clients.
+
+%package perl
+Summary:	perl plugin for collectd
+Summary(pl.UTF-8):	Wtyczka perl dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+Requires:	perl-Collectd = %{version}-%{release}
+
+%description perl
+The Perl plugin embeds a Perl interpreter into collectd and exposes
+the application programming interface (API) to Perl-scripts. This
+allows to write own plugins in the popular scripting language, which
+are then loaded and executed by the daemon without the need to start a
+new process and interpreter every few seconds. Perl-modules written
+for the Perl plugin are therefore more powerful and efficient than
+scripts executed by the Exec plugin.
 
 %package ping
 Summary:	ping-plugin for collectd
@@ -825,13 +849,25 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description python
-The Python plugin embeds a Python interpreter into collectd and exposes
-the application programming interface (API) to Python-scripts. This allows
-to write own plugins in the popular scripting language, which are then
-loaded and executed by the daemon without the need to start a new process
-and interpreter every few seconds. Python-modules written for the Python
-plugin are therefore more powerful and efficient than scripts executed by
-the Exec plugin.
+The Python plugin embeds a Python interpreter into collectd and
+exposes the application programming interface (API) to Python-scripts.
+This allows to write own plugins in the popular scripting language,
+which are then loaded and executed by the daemon without the need to
+start a new process and interpreter every few seconds. Python-modules
+written for the Python plugin are therefore more powerful and
+efficient than scripts executed by the Exec plugin.
+
+%package rrdcached
+Summary:	rrdcached-plugin for collectd
+Summary(pl.UTF-8):	Wtyczka rrdcached dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description rrdcached
+The rrdcached plugin uses the RRDtool accelerator daemon, rrdcached,
+to store values to RRD files in an efficient manner. The combination
+of the rrdcached plugin and the rrdcached daemon is very similar to
+the way the rrdtool plugin works.
 
 %package rrdtool
 Summary:	rrdtool-plugin for collectd
@@ -883,8 +919,8 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description swap
-The Swap plugin collects the amount of memory currently written onto hard
-disk or whatever the system calls “swap”.
+The Swap plugin collects the amount of memory currently written onto
+hard disk or whatever the system calls “swap”.
 
 %package syslog
 Summary:	syslog-plugin for collectd
@@ -942,6 +978,16 @@ Requires:	%{name} = %{version}-%{release}
 %description target_set
 target_set plugin for collectd.
 
+%package target_v5upgrade
+Summary:	target_v5upgrade-plugin for collectd
+Summary(pl.UTF-8):	Wtyczka target_v5upgrade dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description target_v5upgrade
+The v5 upgrade target can be used to upgrade version 4 data to a
+changed version 5 layout.
+
 %package tail
 Summary:	tail-plugin for collectd
 Summary(pl.UTF-8):	Wtyczka tail dla collectd
@@ -994,8 +1040,17 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description thermal
-The thermal plugin reads ACPI thermal zone information from the sysfs or
-procfs file system, i. e. mostly system temperature information.
+The thermal plugin reads ACPI thermal zone information from the sysfs
+or procfs file system, i. e. mostly system temperature information.
+
+%package threshold
+Summary:	threshold-plugin for collectd
+Summary(pl.UTF-8):	Wtyczka threshold dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description threshold
+threshold-plugin for collectd.
 
 %package unixsock
 Summary:	unixsock-plugin for collectd
@@ -1039,6 +1094,16 @@ machine's UUID. The UUID is a universally unique designation for the
 machine, usually taken from the machine's BIOS. This is most useful if
 the machine is running in a virtual environment such as Xen, in which
 case the UUID is preserved across shutdowns and migration.
+
+%package varnish
+Summary:	varnish-plugin for collectd
+Summary(pl.UTF-8):	Wtyczka varnish dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description varnish
+The Varnish plugin collects information about Varnish, an HTTP
+accelerator.
 
 %package vmem
 Summary:	vmem-plugin for collectd
@@ -1106,6 +1171,8 @@ Perl files from Collectd package
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
+%patch5 -p1
 
 %build
 %{__libtoolize}
@@ -1115,6 +1182,7 @@ Perl files from Collectd package
 %{__automake}
 
 %configure \
+	CPPFLAGS="-Wno-unused-but-set-variable" \
 	c_cv_have_libperl=yes \
 	--with-libstatgrab=/usr \
 	--with-lm-sensors=/usr \
@@ -1135,6 +1203,7 @@ Perl files from Collectd package
 	%{__enable_disable sensors} \
 	%{__enable_disable snmp} \
 	%{__enable_disable xmms} \
+	%{__enable_disable varnish} \
 	%{__enable_disable curl} \
 	%{__enable_disable curl apache} \
 	%{__enable_disable curl ngix} \
@@ -1223,6 +1292,7 @@ fi
 %module_scripts cpufreq
 %module_scripts csv
 %module_scripts curl
+%module_scripts curl_json
 %module_scripts dbi
 %module_scripts df
 %module_scripts disk
@@ -1261,12 +1331,14 @@ fi
 %module_scripts nut
 %module_scripts olsrd
 %module_scripts openvpn
+%module_scripts perl
 %module_scripts ping
 %module_scripts postgresql
 %module_scripts powerdns
 %module_scripts processes
 %module_scripts protocols
 %module_scripts python
+%module_scripts rrdcached
 %module_scripts rrdtool
 %module_scripts sensors
 %module_scripts serial
@@ -1279,14 +1351,17 @@ fi
 %module_scripts target_replace
 %module_scripts target_scale
 %module_scripts target_set
+%module_scripts target_v5upgrade
 %module_scripts tcpconns
 %module_scripts teamspeak2
 %module_scripts ted
 %module_scripts thermal
+%module_scripts threshold
 %module_scripts unixsock
 %module_scripts uptime
 %module_scripts users
 %module_scripts uuid
+%module_scripts varnish
 %module_scripts vmem
 %module_scripts vserver
 %module_scripts write_http
@@ -1318,16 +1393,18 @@ fi
 %dir %{_sysconfdir}/%{name}.d
 %attr(755,root,root) %{_sbindir}/collectd
 %attr(755,root,root) %{_sbindir}/collectdmon
+%attr(755,root,root) %{_bindir}/collectdctl
 %attr(755,root,root) %{_bindir}/collectd-nagios
+%dir %{_libdir}/%{name}
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/types.db
 %attr(754,root,root) /etc/rc.d/init.d/%{name}
 %{_mandir}/man1/collectd.1*
 %{_mandir}/man1/collectd-nagios.1*
+%{_mandir}/man1/collectdctl.1*
 %{_mandir}/man1/collectdmon.1*
 %{_mandir}/man5/collectd.conf.5*
 %{_mandir}/man5/collectd-java.5*
-%{_mandir}/man5/collectd-perl.5*
 %{_mandir}/man5/types.db.5*
 %dir %{_var}/lib/%{name}
 
@@ -1335,7 +1412,6 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libcollectdclient.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libcollectdclient.so.0
-%dir %{_libdir}/%{name}
 
 %files devel
 %defattr(644,root,root,755)
@@ -1435,6 +1511,11 @@ fi
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/curl_xml.conf
 %attr(755,root,root) %{_libdir}/%{name}/curl_xml.so
 %endif
+
+%files curl_json
+%defattr(640,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/curl_json.conf
+%attr(755,root,root) %{_libdir}/%{name}/curl_json.so
 %endif
 
 %files dbi
@@ -1650,6 +1731,12 @@ fi
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/openvpn.conf
 %attr(755,root,root) %{_libdir}/%{name}/openvpn.so
 
+%files perl
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/perl.conf
+%attr(755,root,root) %{_libdir}/%{name}/perl.so
+%{_mandir}/man5/collectd-perl.5*
+
 %if %{with ping}
 %files ping
 %defattr(644,root,root,755)
@@ -1687,6 +1774,11 @@ fi
 %{_mandir}/man5/collectd-python.5*
 
 %if %{with rrd}
+%files rrdcached
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/rrdcached.conf
+%attr(755,root,root) %{_libdir}/%{name}/rrdcached.so
+
 %files rrdtool
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/rrdtool.conf
@@ -1753,6 +1845,10 @@ fi
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/target_set.conf
 %attr(755,root,root) %{_libdir}/%{name}/target_set.so
 
+%files target_v5upgrade
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/%{name}/target_v5upgrade.so
+
 %files tcpconns
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/tcpconns.conf
@@ -1772,6 +1868,12 @@ fi
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/thermal.conf
 %attr(755,root,root) %{_libdir}/%{name}/thermal.so
+
+%files threshold
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/threshold.conf
+%attr(755,root,root) %{_libdir}/%{name}/threshold.so
+%{_mandir}/man5/collectd-threshold.5*
 
 %files unixsock
 %defattr(644,root,root,755)
@@ -1793,6 +1895,11 @@ fi
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/uuid.conf
 %attr(755,root,root) %{_libdir}/%{name}/uuid.so
+
+%files varnish
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/varnish.conf
+%attr(755,root,root) %{_libdir}/%{name}/varnish.so
 
 %files vmem
 %defattr(644,root,root,755)

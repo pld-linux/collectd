@@ -1,0 +1,22 @@
+--- collectd-5.0.0/src/Makefile.am.wiget	2011-08-15 21:03:20.991041776 +0200
++++ collectd-5.0.0/src/Makefile.am	2011-08-15 21:03:47.589811740 +0200
+@@ -438,7 +438,7 @@ pkglib_LTLIBRARIES += iptables.la
+ iptables_la_SOURCES = iptables.c
+ iptables_la_CPPFLAGS = $(AM_CPPFLAGS) $(BUILD_WITH_LIBIPTC_CPPFLAGS)
+ iptables_la_LDFLAGS = -module -avoid-version $(BUILD_WITH_LIBIPTC_LDFLAGS)
+-iptables_la_LIBADD = -liptc
++iptables_la_LIBADD = -lip4tc -lip6tc
+ collectd_LDADD += "-dlopen" iptables.la
+ collectd_DEPENDENCIES += iptables.la
+ endif
+--- collectd-5.0.0/configure.in.wiget	2011-08-15 20:04:29.574726374 +0200
++++ collectd-5.0.0/configure.in	2011-08-15 20:07:58.895465067 +0200
+@@ -1814,7 +1814,7 @@ fi
+ # Check for the iptc_init symbol in the library.
+ if test "x$with_libiptc" = "xyes"
+ then
+-	AC_CHECK_LIB(iptc, iptc_init,
++	AC_CHECK_LIB(ip4tc, iptc_init,
+ 		     [with_libiptc="yes"],
+ 		     [with_libiptc="no (symbol 'iptc_init' not found)"])
+ fi
