@@ -5,30 +5,39 @@
 #   mainstream library:
 # liboconfig  . . . . . yes (shipped version)
 # - Libraries not found by configure:
-#   libganglia  . . . . . no (gm_protocol.h not found)
-#   libiokit  . . . . . . no
+#   libcredis . . . . . . no (credis.h not found) (http://code.google.com/p/credis/)
+#   libganglia  . . . . . no (gm_protocol.h not found) (http://ganglia.info/)
+#   libiokit  . . . . . . no (Darwin only)
 #   libjvm  . . . . . . . no (javac not found)
 #   libkstat  . . . . . . no (Solaris only)
-#   libkvm  . . . . . . . no
-#   libnetapp . . . . . . no (netapp_api.h not found)
-#   librouteros . . . . . no ('routeros_api.h' not found)
-#   libtokyotyrant  . . . no (tcrdb.h not found)
-#   libvirt . . . . . . . no (pkg-config doesn't know library)
+#   libkvm  . . . . . . . no (BSD only)
+#   libmodbus . . . . . . no (pkg-config doesn't know modbus) (http://www.libmodbus.org/)
+#   libnetapp . . . . . . no (netapp_api.h not found) (properitary)
+#   libperfstat . . . . . no (AIX only)
+#   librabbitmq . . . . . no (amqp.h not found) (http://hg.rabbitmq.com/rabbitmq-c/)
+#   librouteros . . . . . no ('routeros_api.h' not found) (http://verplant.org/librouteros/)
+#   libtokyotyrant  . . . no (tcrdb.h not found) (http://1978th.net/tokyotyrant/)
 #   libyajl . . . . . . . no (yajl/yajl_parse.h not found)
+#   protobuf-c  . . . . . no 
 #   oracle  . . . . . . . no (ORACLE_HOME is not set)
 # - Disabled modules (build most of them an package):
-#   apple_sensors . . . no             (obvious)
-#   ipvs  . . . . . . . no             (ip_vs.h not found - llh to be fixed)
-#   libvirt . . . . . . no             (requires library)
-#   multimeter  . . . . no             ?
-#   onewire . . . . . . no             (needs libowfs)
-#   tape  . . . . . . . no             ?
+#   amqp    . . . . . . . no
+#   apple_sensors . . . . no             (Darwin only)
 #   gmond . . . . . . . . no
+#   ipvs  . . . . . . . . no             (ip_vs.h not found - llh to be fixed)
 #   java  . . . . . . . . no
+#   lpar... . . . . . . . no
+#   modbus  . . . . . . . no
+#   multimeter  . . . . . no             ?
 #   netapp  . . . . . . . no
+#   onewire . . . . . . . no             (needs libowfs)
 #   oracle  . . . . . . . no
+#   pinba . . . . . . . . no
+#   redis . . . . . . . . no
 #   routeros  . . . . . . no
+#   tape  . . . . . . . . no             ?
 #   tokyotyrant . . . . . no
+#   write_redis . . . . . no
 #   zfs_arc . . . . . . . no
 # - logrotate file for logfile plugin
 # - %desc -l pl for plugins
@@ -40,6 +49,7 @@
 %bcond_without	ipmi		# IPMI plugin
 %bcond_without	iptables	# iptables plugin
 %bcond_without	libesmtp	# notify_email plugin
+%bcond_without	libvirt		# libvirt plugin
 %bcond_with	multimeter	# multimeter plugin
 %bcond_without	mysql		# MySQL plugin
 %bcond_without	netlink		# netlink plugin
@@ -58,7 +68,7 @@ Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
 Version:	5.0.0
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.bz2
@@ -97,6 +107,7 @@ BuildRequires:	libtool
 %{?with_xml:BuildRequires:	libxml2-devel}
 %{?with_sensors:BuildRequires:	lm_sensors-devel}
 %{?with_mysql:BuildRequires:	mysql-devel}
+%{?with_libvirt:BuildRequires:	libvirt-devel}
 BuildRequires:	ncurses-devel
 %{?with_snmp:BuildRequires:	net-snmp-devel}
 %{?with_ups:BuildRequires:	nut-devel}
@@ -111,6 +122,7 @@ BuildRequires:	rpmbuild(macros) >= 1.268
 BuildRequires:	which
 #BuildRequires:	xfsprogs-devel
 %{?with_xmms:BuildRequires:	xmms-devel}
+BuildRequires:	yajl-devel
 Requires(post,preun):	/sbin/chkconfig
 Requires:	rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -502,6 +514,21 @@ Requires:	%{name} = %{version}-%{release}
 %description irq
 The IRQ plugin collects the number of times each interrupt has been
 handled by the operating system.
+
+%package libvirt
+Summary:	libvirt-plugin for collectd
+Summary(pl.UTF-8):	Wtyczka libvirt dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description libvirt
+The libvirt plugin uses the virtualization API libvirt, created by
+RedHat's Emerging Technology group, to gather statistics about
+virtualized guests on a system. This way, you can collect CPU, network
+interface and block device usage for each guest without installing
+collectd on the guest systems. Because the statistics are received
+from the hypervisor directly, this works not only with
+para-virtualized hosts, but with hardware virtualized machines, too.
 
 %package load
 Summary:	load-plugin for collectd
@@ -1196,6 +1223,7 @@ Perl files from Collectd package
 	%{__enable_disable netlink} \
 	%{__enable_disable notify notify_desktop} \
 	%{__enable_disable libesmtp notify_email} \
+	%{__enable_disable libvirt} \
 	%{__enable_disable ups nut} \
 	%{__enable_disable ping} \
 	%{__enable_disable pgsql postgresql} \
@@ -1212,7 +1240,6 @@ Perl files from Collectd package
 	%{__disable curl bind} \
 	%{__disable xml ascent} \
 	%{__disable xml bind} \
-	--disable-libvirt \
 	--disable-ipvs
 
 
@@ -1307,6 +1334,7 @@ fi
 %module_scripts ipmi
 %module_scripts iptables
 %module_scripts irq
+%module_scripts libvirt
 %module_scripts load
 %module_scripts logfile
 %module_scripts madwifi
@@ -1595,6 +1623,11 @@ fi
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/irq.conf
 %attr(755,root,root) %{_libdir}/%{name}/irq.so
+
+%files libvirt
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/libvirt.conf
+%attr(755,root,root) %{_libdir}/%{name}/libvirt.so
 
 %files load
 %defattr(644,root,root,755)
