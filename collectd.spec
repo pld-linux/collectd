@@ -111,6 +111,7 @@ BuildRequires:	libtool
 %{?with_libvirt:BuildRequires:	libvirt-devel}
 BuildRequires:	ncurses-devel
 %{?with_snmp:BuildRequires:	net-snmp-devel}
+%{?with_libvirt:BuildRequires:	numactl-devel}
 %{?with_ups:BuildRequires:	nut-devel}
 BuildRequires:	perl-devel
 BuildRequires:	pkgconfig
@@ -124,7 +125,6 @@ BuildRequires:	which
 #BuildRequires:	xfsprogs-devel
 %{?with_xmms:BuildRequires:	xmms-devel}
 BuildRequires:	yajl-devel
-BuildRequires:	numactl-devel
 Requires(post,preun):	/sbin/chkconfig
 Requires:	rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
