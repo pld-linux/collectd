@@ -98,6 +98,7 @@ BuildRequires:	libltdl-devel
 BuildRequires:	libmemcached-devel
 BuildRequires:	libnetlink-devel
 %{?with_netlink:BuildRequires:	libnetlink-devel}
+%{?with_libvirt:BuildRequires:	libnl1-devel}
 %{?with_notify:BuildRequires:	libnotify-devel >= 0.7.0}
 %{?with_ping:BuildRequires:	liboping-devel}
 %{?with_dns:BuildRequires:	libpcap-devel}
@@ -123,7 +124,6 @@ BuildRequires:	which
 #BuildRequires:	xfsprogs-devel
 %{?with_xmms:BuildRequires:	xmms-devel}
 BuildRequires:	yajl-devel
-BuildRequires:	libnl1-devel
 BuildRequires:	numactl-devel
 Requires(post,preun):	/sbin/chkconfig
 Requires:	rc-scripts
