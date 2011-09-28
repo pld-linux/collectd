@@ -1626,10 +1626,12 @@ fi
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/irq.conf
 %attr(755,root,root) %{_libdir}/%{name}/irq.so
 
+%if %{with libvirt}
 %files libvirt
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/libvirt.conf
 %attr(755,root,root) %{_libdir}/%{name}/libvirt.so
+%endif
 
 %files load
 %defattr(644,root,root,755)
