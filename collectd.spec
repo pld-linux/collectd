@@ -123,6 +123,8 @@ BuildRequires:	which
 #BuildRequires:	xfsprogs-devel
 %{?with_xmms:BuildRequires:	xmms-devel}
 BuildRequires:	yajl-devel
+BuildRequires:	libnl1-devel
+BuildRequires:	numactl-devel
 Requires(post,preun):	/sbin/chkconfig
 Requires:	rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
