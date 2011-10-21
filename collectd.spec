@@ -1469,7 +1469,11 @@ fi
 
 %files collection3
 %defattr(644,root,root,755)
-%{_appdir}/collection3
+%dir %{_appdir}/collection3
+%dir %{_appdir}/collection3/bin
+%attr(755,root,root) %{_appdir}/collection3/bin/*.cgi
+%{_appdir}/collection3/lib
+%{_appdir}/collection3/share
 
 ########## PLUGINS:
 %if %{with xml}
