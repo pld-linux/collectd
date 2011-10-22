@@ -68,7 +68,7 @@ Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
 Version:	5.0.0
-Release:	5
+Release:	5.1
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.bz2
@@ -270,8 +270,10 @@ Summary:	Web script for collectd
 Summary(pl.UTF-8):	Web script for collectd
 Group:		Applications/WWW
 Requires:	%{name} = %{version}-%{release}
+Requires:	perl-Collectd = %{version}-%{release}
 Requires:	perl(Config::General)
 Requires:	perl(HTML::Entities)
+Requires:	perl(Regexp::Common)
 Requires:	perl(RRDs)
 Requires:	webserver(cgi)
 Suggests:	fonts-TTF-DejaVu
@@ -1252,7 +1254,7 @@ Perl files from Collectd package
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_var}/{log/,lib/%{name}},/etc/{rc.d/init.d/,collectd.d}} \
-	$RPM_BUILD_ROOT{%{_appdir}/cgi-bin,%{_webappdir},%{_pkglibdir},%{perl_vendorlib}/}
+	$RPM_BUILD_ROOT{%{_appdir}/cgi-bin,%{_webappdir},%{_pkglibdir},%{perl_vendorlib}/,%{_mandir}/man3}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
@@ -1268,6 +1270,9 @@ install %{SOURCE3} $RPM_BUILD_ROOT%{_webappdir}/httpd.conf
 install %{SOURCE4} $RPM_BUILD_ROOT%{_webappdir}/lighttpd.conf
 
 cp -R contrib/collection3 $RPM_BUILD_ROOT%{_appdir}
+mv $RPM_BUILD_ROOT%{_appdir}/collection3/etc/collection.conf $RPM_BUILD_ROOT%{_webappdir}/collection3.conf
+ln -sf %{_webappdir}/collection3.conf $RPM_BUILD_ROOT%{_appdir}/collection3/etc/collection.conf
+sed -i -e 's@#DataDir "/var/lib/collectd/rrd"@DataDir "%{_var}/lib/%{name}"@' $RPM_BUILD_ROOT%{_webappdir}/collection3.conf
 
 ### Configs instalation ###
 for i in `egrep "^(#|)LoadPlugin" src/collectd.conf |awk '{print $NF}' ` ; do
@@ -1283,6 +1288,7 @@ install %{SOURCE10} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/df.conf
 install %{SOURCE11} $RPM_BUILD_ROOT%{_sysconfdir}/collectd.d/rrdtool.conf
 
 mv $RPM_BUILD_ROOT%{_datadir}/perl5/Collectd* $RPM_BUILD_ROOT%{perl_vendorlib}/
+mv $RPM_BUILD_ROOT/usr/man/man3/Collectd::Unixsock.3pm $RPM_BUILD_ROOT%{_mandir}/man3/
 
 # Cleanups:
 rm -f $RPM_BUILD_ROOT%{_libdir}/%{name}/*.la
@@ -1421,6 +1427,7 @@ fi
 %doc AUTHORS ChangeLog README TODO contrib
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.conf
 %dir %{_sysconfdir}/%{name}.d
+%dir %{_webappdir}
 %attr(755,root,root) %{_sbindir}/collectd
 %attr(755,root,root) %{_sbindir}/collectdmon
 %attr(755,root,root) %{_bindir}/collectdctl
@@ -1458,7 +1465,6 @@ fi
 
 %files collection
 %defattr(644,root,root,755)
-%dir %{_webappdir}
 %config(noreplace) %verify(not md5 mtime size) %{_webappdir}/collection.conf
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_webappdir}/apache.conf
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_webappdir}/httpd.conf
@@ -1469,9 +1475,12 @@ fi
 
 %files collection3
 %defattr(644,root,root,755)
+%doc contrib/collection3/README
+%config(noreplace) %verify(not md5 mtime size) %{_webappdir}/collection3.conf
 %dir %{_appdir}/collection3
 %dir %{_appdir}/collection3/bin
 %attr(755,root,root) %{_appdir}/collection3/bin/*.cgi
+%{_appdir}/collection3/etc
 %{_appdir}/collection3/lib
 %{_appdir}/collection3/share
 
@@ -1973,3 +1982,4 @@ fi
 %defattr(644,root,root,755)
 %{perl_vendorlib}/Collectd.pm
 %{perl_vendorlib}/Collectd
+%{_mandir}/man3/*.3*
