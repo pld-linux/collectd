@@ -68,7 +68,7 @@ Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
 Version:	5.0.1
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.bz2
@@ -89,7 +89,6 @@ URL:		http://collectd.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
 %{?with_curl:BuildRequires:	curl-devel}
-BuildRequires:	hal-devel
 %{?with_iptables:BuildRequires:	iptables-devel >= 1.4.1.1-4}
 BuildRequires:	libdbi-devel
 %{?with_libesmtp:BuildRequires:	libesmtp-devel}
