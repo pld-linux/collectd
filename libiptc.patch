@@ -1,22 +1,22 @@
---- collectd-5.0.0/src/Makefile.am.wiget	2011-08-15 21:03:20.991041776 +0200
-+++ collectd-5.0.0/src/Makefile.am	2011-08-15 21:03:47.589811740 +0200
-@@ -438,7 +438,7 @@ pkglib_LTLIBRARIES += iptables.la
- iptables_la_SOURCES = iptables.c
- iptables_la_CPPFLAGS = $(AM_CPPFLAGS) $(BUILD_WITH_LIBIPTC_CPPFLAGS)
- iptables_la_LDFLAGS = -module -avoid-version $(BUILD_WITH_LIBIPTC_LDFLAGS)
--iptables_la_LIBADD = -liptc
-+iptables_la_LIBADD = -lip4tc -lip6tc
- collectd_LDADD += "-dlopen" iptables.la
- collectd_DEPENDENCIES += iptables.la
- endif
---- collectd-5.0.0/configure.in.wiget	2011-08-15 20:04:29.574726374 +0200
-+++ collectd-5.0.0/configure.in	2011-08-15 20:07:58.895465067 +0200
-@@ -1814,7 +1814,7 @@ fi
+--- ./configure.in.org	2011-10-22 21:33:31.473232680 +0200
++++ ./configure.in	2011-10-22 21:35:52.456386679 +0200
+@@ -1835,7 +1835,7 @@ fi
  # Check for the iptc_init symbol in the library.
- if test "x$with_libiptc" = "xyes"
+ if test "x$with_libiptc" = "xyes" && test "x$with_own_libiptc" = "xno"
  then
 -	AC_CHECK_LIB(iptc, iptc_init,
 +	AC_CHECK_LIB(ip4tc, iptc_init,
- 		     [with_libiptc="yes"],
- 		     [with_libiptc="no (symbol 'iptc_init' not found)"])
- fi
+ 	[
+ 		AC_DEFINE(HAVE_LIBIPTC, 1, [Define to 1 if you have the iptc library (-liptc).])
+ 	],
+--- ./src/Makefile.am.org	2011-10-22 21:38:17.816408886 +0200
++++ ./src/Makefile.am	2011-10-22 21:41:01.187261584 +0200
+@@ -445,7 +445,7 @@ if BUILD_WITH_OWN_LIBIPTC
+ iptables_la_LIBADD  = owniptc/libiptc.la
+ iptables_la_DEPENDENCIES = owniptc/libiptc.la
+ else
+-iptables_la_LIBADD = -liptc
++iptables_la_LIBADD = -lip4tc -lip6tc
+ endif
+ collectd_LDADD += "-dlopen" iptables.la
+ collectd_DEPENDENCIES += iptables.la

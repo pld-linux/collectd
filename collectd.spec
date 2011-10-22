@@ -67,12 +67,12 @@
 Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
-Version:	5.0.0
-Release:	5.1
+Version:	5.0.1
+Release:	1
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.bz2
-# Source0-md5:	7bfea6e82d35b36f16d1da2c71397213
+# Source0-md5:	9ad1e4334bd4a671284e8e92a3e3323e
 Source1:	%{name}.conf
 Source2:	%{name}.init
 Source3:	%{name}-http.conf
@@ -81,10 +81,9 @@ Source10:	%{name}-df.conf
 Source11:	%{name}-rrdtool.conf
 Patch0:		%{name}-collection.patch
 Patch1:		compile.patch
-Patch2:		netfilter.patch
-Patch3:		libnotify.patch
-Patch4:		noquote.patch
-Patch5:		libiptc.patch
+Patch2:		noquote.patch
+Patch3:		libiptc.patch
+Patch4:		pld.patch
 URL:		http://collectd.org/
 %{?with_ipmi:BuildRequires:	OpenIPMI-devel >= 2.0.14-3}
 BuildRequires:	autoconf
@@ -1202,8 +1201,7 @@ Perl files from Collectd package
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
-%patch5 -p1
+%patch4 -p0
 
 %build
 %{__libtoolize}
@@ -1215,6 +1213,7 @@ Perl files from Collectd package
 %configure \
 	CPPFLAGS="-Wno-unused-but-set-variable" \
 	c_cv_have_libperl=yes \
+	--with-libiptc=/usr \
 	--with-libstatgrab=/usr \
 	--with-lm-sensors=/usr \
 	--with-libmysql=/usr \
