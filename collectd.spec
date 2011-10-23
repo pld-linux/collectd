@@ -124,6 +124,7 @@ BuildRequires:	which
 %{?with_xmms:BuildRequires:	xmms-devel}
 BuildRequires:	yajl-devel
 Requires(post,preun):	/sbin/chkconfig
+Requires:	%{name}-libs = %{version}-%{release}
 Requires:	rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
