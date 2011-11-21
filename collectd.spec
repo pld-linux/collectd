@@ -97,7 +97,7 @@ BuildRequires:	libmemcached-devel
 BuildRequires:	libnetlink-devel
 %{?with_netlink:BuildRequires:	libnetlink-devel}
 %{?with_libvirt:BuildRequires:	libnl1-devel}
-%{?with_notify:BuildRequires:	libnotify-devel >= 0.7.0}
+%{?with_notify:BuildRequires:	libnotify-devel}
 %{?with_ping:BuildRequires:	liboping-devel}
 %{?with_dns:BuildRequires:	libpcap-devel}
 BuildRequires:	libstatgrab-devel >= 0.12
