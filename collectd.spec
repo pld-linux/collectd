@@ -67,12 +67,12 @@
 Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
-Version:	5.0.1
-Release:	4
+Version:	5.0.2
+Release:	2
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.bz2
-# Source0-md5:	9ad1e4334bd4a671284e8e92a3e3323e
+# Source0-md5:	47f70ae20801f10be355dc8109d696aa
 Source1:	%{name}.conf
 Source2:	%{name}.init
 Source3:	%{name}-http.conf
@@ -84,6 +84,7 @@ Patch1:		compile.patch
 Patch2:		noquote.patch
 Patch3:		libiptc.patch
 Patch4:		pld.patch
+Patch5:		%{name}-netlink.patch
 URL:		http://collectd.org/
 %{?with_ipmi:BuildRequires:	OpenIPMI-devel >= 2.0.14-3}
 BuildRequires:	autoconf
@@ -1202,6 +1203,7 @@ Perl files from Collectd package
 %patch2 -p1
 %patch3 -p1
 %patch4 -p0
+%patch5 -p1
 
 %build
 %{__libtoolize}
