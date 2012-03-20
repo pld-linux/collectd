@@ -1,0 +1,26 @@
+--- collectd-5.0.2/configure.in.old	2012-03-20 18:44:53.000000000 +0100
++++ collectd-5.0.2/configure.in	2012-03-20 18:45:54.000000000 +0100
+@@ -2128,7 +2128,7 @@
+ if test "x$with_libmodbus" = "xuse_pkgconfig"
+ then
+ 	AC_MSG_NOTICE([Checking for modbus using $PKG_CONFIG])
+-	$PKG_CONFIG --exists 'modbus' 2>/dev/null
++	$PKG_CONFIG --exists 'libmodbus' 2>/dev/null
+ 	if test $? -ne 0
+ 	then
+ 		with_libmodbus="no (pkg-config doesn't know modbus)"
+@@ -2136,12 +2136,12 @@
+ fi
+ if test "x$with_libmodbus" = "xuse_pkgconfig"
+ then
+-	with_libmodbus_cflags="`$PKG_CONFIG --cflags 'modbus'`"
++	with_libmodbus_cflags="`$PKG_CONFIG --cflags 'libmodbus'`"
+ 	if test $? -ne 0
+ 	then
+ 		with_libmodbus="no ($PKG_CONFIG failed)"
+ 	fi
+-	with_libmodbus_libs="`$PKG_CONFIG --libs 'modbus'`"
++	with_libmodbus_libs="`$PKG_CONFIG --libs 'libmodbus'`"
+ 	if test $? -ne 0
+ 	then
+ 		with_libmodbus="no ($PKG_CONFIG failed)"
