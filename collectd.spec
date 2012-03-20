@@ -1,3 +1,4 @@
+#	 $Revision: 1.120 $, $Date: 2012-03-20 18:02:46 $
 # TODO:
 # - package contrib scripts as %doc
 # - perl modules with Collectd classes package to separate package
@@ -11,7 +12,6 @@
 #   libjvm  . . . . . . . no (javac not found)
 #   libkstat  . . . . . . no (Solaris only)
 #   libkvm  . . . . . . . no (BSD only)
-#   libmodbus . . . . . . no (pkg-config doesn't know modbus) (http://www.libmodbus.org/)
 #   libnetapp . . . . . . no (netapp_api.h not found) (properitary)
 #   libperfstat . . . . . no (AIX only)
 #   librabbitmq . . . . . no (amqp.h not found) (http://hg.rabbitmq.com/rabbitmq-c/)
@@ -27,7 +27,6 @@
 #   ipvs  . . . . . . . . no             (ip_vs.h not found - llh to be fixed)
 #   java  . . . . . . . . no
 #   lpar... . . . . . . . no
-#   modbus  . . . . . . . no
 #   multimeter  . . . . . no             ?
 #   netapp  . . . . . . . no
 #   onewire . . . . . . . no             (needs libowfs)
@@ -50,6 +49,7 @@
 %bcond_without	iptables	# iptables plugin
 %bcond_without	libesmtp	# notify_email plugin
 %bcond_without	libvirt		# libvirt plugin
+%bcond_without	modbus	# modbus plugin
 %bcond_with	multimeter	# multimeter plugin
 %bcond_without	mysql		# MySQL plugin
 %bcond_without	netlink		# netlink plugin
@@ -68,7 +68,7 @@ Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
 Version:	5.0.2
-Release:	3
+Release:	4
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.bz2
@@ -85,6 +85,7 @@ Patch2:		noquote.patch
 Patch3:		libiptc.patch
 Patch4:		pld.patch
 Patch5:		%{name}-netlink.patch
+Patch6:		%{name}-modbus.patch
 URL:		http://collectd.org/
 %{?with_ipmi:BuildRequires:	OpenIPMI-devel >= 2.0.14-3}
 BuildRequires:	autoconf
@@ -106,6 +107,7 @@ BuildRequires:	libstdc++-devel
 BuildRequires:	libtool
 %{?with_xml:BuildRequires:	libxml2-devel}
 %{?with_sensors:BuildRequires:	lm_sensors-devel}
+%{?with_modbus:BuildRequires:	libmodbus-devel}
 %{?with_mysql:BuildRequires:	mysql-devel}
 %{?with_libvirt:BuildRequires:	libvirt-devel}
 BuildRequires:	ncurses-devel
@@ -657,6 +659,19 @@ Requires:	%{name} = %{version}-%{release}
 %description memory
 Collects physical memory utilization for collectd.
 
+%package modbus
+Summary:	modbus-plugin for collectd
+Summary(pl.UTF-8):	Wtyczka modbus dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description modbus
+The Modbus plugin connects to a Modbus "slave" via Modbus/TCP and
+reads register values. It supports reading single registers (unsigned 16
+bit values), large integer values (unsigned 32 bit values) and 
+floating point values (two registers interpreted as IEEE floats in big
+endian notation). 
+
 %package multimeter
 Summary:	multimeter-plugin for collectd
 Summary(pl.UTF-8):	Wtyczka multimeter dla collectd
@@ -1204,6 +1219,7 @@ Perl files from Collectd package
 %patch3 -p1
 %patch4 -p0
 %patch5 -p1
+%patch6 -p1
 
 %build
 %{__libtoolize}
@@ -1228,6 +1244,7 @@ Perl files from Collectd package
 	%{__enable_disable netlink} \
 	%{__enable_disable notify notify_desktop} \
 	%{__enable_disable libesmtp notify_email} \
+	%{__enable_disable modbus } \
 	%{__enable_disable libvirt} \
 	%{__enable_disable ups nut} \
 	%{__enable_disable ping} \
@@ -1707,6 +1724,13 @@ fi
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/memory.conf
 %attr(755,root,root) %{_libdir}/%{name}/memory.so
+
+%if %{with modbus}
+%files modbus
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/modbus.conf
+%attr(755,root,root) %{_libdir}/%{name}/modbus.so
+%endif
 
 %if %{with multimeter}
 %files multimeter
