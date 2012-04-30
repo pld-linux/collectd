@@ -1,4 +1,4 @@
-#	 $Revision: 1.120 $, $Date: 2012-03-20 18:02:46 $
+#	 $Revision: 1.121 $, $Date: 2012-04-30 12:09:44 $
 # TODO:
 # - package contrib scripts as %doc
 # - perl modules with Collectd classes package to separate package
@@ -96,8 +96,7 @@ BuildRequires:	libdbi-devel
 %{?with_libesmtp:BuildRequires:	libesmtp-devel}
 BuildRequires:	libltdl-devel
 BuildRequires:	libmemcached-devel
-BuildRequires:	libnetlink-devel
-%{?with_netlink:BuildRequires:	libnetlink-devel}
+%{?with_netlink:BuildRequires:	libnetlink-devel >= 3.0.0}
 %{?with_libvirt:BuildRequires:	libnl1-devel}
 %{?with_notify:BuildRequires:	libnotify-devel}
 %{?with_ping:BuildRequires:	liboping-devel}
