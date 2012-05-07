@@ -1,4 +1,4 @@
-#	 $Revision: 1.121 $, $Date: 2012-04-30 12:09:44 $
+#	 $Revision: 1.122 $, $Date: 2012-05-07 17:55:54 $
 # TODO:
 # - package contrib scripts as %doc
 # - perl modules with Collectd classes package to separate package
@@ -67,12 +67,12 @@
 Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
-Version:	5.0.2
-Release:	4
+Version:	5.1.0
+Release:	1
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.bz2
-# Source0-md5:	47f70ae20801f10be355dc8109d696aa
+# Source0-md5:	141570150b4608c0c567330f6f146e0f
 Source1:	%{name}.conf
 Source2:	%{name}.init
 Source3:	%{name}-http.conf
@@ -427,6 +427,16 @@ The Entropy plugin collects the available entropy on a system. Entropy
 is important to generate random numbers, which are used for
 encryption, authorization and similar tasks.
 
+%package ethstat
+Summary:	ethstat-plugin for collectd
+Summary(pl.UTF-8):	Wyczka ethstat dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description ethstat
+The ethstat plugin reads performance statistics directly from ethernet
+cards
+
 %package exec
 Summary:	exec-plugin for collectd
 Summary(pl.UTF-8):	Wtyczka exec dla collectd
@@ -625,6 +635,16 @@ Requires:	%{name} = %{version}-%{release}
 %description mbmon
 The mbmon plugin uses mbmon to retrieve temperature, voltage, etc.
 
+%package md
+Summary:	md plugin for collectd
+Summary(pl.UTF-8):	Wtyczka md dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description md
+The md plugin reports the number of disks in various states in Linux
+software RAID devices.
+
 %package memcachec
 Summary:	memcachec-plugin for collectd
 Summary(pl.UTF-8):	Wtyczka memcachec dla collectd
@@ -778,6 +798,16 @@ statistics access is allowed) and extracts :
 - "local" clock parameters: time offset, error and offset loop,
 - parameters for each NTP server used to sync time: offset,
   dispersion, delay.
+
+%package numa
+Summary:	numa-plugin for collectd
+Summary(pl.UTF-8):	Wtyczka numa dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description numa
+The numa plugin reports statistics of the Non-Uniform Memory
+Access (NUMA) subsystem of Linux.
 
 %package nut
 Summary:	nut-plugin for collectd
@@ -1171,6 +1201,23 @@ Requires:	%{name} = %{version}-%{release}
 Collects information about the virtual servers running on a system,
 using Linux-Vserver.
 
+%package write_graphite
+Summary:	write_graphite-plugin for collectd
+Summary(pl.UTF-8):	wtyczka write_graphite dla collectd
+Group:		Daemons
+Requires:	%{name} = %{version}-%{release}
+
+%description write_graphite
+The Write Graphite plugin stores values in Carbon, the storage layer
+of Graphite.
+The plugin aims to be very efficient. It keeps the TCP connection to
+Carbon open in order to minimize the connection handshake overhead. It
+buffers the data in a buffer to send many lines at once, rather than
+generating lots of small network packets. The size of this buffer
+(1428 bytes) is dimensioned so that the buffer as well as the TCP and
+IP header fit into one Ethernet frame and can (hopefully) be delivered
+without fragmentation.
+
 %package write_http
 Summary:	write_http-plugin for collectd
 Summary(pl.UTF-8):	Wtyczka write_http dla collectd
@@ -1215,10 +1262,10 @@ Perl files from Collectd package
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
+%patch3 -p0
 %patch4 -p0
 %patch5 -p1
-%patch6 -p1
+#%patch6 -p1
 
 %build
 %{__libtoolize}
@@ -1351,6 +1398,7 @@ fi
 %module_scripts dns
 %module_scripts email
 %module_scripts entropy
+%module_scripts ethstat
 %module_scripts exec
 %module_scripts filecount
 %module_scripts fscache
@@ -1369,6 +1417,7 @@ fi
 %module_scripts match_timediff
 %module_scripts match_value
 %module_scripts mbmon
+%module_scripts md
 %module_scripts memcachec
 %module_scripts memcached
 %module_scripts memory
@@ -1381,6 +1430,7 @@ fi
 %module_scripts notify_desktop
 %module_scripts notify_email
 %module_scripts ntpd
+%module_scripts numa
 %module_scripts nut
 %module_scripts olsrd
 %module_scripts openvpn
@@ -1417,6 +1467,7 @@ fi
 %module_scripts varnish
 %module_scripts vmem
 %module_scripts vserver
+%module_scripts write_graphite
 %module_scripts write_http
 %module_scripts wireless
 %module_scripts xmms
@@ -1611,6 +1662,11 @@ fi
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/entropy.conf
 %attr(755,root,root) %{_libdir}/%{name}/entropy.so
 
+%files ethstat
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/ethstat.conf
+%attr(755,root,root) %{_libdir}/%{name}/ethstat.so
+
 %files exec
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/exec.conf
@@ -1709,6 +1765,11 @@ fi
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/mbmon.conf
 %attr(755,root,root) %{_libdir}/%{name}/mbmon.so
 
+%files md
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/md.conf
+%attr(755,root,root) %{_libdir}/%{name}/md.so
+
 %files memcachec
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/memcachec.conf
@@ -1787,6 +1848,11 @@ fi
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/ntpd.conf
 %attr(755,root,root) %{_libdir}/%{name}/ntpd.so
+
+%files numa
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/numa.conf
+%attr(755,root,root) %{_libdir}/%{name}/numa.so
 
 %if %{with ups}
 %files nut
@@ -1989,6 +2055,11 @@ fi
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/wireless.conf
 %attr(755,root,root) %{_libdir}/%{name}/wireless.so
+
+%files write_graphite
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/write_graphite.conf
+%attr(755,root,root) %{_libdir}/%{name}/write_graphite.so
 
 %files write_http
 %defattr(644,root,root,755)
