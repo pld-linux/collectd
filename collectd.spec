@@ -1,4 +1,4 @@
-#	 $Revision: 1.122 $, $Date: 2012-05-07 17:55:54 $
+#	 $Revision: 1.123 $, $Date: 2012-06-05 12:38:02 $
 # TODO:
 # - package contrib scripts as %doc
 # - perl modules with Collectd classes package to separate package
@@ -2036,10 +2036,12 @@ fi
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/uuid.conf
 %attr(755,root,root) %{_libdir}/%{name}/uuid.so
 
+%if %{with varnish}
 %files varnish
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/varnish.conf
 %attr(755,root,root) %{_libdir}/%{name}/varnish.so
+%endif
 
 %files vmem
 %defattr(644,root,root,755)
