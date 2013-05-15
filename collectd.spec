@@ -68,7 +68,7 @@ Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
 Version:	5.1.0
-Release:	2
+Release:	3
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.bz2
@@ -77,6 +77,7 @@ Source1:	%{name}.conf
 Source2:	%{name}.init
 Source3:	%{name}-http.conf
 Source4:	%{name}-lighttpd.conf
+Source5:	%{name}-apache.conf
 Source10:	%{name}-df.conf
 Source11:	%{name}-rrdtool.conf
 Patch0:		%{name}-collection.patch
@@ -262,6 +263,7 @@ Requires:	perl(RRDs)
 Requires:	perl(URI::Escape)
 Requires:	webserver(cgi)
 Suggests:	fonts-TTF-DejaVu
+Conflicts:	apache-base < 2.4.0-1
 
 %description collection
 Web script for collectd.
@@ -278,6 +280,7 @@ Requires:	perl(Regexp::Common)
 Requires:	perl(RRDs)
 Requires:	webserver(cgi)
 Suggests:	fonts-TTF-DejaVu
+Conflicts:	apache-base < 2.4.0-1
 
 %description collection3
 Web script for collectd.
@@ -1329,7 +1332,7 @@ install %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
 # Web frontend:
 install contrib/collection.conf $RPM_BUILD_ROOT%{_webappdir}
 install contrib/collection.cgi $RPM_BUILD_ROOT%{_appdir}/cgi-bin
-install %{SOURCE3} $RPM_BUILD_ROOT%{_webappdir}/apache.conf
+install %{SOURCE5} $RPM_BUILD_ROOT%{_webappdir}/apache.conf
 install %{SOURCE3} $RPM_BUILD_ROOT%{_webappdir}/httpd.conf
 install %{SOURCE4} $RPM_BUILD_ROOT%{_webappdir}/lighttpd.conf
 
@@ -1478,10 +1481,10 @@ fi
 %triggerun collection -- apache1 < 1.3.37-3, apache1-base
 %webapp_unregister apache %{_webapp}
 
-%triggerin collection -- apache < 2.2.0, apache-base
+%triggerin collection -- apache-base
 %webapp_register httpd %{_webapp}
 
-%triggerun collection -- apache < 2.2.0, apache-base
+%triggerun collection -- apache-base
 %webapp_unregister httpd %{_webapp}
 
 %triggerin collection -- lighttpd
