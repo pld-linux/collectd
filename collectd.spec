@@ -1,4 +1,3 @@
-#	 $Revision: 1.123 $, $Date: 2012-06-05 12:38:02 $
 # TODO:
 # - package contrib scripts as %doc
 # - perl modules with Collectd classes package to separate package
@@ -18,7 +17,7 @@
 #   librouteros . . . . . no ('routeros_api.h' not found) (http://verplant.org/librouteros/)
 #   libtokyotyrant  . . . no (tcrdb.h not found) (http://1978th.net/tokyotyrant/)
 #   libyajl . . . . . . . no (yajl/yajl_parse.h not found)
-#   protobuf-c  . . . . . no 
+#   protobuf-c  . . . . . no
 #   oracle  . . . . . . . no (ORACLE_HOME is not set)
 # - Disabled modules (build most of them an package):
 #   amqp    . . . . . . . no
@@ -68,7 +67,7 @@ Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
 Version:	5.1.0
-Release:	5
+Release:	6
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.bz2
@@ -97,6 +96,7 @@ BuildRequires:	libdbi-devel
 %{?with_libesmtp:BuildRequires:	libesmtp-devel}
 BuildRequires:	libltdl-devel
 BuildRequires:	libmemcached-devel
+%{?with_modbus:BuildRequires:	libmodbus-devel}
 %{?with_netlink:BuildRequires:	libnetlink-devel >= 3.0.0}
 %{?with_libvirt:BuildRequires:	libnl1-devel}
 %{?with_notify:BuildRequires:	libnotify-devel}
@@ -105,11 +105,10 @@ BuildRequires:	libmemcached-devel
 BuildRequires:	libstatgrab-devel >= 0.12
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool
+%{?with_libvirt:BuildRequires:	libvirt-devel}
 %{?with_xml:BuildRequires:	libxml2-devel}
 %{?with_sensors:BuildRequires:	lm_sensors-devel}
-%{?with_modbus:BuildRequires:	libmodbus-devel}
 %{?with_mysql:BuildRequires:	mysql-devel}
-%{?with_libvirt:BuildRequires:	libvirt-devel}
 BuildRequires:	ncurses-devel
 %{?with_snmp:BuildRequires:	net-snmp-devel}
 %{?with_libvirt:BuildRequires:	numactl-devel}
@@ -148,12 +147,12 @@ every time new values should be logged. This allows collectd to have a
 10 second resolution while being nice to the system.
 
 %description -l pl.UTF-8
-collectd to mały demon zbierający co 10 sekund informacje o systemie
-i zapisujący wyniki do pliku RRD.
+collectd to mały demon zbierający co 10 sekund informacje o systemie i
+zapisujący wyniki do pliku RRD.
 
 W odróżnieniu od innych podobnych programów collectd nie jest
-skryptem, lecz jest napisany w czystym C z myślą o wydajności
-i przenośności. Jako demon pozostaje w pamięci, więc nie ma potrzeby
+skryptem, lecz jest napisany w czystym C z myślą o wydajności i
+przenośności. Jako demon pozostaje w pamięci, więc nie ma potrzeby
 urychamiania ciężkiego interpretera za każdym razem, kiedy powinny być
 zapisane nowe wartości. Dzięki temu collect może mieć rozdzielczość 10
 sekund i nie obciążać zbytnio systemu.
@@ -273,11 +272,11 @@ Summary:	Web script for collectd
 Summary(pl.UTF-8):	Web script for collectd
 Group:		Applications/WWW
 Requires:	%{name} = %{version}-%{release}
-Requires:	perl-Collectd = %{version}-%{release}
 Requires:	perl(Config::General)
 Requires:	perl(HTML::Entities)
-Requires:	perl(Regexp::Common)
 Requires:	perl(RRDs)
+Requires:	perl(Regexp::Common)
+Requires:	perl-Collectd = %{version}-%{release}
 Requires:	webserver(cgi)
 Suggests:	fonts-TTF-DejaVu
 Conflicts:	apache-base < 2.4.0-1
@@ -689,10 +688,10 @@ Requires:	%{name} = %{version}-%{release}
 
 %description modbus
 The Modbus plugin connects to a Modbus "slave" via Modbus/TCP and
-reads register values. It supports reading single registers (unsigned 16
-bit values), large integer values (unsigned 32 bit values) and 
+reads register values. It supports reading single registers (unsigned
+16 bit values), large integer values (unsigned 32 bit values) and
 floating point values (two registers interpreted as IEEE floats in big
-endian notation). 
+endian notation).
 
 %package multimeter
 Summary:	multimeter-plugin for collectd
@@ -809,8 +808,8 @@ Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description numa
-The numa plugin reports statistics of the Non-Uniform Memory
-Access (NUMA) subsystem of Linux.
+The numa plugin reports statistics of the Non-Uniform Memory Access
+(NUMA) subsystem of Linux.
 
 %package nut
 Summary:	nut-plugin for collectd
@@ -1212,14 +1211,13 @@ Requires:	%{name} = %{version}-%{release}
 
 %description write_graphite
 The Write Graphite plugin stores values in Carbon, the storage layer
-of Graphite.
-The plugin aims to be very efficient. It keeps the TCP connection to
-Carbon open in order to minimize the connection handshake overhead. It
-buffers the data in a buffer to send many lines at once, rather than
-generating lots of small network packets. The size of this buffer
-(1428 bytes) is dimensioned so that the buffer as well as the TCP and
-IP header fit into one Ethernet frame and can (hopefully) be delivered
-without fragmentation.
+of Graphite. The plugin aims to be very efficient. It keeps the TCP
+connection to Carbon open in order to minimize the connection
+handshake overhead. It buffers the data in a buffer to send many lines
+at once, rather than generating lots of small network packets. The
+size of this buffer (1428 bytes) is dimensioned so that the buffer as
+well as the TCP and IP header fit into one Ethernet frame and can
+(hopefully) be delivered without fragmentation.
 
 %package write_http
 Summary:	write_http-plugin for collectd
