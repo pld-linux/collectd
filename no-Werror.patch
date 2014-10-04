@@ -1,0 +1,51 @@
+--- collectd-5.4.1/configure.ac~	2014-01-26 09:09:23.000000000 +0100
++++ collectd-5.4.1/configure.ac	2014-10-04 22:35:37.727704935 +0200
+@@ -589,7 +589,7 @@
+ # Emulate behavior of src/Makefile.am
+ if test "x$GCC" = "xyes"
+ then
+-	CFLAGS="$CFLAGS -Wall -Werror"
++	CFLAGS="$CFLAGS -Wall"
+ fi
+ 
+ AC_CACHE_CHECK([for strtok_r],
+@@ -718,7 +718,7 @@
+ if test "x$GCC" = "xyes"
+ then
+ 	SAVE_CFLAGS="$CFLAGS"
+-	CFLAGS="$CFLAGS -Wall -Wextra -Werror"
++	CFLAGS="$CFLAGS -Wall -Wextra"
+ fi
+ 
+ AC_CHECK_FUNCS(strptime, [have_strptime="yes"], [have_strptime="no"])
+@@ -3205,7 +3205,7 @@
+ 	SAVE_LDFLAGS="$LDFLAGS"
+ 	# trigger an error if Perl_load_module*() uses __attribute__nonnull__(3)
+ 	# (see issues #41 and #42)
+-	CFLAGS="$CFLAGS $PERL_CFLAGS -Wall -Werror"
++	CFLAGS="$CFLAGS $PERL_CFLAGS -Wall"
+ 	LDFLAGS="$LDFLAGS $PERL_LDFLAGS"
+ 
+ 	AC_CACHE_CHECK([for broken Perl_load_module()],
+--- collectd-5.4.1/src/Makefile.am~	2014-10-04 22:34:10.000000000 +0200
++++ collectd-5.4.1/src/Makefile.am	2014-10-04 22:36:06.087706122 +0200
+@@ -4,7 +4,7 @@
+ endif
+ 
+ if COMPILER_IS_GCC
+-AM_CFLAGS = -Wall -Werror
++AM_CFLAGS = -Wall
+ endif
+ 
+ AM_CPPFLAGS = -DPREFIX='"${prefix}"'
+--- collectd-5.4.1/src/libcollectdclient/Makefile.am~	2014-01-26 09:09:14.000000000 +0100
++++ collectd-5.4.1/src/libcollectdclient/Makefile.am	2014-10-04 22:36:28.911040409 +0200
+@@ -1,7 +1,7 @@
+ AUTOMAKE_OPTIONS = foreign no-dependencies
+ 
+ if COMPILER_IS_GCC
+-AM_CFLAGS = -Wall -Werror
++AM_CFLAGS = -Wall
+ endif
+ 
+ pkginclude_HEADERS = collectd/client.h collectd/network.h collectd/network_buffer.h collectd/lcc_features.h

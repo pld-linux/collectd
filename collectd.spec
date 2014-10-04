@@ -1,4 +1,19 @@
 # TODO:
+#warning: Installed (but unpackaged) file(s) found:
+#	/etc/collectd.d/aggregation.conf
+#	/etc/collectd.d/cgroups.conf
+#	/etc/collectd.d/lvm.conf
+#	/etc/collectd.d/statsd.conf
+#	/etc/collectd.d/tail_csv.conf
+#	/etc/collectd.d/target_v5upgrade.conf
+#	/usr/bin/collectd-tg
+#	/usr/lib64/collectd/aggregation.so
+#	/usr/lib64/collectd/cgroups.so
+#	/usr/lib64/collectd/lvm.so
+#	/usr/lib64/collectd/statsd.so
+#	/usr/lib64/collectd/tail_csv.so
+#	/usr/share/man/man1/collectd-tg.1.gz
+#
 # - package contrib scripts as %doc
 # - perl modules with Collectd classes package to separate package
 # - Bundled libraries - check if its not changed ones and if it can be
@@ -66,12 +81,12 @@
 Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
-Version:	5.1.0
-Release:	8
+Version:	5.4.1
+Release:	1
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.bz2
-# Source0-md5:	141570150b4608c0c567330f6f146e0f
+# Source0-md5:	6f56c71c96573a7f4f7fb3bfab185974
 Source1:	%{name}.conf
 Source2:	%{name}.init
 Source3:	%{name}-http.conf
@@ -84,7 +99,7 @@ Patch1:		compile.patch
 Patch2:		noquote.patch
 Patch3:		libiptc.patch
 Patch4:		pld.patch
-Patch5:		%{name}-netlink.patch
+Patch5:		no-Werror.patch
 Patch6:		%{name}-modbus.patch
 URL:		http://collectd.org/
 %{?with_ipmi:BuildRequires:	OpenIPMI-devel >= 2.0.14-3}
@@ -97,7 +112,7 @@ BuildRequires:	libdbi-devel
 BuildRequires:	libltdl-devel
 BuildRequires:	libmemcached-devel
 %{?with_modbus:BuildRequires:	libmodbus-devel}
-%{?with_netlink:BuildRequires:	libnetlink-devel >= 3.0.0}
+%{?with_netlink:BuildRequires:	libmnl-devel}
 %{?with_libvirt:BuildRequires:	libnl1-devel}
 %{?with_notify:BuildRequires:	libnotify-devel}
 %{?with_ping:BuildRequires:	liboping-devel}
@@ -1517,7 +1532,7 @@ fi
 %files libs
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libcollectdclient.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libcollectdclient.so.0
+%attr(755,root,root) %ghost %{_libdir}/libcollectdclient.so.1
 
 %files devel
 %defattr(644,root,root,755)
