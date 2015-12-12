@@ -24,7 +24,7 @@
  	# (see issues #41 and #42)
 -	CFLAGS="$CFLAGS $PERL_CFLAGS -Wall -Werror"
 +	CFLAGS="$CFLAGS $PERL_CFLAGS -Wall"
- 	LDFLAGS="$LDFLAGS $PERL_LDFLAGS"
+ 	LIBS="$LIBS $PERL_LIBS"
  
  	AC_CACHE_CHECK([for broken Perl_load_module()],
 --- collectd-5.4.1/src/Makefile.am~	2014-10-04 22:34:10.000000000 +0200

@@ -1,11 +1,12 @@
 --- collectd-5.0.0/src/collectd.conf.in.wiget	2011-08-15 17:26:34.433454586 +0200
 +++ collectd-5.0.0/src/collectd.conf.in	2011-08-15 17:27:49.809878542 +0200
-@@ -1002,7 +1002,7 @@
+@@ -1457,7 +1457,7 @@
  # the collectd-threshold(5) manual page.                                     #
  ##############################################################################
  
 -#@BUILD_PLUGIN_THRESHOLD_TRUE@LoadPlugin "threshold"
 +#@BUILD_PLUGIN_THRESHOLD_TRUE@LoadPlugin threshold
- #<Plugin "threshold">
+ #<Plugin threshold>
  #  <Type "foo">
  #    WarningMin    0.00
+

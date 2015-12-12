@@ -1,18 +1,61 @@
 # TODO:
 #warning: Installed (but unpackaged) file(s) found:
-#	/etc/collectd.d/aggregation.conf
-#	/etc/collectd.d/cgroups.conf
-#	/etc/collectd.d/lvm.conf
-#	/etc/collectd.d/statsd.conf
-#	/etc/collectd.d/tail_csv.conf
-#	/etc/collectd.d/target_v5upgrade.conf
-#	/usr/bin/collectd-tg
-#	/usr/lib64/collectd/aggregation.so
-#	/usr/lib64/collectd/cgroups.so
-#	/usr/lib64/collectd/lvm.so
-#	/usr/lib64/collectd/statsd.so
-#	/usr/lib64/collectd/tail_csv.so
-#	/usr/share/man/man1/collectd-tg.1.gz
+#    /etc/collectd.d/aggregation.conf
+#    /etc/collectd.d/ceph.conf
+#    /etc/collectd.d/cgroups.conf
+#    /etc/collectd.d/drbd.conf
+#    /etc/collectd.d/fhcount.conf
+#    /etc/collectd.d/ipc.conf
+#    /etc/collectd.d/java.conf
+#    /etc/collectd.d/log_logstash.conf
+#    /etc/collectd.d/lvm.conf
+#    /etc/collectd.d/openldap.conf
+#    /etc/collectd.d/pinba.conf
+#    /etc/collectd.d/redis.conf
+#    /etc/collectd.d/sigrok.conf
+#    /etc/collectd.d/smart.conf
+#    /etc/collectd.d/statsd.conf
+#    /etc/collectd.d/tail_csv.conf
+#    /etc/collectd.d/target_v5upgrade.conf
+#    /etc/collectd.d/turbostat.conf
+#    /etc/collectd.d/write_log.conf
+#    /etc/collectd.d/write_redis.conf
+#    /etc/collectd.d/write_riemann.conf
+#    /etc/collectd.d/write_sensu.conf
+#    /etc/collectd.d/write_tsdb.conf
+#    /etc/collectd.d/zfs_arc.conf
+#    /etc/collectd.d/zookeeper.conf
+#    /usr/bin/collectd-tg
+#    /usr/lib64/collectd/aggregation.so
+#    /usr/lib64/collectd/ceph.so
+#    /usr/lib64/collectd/cgroups.so
+#    /usr/lib64/collectd/drbd.so
+#    /usr/lib64/collectd/fhcount.so
+#    /usr/lib64/collectd/ipc.so
+#    /usr/lib64/collectd/java.so
+#    /usr/lib64/collectd/log_logstash.so
+#    /usr/lib64/collectd/lvm.so
+#    /usr/lib64/collectd/openldap.so
+#    /usr/lib64/collectd/pinba.so
+#    /usr/lib64/collectd/redis.so
+#    /usr/lib64/collectd/sigrok.so
+#    /usr/lib64/collectd/smart.so
+#    /usr/lib64/collectd/statsd.so
+#    /usr/lib64/collectd/tail_csv.so
+#    /usr/lib64/collectd/turbostat.so
+#    /usr/lib64/collectd/write_log.so
+#    /usr/lib64/collectd/write_redis.so
+#    /usr/lib64/collectd/write_riemann.so
+#    /usr/lib64/collectd/write_sensu.so
+#    /usr/lib64/collectd/write_tsdb.so
+#    /usr/lib64/collectd/zfs_arc.so
+#    /usr/lib64/collectd/zookeeper.so
+#    /usr/share/collectd/collection3/README
+#    /usr/share/collectd/collection3/bin/.htaccess
+#    /usr/share/collectd/collection3/test.px
+#    /usr/share/collectd/java/collectd-api.jar
+#    /usr/share/collectd/java/generic-jmx.jar
+#    /usr/share/man/man1/collectd-tg.1.gz
 #
 # - package contrib scripts as %doc
 # - perl modules with Collectd classes package to separate package
@@ -81,12 +124,12 @@
 Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
-Version:	5.4.1
-Release:	2
+Version:	5.5.0
+Release:	1
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.bz2
-# Source0-md5:	6f56c71c96573a7f4f7fb3bfab185974
+# Source0-md5:	c39305ef5514b44238b0d31f77e29e6a
 Source1:	%{name}.conf
 Source2:	%{name}.init
 Source3:	%{name}-http.conf
@@ -97,8 +140,7 @@ Source11:	%{name}-rrdtool.conf
 Patch0:		%{name}-collection.patch
 Patch1:		compile.patch
 Patch2:		noquote.patch
-Patch3:		libiptc.patch
-Patch4:		pld.patch
+
 Patch5:		no-Werror.patch
 Patch6:		%{name}-modbus.patch
 URL:		http://collectd.org/
@@ -1278,13 +1320,12 @@ Perl files from Collectd package
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%patch3 -p0
-%patch4 -p0
+
 %patch5 -p1
 #%patch6 -p1
 
 %build
-%{__libtoolize}
+%{__libtoolize} --ltdl
 %{__aclocal}
 %{__autoconf}
 %{__autoheader}
@@ -1327,7 +1368,7 @@ Perl files from Collectd package
 	--disable-ipvs
 
 
-%{__make} LDFLAGS="%{rpmldflags} -lstatgrab" \
+%{__make} -j1 LDFLAGS="%{rpmldflags} -lstatgrab" \
 	BUILD_WITH_OPENIPMI_CFLAGS="-I/usr/include" \
 	BUILD_WITH_OPENIPMI_LIBS="-L%{_libdir} -lOpenIPMIutils -lOpenIPMIpthread"
 
@@ -1731,8 +1772,8 @@ fi
 %if %{with libvirt}
 %files libvirt
 %defattr(644,root,root,755)
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/libvirt.conf
-%attr(755,root,root) %{_libdir}/%{name}/libvirt.so
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.d/virt.conf
+%attr(755,root,root) %{_libdir}/%{name}/virt.so
 %endif
 
 %files load
