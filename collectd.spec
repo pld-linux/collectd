@@ -126,7 +126,7 @@ Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
 Version:	5.5.0
-Release:	2
+Release:	3
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.bz2
@@ -1343,7 +1343,7 @@ Perl files from Collectd package
 	%{__enable_disable dns} \
 	%{__enable_disable ipmi} \
 	%{__enable_disable iptables} \
-	%{__enable_disable java} \
+	%{__with_without java} \
 	%{__enable_disable multimeter} \
 	%{__enable_disable mysql} \
 	%{__enable_disable netlink} \
