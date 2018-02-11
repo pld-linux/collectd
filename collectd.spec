@@ -1,61 +1,71 @@
 # TODO:
 #warning: Installed (but unpackaged) file(s) found:
-#    /etc/collectd.d/aggregation.conf
-#    /etc/collectd.d/ceph.conf
-#    /etc/collectd.d/cgroups.conf
-#    /etc/collectd.d/drbd.conf
-#    /etc/collectd.d/fhcount.conf
-#    /etc/collectd.d/ipc.conf
-#    /etc/collectd.d/java.conf
-#    /etc/collectd.d/log_logstash.conf
-#    /etc/collectd.d/lvm.conf
-#    /etc/collectd.d/openldap.conf
-#    /etc/collectd.d/pinba.conf
-#    /etc/collectd.d/redis.conf
-#    /etc/collectd.d/sigrok.conf
-#    /etc/collectd.d/smart.conf
-#    /etc/collectd.d/statsd.conf
-#    /etc/collectd.d/tail_csv.conf
-#    /etc/collectd.d/target_v5upgrade.conf
-#    /etc/collectd.d/turbostat.conf
-#    /etc/collectd.d/write_log.conf
-#    /etc/collectd.d/write_redis.conf
-#    /etc/collectd.d/write_riemann.conf
-#    /etc/collectd.d/write_sensu.conf
-#    /etc/collectd.d/write_tsdb.conf
-#    /etc/collectd.d/zfs_arc.conf
-#    /etc/collectd.d/zookeeper.conf
-#    /usr/bin/collectd-tg
-#    /usr/lib64/collectd/aggregation.so
-#    /usr/lib64/collectd/ceph.so
-#    /usr/lib64/collectd/cgroups.so
-#    /usr/lib64/collectd/drbd.so
-#    /usr/lib64/collectd/fhcount.so
-#    /usr/lib64/collectd/ipc.so
-#    /usr/lib64/collectd/java.so
-#    /usr/lib64/collectd/log_logstash.so
-#    /usr/lib64/collectd/lvm.so
-#    /usr/lib64/collectd/openldap.so
-#    /usr/lib64/collectd/pinba.so
-#    /usr/lib64/collectd/redis.so
-#    /usr/lib64/collectd/sigrok.so
-#    /usr/lib64/collectd/smart.so
-#    /usr/lib64/collectd/statsd.so
-#    /usr/lib64/collectd/tail_csv.so
-#    /usr/lib64/collectd/turbostat.so
-#    /usr/lib64/collectd/write_log.so
-#    /usr/lib64/collectd/write_redis.so
-#    /usr/lib64/collectd/write_riemann.so
-#    /usr/lib64/collectd/write_sensu.so
-#    /usr/lib64/collectd/write_tsdb.so
-#    /usr/lib64/collectd/zfs_arc.so
-#    /usr/lib64/collectd/zookeeper.so
-#    /usr/share/collectd/collection3/README
-#    /usr/share/collectd/collection3/bin/.htaccess
-#    /usr/share/collectd/collection3/test.px
-#    /usr/share/collectd/java/collectd-api.jar
-#    /usr/share/collectd/java/generic-jmx.jar
-#    /usr/share/man/man1/collectd-tg.1.gz
+#	/etc/collectd.d/aggregation.conf
+#	/etc/collectd.d/ceph.conf
+#	/etc/collectd.d/cgroups.conf
+#	/etc/collectd.d/chrony.conf
+#	/etc/collectd.d/cpusleep.conf
+#	/etc/collectd.d/drbd.conf
+#	/etc/collectd.d/fhcount.conf
+#	/etc/collectd.d/gps.conf
+#	/etc/collectd.d/hugepages.conf
+#	/etc/collectd.d/ipc.conf
+#	/etc/collectd.d/log_logstash.conf
+#	/etc/collectd.d/lua.conf
+#	/etc/collectd.d/lvm.conf
+#	/etc/collectd.d/mcelog.conf
+#	/etc/collectd.d/notify_nagios.conf
+#	/etc/collectd.d/openldap.conf
+#	/etc/collectd.d/ovs_events.conf
+#	/etc/collectd.d/ovs_stats.conf
+#	/etc/collectd.d/pinba.conf
+#	/etc/collectd.d/smart.conf
+#	/etc/collectd.d/snmp_agent.conf
+#	/etc/collectd.d/statsd.conf
+#	/etc/collectd.d/tail_csv.conf
+#	/etc/collectd.d/target_v5upgrade.conf
+#	/etc/collectd.d/turbostat.conf
+#	/etc/collectd.d/write_log.conf
+#	/etc/collectd.d/write_prometheus.conf
+#	/etc/collectd.d/write_sensu.conf
+#	/etc/collectd.d/write_tsdb.conf
+#	/etc/collectd.d/xencpu.conf
+#	/etc/collectd.d/zfs_arc.conf
+#	/etc/collectd.d/zookeeper.conf
+#	/usr/lib64/collectd/aggregation.so
+#	/usr/lib64/collectd/ceph.so
+#	/usr/lib64/collectd/cgroups.so
+#	/usr/lib64/collectd/chrony.so
+#	/usr/lib64/collectd/cpusleep.so
+#	/usr/lib64/collectd/drbd.so
+#	/usr/lib64/collectd/fhcount.so
+#	/usr/lib64/collectd/gps.so
+#	/usr/lib64/collectd/hugepages.so
+#	/usr/lib64/collectd/ipc.so
+#	/usr/lib64/collectd/log_logstash.so
+#	/usr/lib64/collectd/lua.so
+#	/usr/lib64/collectd/lvm.so
+#	/usr/lib64/collectd/mcelog.so
+#	/usr/lib64/collectd/notify_nagios.so
+#	/usr/lib64/collectd/openldap.so
+#	/usr/lib64/collectd/ovs_events.so
+#	/usr/lib64/collectd/ovs_stats.so
+#	/usr/lib64/collectd/pinba.so
+#	/usr/lib64/collectd/smart.so
+#	/usr/lib64/collectd/snmp_agent.so
+#	/usr/lib64/collectd/statsd.so
+#	/usr/lib64/collectd/synproxy.so
+#	/usr/lib64/collectd/tail_csv.so
+#	/usr/lib64/collectd/turbostat.so
+#	/usr/lib64/collectd/write_log.so
+#	/usr/lib64/collectd/write_prometheus.so
+#	/usr/lib64/collectd/write_sensu.so
+#	/usr/lib64/collectd/write_tsdb.so
+#	/usr/lib64/collectd/xencpu.so
+#	/usr/lib64/collectd/zfs_arc.so
+#	/usr/lib64/collectd/zookeeper.so
+#	/usr/share/collectd/collection3/README
+#	/usr/share/collectd/collection3/bin/.htaccess
 #
 # - package contrib scripts as %doc
 # - perl modules with Collectd classes package to separate package
@@ -125,12 +135,12 @@
 Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
-Version:	5.6.1
-Release:	5
+Version:	5.8.0
+Release:	1
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.bz2
-# Source0-md5:	979f43b6439d7df93f0b40c73d779223
+# Source0-md5:	a841159323624f18bf03198e9f5aa364
 Source1:	%{name}.conf
 Source2:	%{name}.init
 Source3:	%{name}-http.conf
@@ -139,7 +149,6 @@ Source5:	%{name}-apache.conf
 Source10:	%{name}-df.conf
 Source11:	%{name}-rrdtool.conf
 Patch0:		%{name}-collection.patch
-Patch1:		compile.patch
 Patch2:		noquote.patch
 URL:		http://collectd.org/
 %{?with_ipmi:BuildRequires:	OpenIPMI-devel >= 2.0.14-3}
@@ -228,24 +237,13 @@ Summary:	Header files for %{name} libraries
 Summary(pl.UTF-8):	Pliki nagłówkowe bibliotek %{name}
 Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
+Obsoletes:	collectd-static
 
 %description devel
 Header files for %{name} libraries.
 
 %description devel -l pl.UTF-8
 Pliki nagłówkowe bibliotek %{name}.
-
-%package static
-Summary:	Static files for %{name} libraries
-Summary(pl.UTF-8):	Pliki statyczne bibliotek %{name}
-Group:		Development/Libraries
-Requires:	%{name}-libs = %{version}-%{release}
-
-%description static
-Static files for %{name} libraries.
-
-%description static -l pl.UTF-8
-Pliki statyczne bibliotek %{name}.
 
 %package apache
 Summary:	apache-plugin for collectd
@@ -1316,7 +1314,6 @@ Perl files from Collectd package
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
 %patch2 -p1
 
 %build
@@ -1545,7 +1542,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS ChangeLog README TODO contrib
+%doc AUTHORS ChangeLog README contrib
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.conf
 %dir %{_sysconfdir}/%{name}.d
 %dir %{_webappdir}
@@ -1553,16 +1550,19 @@ fi
 %attr(755,root,root) %{_sbindir}/collectdmon
 %attr(755,root,root) %{_bindir}/collectdctl
 %attr(755,root,root) %{_bindir}/collectd-nagios
+%attr(755,root,root) %{_bindir}/collectd-tg
 %dir %{_libdir}/%{name}
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/types.db
 %attr(754,root,root) /etc/rc.d/init.d/%{name}
 %{_mandir}/man1/collectd.1*
 %{_mandir}/man1/collectd-nagios.1*
+%{_mandir}/man1/collectd-tg.1*
 %{_mandir}/man1/collectdctl.1*
 %{_mandir}/man1/collectdmon.1*
 %{_mandir}/man5/collectd.conf.5*
 %{_mandir}/man5/collectd-java.5*
+%{_mandir}/man5/collectd-lua.5*
 %{_mandir}/man5/types.db.5*
 %dir %{_var}/lib/%{name}
 
@@ -1578,11 +1578,6 @@ fi
 %dir %{_includedir}/%{name}
 %{_includedir}/%{name}/*.h
 %{_pkgconfigdir}/libcollectdclient.pc
-
-%files static
-%defattr(644,root,root,755)
-%{_libdir}/libcollectdclient.a
-%{_libdir}/%{name}/*.a
 
 %files collection
 %defattr(644,root,root,755)
