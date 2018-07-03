@@ -1,0 +1,11 @@
+--- collectd-5.8.0/src/python.c~	2017-11-18 10:03:27.000000000 +0100
++++ collectd-5.8.0/src/python.c	2018-07-03 19:31:41.523756509 +0200
+@@ -1136,7 +1136,7 @@ static void *cpy_interactive(void *pipef
+     cpy_log_exception("interactive session init");
+   }
+   cur_sig = PyOS_setsig(SIGINT, python_sigint_handler);
+-  PyOS_AfterFork();
++  PyOS_AfterFork_Child();
+   PyEval_InitThreads();
+   close(*(int *)pipefd);
+   PyRun_InteractiveLoop(stdin, "<stdin>");
