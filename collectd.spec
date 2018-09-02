@@ -136,7 +136,7 @@ Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
 Version:	5.8.0
-Release:	5
+Release:	6
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.bz2
@@ -1326,7 +1326,7 @@ Perl files from Collectd package
 %{__automake}
 
 %configure \
-	CPPFLAGS="-Wno-unused-but-set-variable" \
+	CPPFLAGS="-Wno-unused-but-set-variable -Wno-format-truncation" \
 	c_cv_have_libperl=yes \
 	--with-libiptc=/usr \
 	--with-libstatgrab=/usr \
