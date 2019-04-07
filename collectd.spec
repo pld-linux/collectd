@@ -135,12 +135,12 @@
 Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
-Version:	5.8.0
-Release:	6
+Version:	5.8.1
+Release:	1
 License:	GPL v2
 Group:		Daemons
 Source0:	http://collectd.org/files/%{name}-%{version}.tar.bz2
-# Source0-md5:	a841159323624f18bf03198e9f5aa364
+# Source0-md5:	bfce96c42cede5243028510bcc57c1e6
 Source1:	%{name}.conf
 Source2:	%{name}.init
 Source3:	%{name}-http.conf
@@ -151,6 +151,7 @@ Source11:	%{name}-rrdtool.conf
 Patch0:		%{name}-collection.patch
 Patch1:		%{name}-python.patch
 Patch2:		noquote.patch
+Patch3:		sensors.patch
 URL:		http://collectd.org/
 %{?with_ipmi:BuildRequires:	OpenIPMI-devel >= 2.0.14-3}
 BuildRequires:	autoconf
@@ -1317,6 +1318,7 @@ Perl files from Collectd package
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 %{__libtoolize} --ltdl
@@ -1328,6 +1330,7 @@ Perl files from Collectd package
 %configure \
 	CPPFLAGS="-Wno-unused-but-set-variable -Wno-format-truncation" \
 	c_cv_have_libperl=yes \
+	--disable-werror \
 	--with-libiptc=/usr \
 	--with-libstatgrab=/usr \
 	--with-lm-sensors=/usr \
