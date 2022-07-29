@@ -1,9 +1,13 @@
 # TODO:
 #warning: Installed (but unpackaged) file(s) found:
 #	/etc/collectd.d/aggregation.conf
+#	/etc/collectd.d/amqp.conf
+#	/etc/collectd.d/barometer.conf
 #	/etc/collectd.d/ceph.conf
 #	/etc/collectd.d/cgroups.conf
+#	/etc/collectd.d/check_uptime.conf
 #	/etc/collectd.d/chrony.conf
+#	/etc/collectd.d/connectivity.conf
 #	/etc/collectd.d/cpusleep.conf
 #	/etc/collectd.d/drbd.conf
 #	/etc/collectd.d/fhcount.conf
@@ -14,28 +18,41 @@
 #	/etc/collectd.d/lua.conf
 #	/etc/collectd.d/lvm.conf
 #	/etc/collectd.d/mcelog.conf
+#	/etc/collectd.d/mqtt.conf
 #	/etc/collectd.d/notify_nagios.conf
 #	/etc/collectd.d/openldap.conf
 #	/etc/collectd.d/ovs_events.conf
 #	/etc/collectd.d/ovs_stats.conf
+#	/etc/collectd.d/pcie_errors.conf
 #	/etc/collectd.d/pinba.conf
+#	/etc/collectd.d/procevent.conf
+#	/etc/collectd.d/redis.conf
 #	/etc/collectd.d/smart.conf
 #	/etc/collectd.d/snmp_agent.conf
 #	/etc/collectd.d/statsd.conf
+#	/etc/collectd.d/sysevent.conf
 #	/etc/collectd.d/tail_csv.conf
 #	/etc/collectd.d/target_v5upgrade.conf
 #	/etc/collectd.d/turbostat.conf
+#	/etc/collectd.d/write_kafka.conf
 #	/etc/collectd.d/write_log.conf
 #	/etc/collectd.d/write_prometheus.conf
+#	/etc/collectd.d/write_redis.conf
 #	/etc/collectd.d/write_sensu.conf
+#	/etc/collectd.d/write_stackdriver.conf
+#	/etc/collectd.d/write_syslog.conf
 #	/etc/collectd.d/write_tsdb.conf
 #	/etc/collectd.d/xencpu.conf
 #	/etc/collectd.d/zfs_arc.conf
 #	/etc/collectd.d/zookeeper.conf
 #	/usr/lib64/collectd/aggregation.so
+#	/usr/lib64/collectd/amqp.so
+#	/usr/lib64/collectd/barometer.so
 #	/usr/lib64/collectd/ceph.so
 #	/usr/lib64/collectd/cgroups.so
+#	/usr/lib64/collectd/check_uptime.so
 #	/usr/lib64/collectd/chrony.so
+#	/usr/lib64/collectd/connectivity.so
 #	/usr/lib64/collectd/cpusleep.so
 #	/usr/lib64/collectd/drbd.so
 #	/usr/lib64/collectd/fhcount.so
@@ -46,20 +63,28 @@
 #	/usr/lib64/collectd/lua.so
 #	/usr/lib64/collectd/lvm.so
 #	/usr/lib64/collectd/mcelog.so
+#	/usr/lib64/collectd/mqtt.so
 #	/usr/lib64/collectd/notify_nagios.so
 #	/usr/lib64/collectd/openldap.so
 #	/usr/lib64/collectd/ovs_events.so
 #	/usr/lib64/collectd/ovs_stats.so
 #	/usr/lib64/collectd/pinba.so
+#	/usr/lib64/collectd/procevent.so
+#	/usr/lib64/collectd/redis.so
 #	/usr/lib64/collectd/smart.so
 #	/usr/lib64/collectd/snmp_agent.so
 #	/usr/lib64/collectd/statsd.so
 #	/usr/lib64/collectd/synproxy.so
+#	/usr/lib64/collectd/sysevent.so
 #	/usr/lib64/collectd/tail_csv.so
 #	/usr/lib64/collectd/turbostat.so
+#	/usr/lib64/collectd/write_kafka.so
 #	/usr/lib64/collectd/write_log.so
 #	/usr/lib64/collectd/write_prometheus.so
+#	/usr/lib64/collectd/write_redis.so
 #	/usr/lib64/collectd/write_sensu.so
+#	/usr/lib64/collectd/write_stackdriver.so
+#	/usr/lib64/collectd/write_syslog.so
 #	/usr/lib64/collectd/write_tsdb.so
 #	/usr/lib64/collectd/xencpu.so
 #	/usr/lib64/collectd/zfs_arc.so
@@ -73,38 +98,65 @@
 #   mainstream library:
 # liboconfig  . . . . . yes (shipped version)
 # - Libraries not found by configure:
-#   libcredis . . . . . . no (credis.h not found) (http://code.google.com/p/credis/)
+#   intel mic . . . . . . no (MicAccessApi not found)
+#   libaquaero5 . . . . . no (libaquaero5.h not found)
+#   libdpdk . . . . . . . no (rte_config.h not found)
 #   libganglia  . . . . . no (gm_protocol.h not found) (http://ganglia.info/)
+#   libgrpc++ . . . . . . no (pkg-config could not find libgrpc++)
 #   libiokit  . . . . . . no (Darwin only)
-#   libjvm  . . . . . . . no (javac not found)
+#   libjevents  . . . . . no (jevents.h not found)
+#   libjvm  . . . . . . . no (javac/jar not found)
 #   libkstat  . . . . . . no (Solaris only)
 #   libkvm  . . . . . . . no (BSD only)
+#   liblvm2app  . . . . . no (lvm2app.h not found)
+#   libmongoc . . . . . . no (pkg-config could not find libmongoc)
 #   libnetapp . . . . . . no (netapp_api.h not found) (properitary)
+#   libnvidia-ml  . . . . no
+#   libowcapi . . . . . . no (owcapi.h not found)
 #   libperfstat . . . . . no (AIX only)
+#   libpqos . . . . . . . no (pqos.h not found)
+#   libqpid-proton .  . . no (proton/proactor.h not found)
 #   librabbitmq . . . . . no (amqp.h not found) (http://hg.rabbitmq.com/rabbitmq-c/)
+#   libriemann-client . . no (pkg-config doesn't know libriemann-client)
 #   librouteros . . . . . no ('routeros_api.h' not found) (http://verplant.org/librouteros/)
+#   libsigrok   . . . . . no (pkg-config could not find libsigrok)
 #   libtokyotyrant  . . . no (tcrdb.h not found) (http://1978th.net/tokyotyrant/)
 #   libyajl . . . . . . . no (yajl/yajl_parse.h not found)
 #   protobuf-c  . . . . . no
 #   oracle  . . . . . . . no (ORACLE_HOME is not set)
 # - Disabled modules (build most of them an package):
 #   amqp    . . . . . . . no
+#   amqp1   . . . . . . . no (proton/proactor.h not found)
 #   apple_sensors . . . . no             (Darwin only)
-#   gmond . . . . . . . . no
+#   aquaero . . . . . . . no (libaquaero5.h not found)
+#   dpdkevents. . . . . . no
+#   dpdkstat  . . . . . . no
+#   gmond . . . . . . . . no (gm_protocol.h not found)
+#   gpu_nvidia  . . . . . no
+#   grpc  . . . . . . . . no (libgrpc++ not found)
+#   intel_pmu . . . . . . no (jevents.h not found)
+#   intel_rdt . . . . . . no (pqos.h not found)
 #   ipvs  . . . . . . . . no             (ip_vs.h not found - llh to be fixed)
-#   java  . . . . . . . . no
-#   lpar... . . . . . . . no
+#   java  . . . . . . . . no (jar not found)
+#   lpar... . . . . . . . no (AIX only)
+#   lvm . . . . . . . . . no (lvm2app.h not found)
+#   mic . . . . . . . . . no (MicAccessApi not found)
 #   multimeter  . . . . . no             ?
-#   netapp  . . . . . . . no
-#   onewire . . . . . . . no             (needs libowfs)
-#   oracle  . . . . . . . no
+#   netapp  . . . . . . . no (netapp_api.h not found)
+#   onewire . . . . . . . no (owcapi.h not found)
+#   oracle  . . . . . . . no (ORACLE_HOME is not set)
+#   pf  . . . . . . . . . no
 #   pinba . . . . . . . . no
 #   redis . . . . . . . . no
-#   routeros  . . . . . . no
+#   routeros  . . . . . . no (routeros_api.h not found)
+#   sigrok  . . . . . . . no (pkg-config could not find libsigrok)
 #   tape  . . . . . . . . no             ?
-#   tokyotyrant . . . . . no
+#   tokyotyrant . . . . . no (tcrdb.h not found)
+#   write_mongodb . . . . no (pkg-config could not find libmongoc)
+#   write_riemann . . . . no (pkg-config doesn't know libriemann-client)
 #   write_redis . . . . . no
 #   zfs_arc . . . . . . . no
+#   zone  . . . . . . . . no
 # - logrotate file for logfile plugin
 # - %desc -l pl for plugins
 # - package SpamAssassin plugin from contrib
@@ -136,7 +188,7 @@ Summary:	Collects system information in RRD files
 Summary(pl.UTF-8):	Zbieranie informacji o systemie w plikach RRD
 Name:		collectd
 Version:	5.9.2
-Release:	6
+Release:	7
 License:	GPL v2
 Group:		Daemons
 # http://collectd.org/files/%{name}-%{version}.tar.bz2 is xz compressed :/
@@ -238,7 +290,7 @@ Summary:	Header files for %{name} libraries
 Summary(pl.UTF-8):	Pliki nagłówkowe bibliotek %{name}
 Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
-Obsoletes:	collectd-static
+Obsoletes:	collectd-static < 5.8.0
 
 %description devel
 Header files for %{name} libraries.
