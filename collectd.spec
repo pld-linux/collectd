@@ -233,6 +233,8 @@ BuildRequires:	ncurses-devel
 BuildRequires:	perl-devel
 BuildRequires:	pkgconfig
 %{?with_pgsql:BuildRequires:	postgresql-devel}
+BuildRequires:	protobuf-c
+BuildRequires:	protobuf-devel
 BuildRequires:	python-devel
 BuildRequires:	python-modules
 BuildRequires:	rpmbuild(macros) >= 1.268
