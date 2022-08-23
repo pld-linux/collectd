@@ -202,6 +202,7 @@ Source5:	%{name}-apache.conf
 Source10:	%{name}-df.conf
 Source11:	%{name}-rrdtool.conf
 Patch0:		%{name}-collection.patch
+Patch1:		glibc-2.36.patch
 Patch2:		noquote.patch
 URL:		http://collectd.org/
 %{?with_ipmi:BuildRequires:	OpenIPMI-devel >= 2.0.14-3}
@@ -1370,6 +1371,7 @@ Perl files from Collectd package
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 %patch2 -p1
 
 %build

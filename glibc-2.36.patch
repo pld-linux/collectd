@@ -1,0 +1,14 @@
+--- collectd-5.9.2/src/utils/mount/mount.h.orig	2019-10-01 14:00:47.000000000 +0200
++++ collectd-5.9.2/src/utils/mount/mount.h	2022-08-23 13:13:10.904711606 +0200
+@@ -54,7 +54,11 @@
+ #include <sys/mnttab.h>
+ #endif
+ #if HAVE_SYS_MOUNT_H
++#if !defined(__GLIBC__) || (__GLIBC__ < 2) || (__GLIBC__ == 2 && __GLIBC_MINOR__ < 36)
+ #include <sys/mount.h>
++#else
++#include <linux/mount.h>
++#endif
+ #endif
+ #if HAVE_SYS_STATFS_H
+ #include <sys/statfs.h>
