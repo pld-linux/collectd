@@ -224,6 +224,7 @@ BuildRequires:	libstdc++-devel
 BuildRequires:	libtool
 %{?with_libvirt:BuildRequires:	libvirt-devel}
 %{?with_xml:BuildRequires:	libxml2-devel}
+BuildRequires:	linux-libc-headers
 %{?with_sensors:BuildRequires:	lm_sensors-devel}
 %{?with_mysql:BuildRequires:	mysql-devel}
 BuildRequires:	ncurses-devel
