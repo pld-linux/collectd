@@ -1384,6 +1384,7 @@ Perl files from Collectd package
 %configure \
 	CPPFLAGS="-Wno-unused-but-set-variable -Wno-format-truncation" \
 	c_cv_have_libperl=yes \
+	--disable-silent-rules \
 	--disable-werror \
 	--with-libiptc=/usr \
 	--with-libstatgrab=/usr \
