@@ -239,7 +239,7 @@ BuildRequires:	protobuf-c
 BuildRequires:	protobuf-devel
 BuildRequires:	python-devel
 BuildRequires:	python-modules
-BuildRequires:	rpmbuild(macros) >= 1.268
+BuildRequires:	rpmbuild(macros) >= 1.527
 %{?with_rrd:BuildRequires:	rrdtool-devel}
 %{?with_varnish:BuildRequires:		varnish-devel}
 BuildRequires:	which
