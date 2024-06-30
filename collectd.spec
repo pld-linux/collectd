@@ -241,10 +241,12 @@ BuildRequires:	python-devel
 BuildRequires:	python-modules
 BuildRequires:	rpmbuild(macros) >= 1.527
 %{?with_rrd:BuildRequires:	rrdtool-devel}
+BuildRequires:	tar >= 1:1.22
 %{?with_varnish:BuildRequires:		varnish-devel}
 BuildRequires:	which
 #BuildRequires:	xfsprogs-devel
 %{?with_xmms:BuildRequires:	xmms-devel}
+BuildRequires:	xz
 BuildRequires:	yajl-devel
 Requires(post,preun):	/sbin/chkconfig
 Requires:	%{name}-libs = %{version}-%{release}
