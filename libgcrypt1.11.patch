@@ -1,0 +1,38 @@
+--- collectd-5.9.2/configure.ac.orig	2019-10-01 14:00:47.000000000 +0200
++++ collectd-5.9.2/configure.ac	2024-07-01 13:03:11.069669675 +0200
+@@ -2578,23 +2578,33 @@
+       GCRYPT_LDFLAGS="$GCRYPT_LDFLAGS -L$withval/lib"
+       with_libgcrypt="yes"
+     else
++      with_gpgrt_config="gpgrt-config"
+       with_libgcrypt_config="gcrypt-config"
+       with_libgcrypt="$withval"
+     fi; fi; fi
+   ],
+   [
+     with_libgcrypt_config="libgcrypt-config"
++    with_gpgrt_config="gpgrt-config"
+     with_libgcrypt="yes"
+   ]
+ )
+ 
+ if test "x$with_libgcrypt" = "xyes" && test "x$with_libgcrypt_config" != "x"; then
+   if test "x$GCRYPT_CPPFLAGS" = "x"; then
+-    GCRYPT_CPPFLAGS=`"$with_libgcrypt_config" --cflags 2>/dev/null`
++    if $with_gpgrt_config libgcrypt --exists >/dev/null 2>&1; then
++      GCRYPT_CPPFLAGS=`"$with_gpgrt_config" libgcrypt --cflags 2>/dev/null`
++    else
++      GCRYPT_CPPFLAGS=`"$with_libgcrypt_config" --cflags 2>/dev/null`
++    fi
+   fi
+ 
+   if test "x$GCRYPT_LIBS" = "x"; then
+-    GCRYPT_LIBS=`"$with_libgcrypt_config" --libs 2>/dev/null`
++    if $with_gpgrt_config libgcrypt --exists >/dev/null 2>&1; then
++      GCRYPT_LIBS=`"$with_gpgrt_config" libgcrypt --libs 2>/dev/null`
++    else
++      GCRYPT_LIBS=`"$with_libgcrypt_config" --libs 2>/dev/null`
++    fi
+   fi
+ fi
+ 

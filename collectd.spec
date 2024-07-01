@@ -204,6 +204,7 @@ Source11:	%{name}-rrdtool.conf
 Patch0:		%{name}-collection.patch
 Patch1:		glibc-2.36.patch
 Patch2:		noquote.patch
+Patch3:		libgcrypt1.11.patch
 URL:		http://collectd.org/
 %{?with_ipmi:BuildRequires:	OpenIPMI-devel >= 2.0.14-3}
 BuildRequires:	autoconf
@@ -1375,6 +1376,7 @@ Perl files from Collectd package
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 %{__libtoolize} --ltdl
