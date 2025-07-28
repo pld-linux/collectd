@@ -18,3 +18,14 @@
    int status;
  
    /* (Re-)Connect if we have no connection */
+--- collectd-5.9.2/src/write_prometheus.c.orig	2019-10-01 14:00:47.000000000 +0200
++++ collectd-5.9.2/src/write_prometheus.c	2025-07-28 22:24:38.006061329 +0200
+@@ -227,7 +227,7 @@
+ 
+ /* http_handler is the callback called by the microhttpd library. It essentially
+  * handles all HTTP request aspects and creates an HTTP response. */
+-static int http_handler(void *cls, struct MHD_Connection *connection,
++static enum MHD_Result http_handler(void *cls, struct MHD_Connection *connection,
+                         const char *url, const char *method,
+                         const char *version, const char *upload_data,
+                         size_t *upload_data_size, void **connection_state) {

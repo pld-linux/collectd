@@ -218,6 +218,7 @@ BuildRequires:	libdbi-devel
 %{?with_libesmtp:BuildRequires:	libesmtp-devel}
 BuildRequires:	libltdl-devel
 BuildRequires:	libmemcached-devel
+BuildRequires:	libmicrohttpd-devel
 %{?with_modbus:BuildRequires:	libmodbus-devel}
 %{?with_netlink:BuildRequires:	libmnl-devel}
 %{?with_libvirt:BuildRequires:	libnl1-devel}
@@ -240,6 +241,7 @@ BuildRequires:	perl-devel
 BuildRequires:	pkgconfig
 %{?with_pgsql:BuildRequires:	postgresql-devel}
 BuildRequires:	protobuf-c
+BuildRequires:	protobuf-c-devel
 BuildRequires:	protobuf-devel
 BuildRequires:	python-devel
 BuildRequires:	python-modules
