@@ -1,0 +1,15 @@
+--- collectd-5.9.2/src/cpython.h.orig	2019-10-01 14:00:47.000000000 +0200
++++ collectd-5.9.2/src/cpython.h	2025-07-28 20:57:28.280313794 +0200
+@@ -26,7 +26,12 @@
+ 
+ /* Some python versions don't include this by default. */
+ 
++#include <Python.h>
++#if defined(PY_MAJOR_VERSION) && PY_MAJOR_VERSION > 3 || defined(PY_MAJOR_VERSION) && PY_MAJOR_VERSION == 3 && defined(PY_MINOR_VERSION) && PY_MINOR_VERSION >= 11
++#include <cpython/longintrepr.h>
++#else
+ #include <longintrepr.h>
++#endif
+ 
+ /* These two macros are basically Py_BEGIN_ALLOW_THREADS and
+  * Py_BEGIN_ALLOW_THREADS
