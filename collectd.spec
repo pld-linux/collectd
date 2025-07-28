@@ -207,6 +207,7 @@ Patch2:		noquote.patch
 Patch3:		libgcrypt1.11.patch
 Patch4:		types.patch
 Patch5:		python3.11.patch
+Patch6:		libxml2-2.14.patch
 URL:		http://collectd.org/
 %{?with_ipmi:BuildRequires:	OpenIPMI-devel >= 2.0.14-3}
 BuildRequires:	autoconf
@@ -1381,6 +1382,7 @@ Perl files from Collectd package
 %patch -P3 -p1
 %patch -P4 -p1
 %patch -P5 -p1
+%patch -P6 -p1
 
 %build
 %{__libtoolize} --ltdl

@@ -1,0 +1,11 @@
+--- collectd-5.9.2/src/virt.c.orig	2019-10-01 14:00:47.000000000 +0200
++++ collectd-5.9.2/src/virt.c	2025-07-28 21:00:57.644935167 +0200
+@@ -2205,7 +2205,7 @@
+   return 0;
+ }
+ 
+-static void virt_eventloop_timeout_cb(int timer ATTRIBUTE_UNUSED,
++static void virt_eventloop_timeout_cb(int timer __attribute__((unused)),
+                                       void *timer_info) {}
+ 
+ static int register_event_impl(void) {
