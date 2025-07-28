@@ -1,0 +1,20 @@
+--- collectd-5.9.2/src/nut.c.orig	2019-10-01 14:00:47.000000000 +0200
++++ collectd-5.9.2/src/nut.c	2025-07-28 20:34:12.801738877 +0200
+@@ -46,7 +46,7 @@
+   collectd_upsconn_t *conn;
+   char *upsname;
+   char *hostname;
+-  int port;
++  uint16_t port;
+   nut_ups_t *next;
+ };
+ 
+@@ -250,7 +250,7 @@
+   const char *query[3] = {"VAR", ups->upsname, NULL};
+   unsigned int query_num = 2;
+   char **answer;
+-  unsigned int answer_num;
++  size_t answer_num;
+   int status;
+ 
+   /* (Re-)Connect if we have no connection */

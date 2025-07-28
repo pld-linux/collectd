@@ -205,6 +205,7 @@ Patch0:		%{name}-collection.patch
 Patch1:		glibc-2.36.patch
 Patch2:		noquote.patch
 Patch3:		libgcrypt1.11.patch
+Patch4:		types.patch
 URL:		http://collectd.org/
 %{?with_ipmi:BuildRequires:	OpenIPMI-devel >= 2.0.14-3}
 BuildRequires:	autoconf
@@ -1377,6 +1378,7 @@ Perl files from Collectd package
 %patch -P1 -p1
 %patch -P2 -p1
 %patch -P3 -p1
+%patch -P4 -p1
 
 %build
 %{__libtoolize} --ltdl
